@@ -1,10 +1,12 @@
 // ==UserScript==
 // @name         自动展开
 // @description  自动展开文档	隐藏部分
-// @version      1.0.0
+// @version      1.0.1
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @author       airbash
-// @match      	 *://*.jianshu.com/p/*
+// @match      	 *://jianshu.com/p/*
+// @match		 *://blog.csdn.net/*
+// @match		 *://jingyan.baidu.com/article*
 // @grant        none
 // @license      GPL-3.0
 // ==/UserScript==
@@ -16,46 +18,45 @@
 	 */
 	var websites = [
 		{
-			name: "简书",
-			url: 'jianshu.com/p',
-			handle: "click_item",
-			type: "class",
-			item: "ant-btn nP21pp"
-		},
-		{
 			name: "百度经验",
 			url: 'jingyan.baidu.com/article',
-			handle: 'disaplay_item',
-			type: "class",
-			item: "read-whole-mask"
+			handles: [
+				{
+					handle: 'disaplay_item',
+					type: "class",
+					item: "read-whole-mask"
+				},
+				{
+					handle: 'heiht_item',
+					type: 'class',
+					item: 'exp-content-container fold'
+				}
+			]
+
 		}
 	];
 
 	var website = GetWebsite();
-	var items = GetItemElement();
-	if (website.handle == 'click_item') {
-		//使用js的click():模拟点击'展开'命令;
-		var interval = setInterval(() => {
+	for (var handle of website.handles) {
+		var items = GetItemElement(handle);
+		if (handle.handle == 'disaplay_item') {
+			//使用css的display:none;隐藏遮挡部分
 			for (var item of items) {
-				if (
-					item != null &&
-					item.getAttribute("opened") != "yes"
-				) {
-					item.click();
-					item.setAttribute("opened", "yes");
-				}
+				item.style.display = "none";
 			}
-		}, 100);
-	} else {
-		//使用css的display:none;隐藏遮挡部分
-		for (var item of items) {
-			item.style.display = "none";
+		} else {
+			for (var item of items) {
+				item.style.height='unset';
+				item.style.maxHeight='unset';
+				item.style.maxHeight='unset';
+			}
 		}
 	}
 
+
 	/**
 	 * 校验当前网站是否匹配
-	 * @return     {Website}  网站对象
+	 * @return     {Website}  当前网站对象
 	 */
 	function GetWebsite() {
 		for (var website of websites) {
@@ -70,13 +71,13 @@
 	 * @param      {object}  item    选择器
 	 * @return     {Array}   falgs?元素数组:空数组
 	 */
-	function GetItemElement() {
-		if (website.type == "class") {
-			return document.getElementsByClassName(website.item);
-		} else if (website.type == "id") {
-			return [document.getElementById(website.item)];
-		} else if (website.type == "tag") {
-			return document.getElementsByTagName(website.item);
+	function GetItemElement(obj) {
+		if (obj.type == "class") {
+			return document.getElementsByClassName(obj.item);
+		} else if (obj.type == "id") {
+			return [document.getElementById(obj.item)];
+		} else if (obj.type == "tag") {
+			return document.getElementsByTagName(obj.item);
 		}
 		return [];
 	}
