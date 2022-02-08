@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         自动展开
 // @description  自动展开文档	隐藏部分
-// @version      1.0.2
+// @version      1.0.3
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @author       airbash
 // @match      	 *://jianshu.com/p/*
@@ -19,6 +19,24 @@
 	 */
 	var websites = [
 		{
+			name: "CSDN",
+			url: 'blog.csdn.net',
+			handles: [
+				{
+					handle: 'click_item',
+					type: 'class',
+					item: 'look-more-preCode contentImg-no-view'
+				},
+				{
+					//移动版:展开评论
+					handle: 'click_item',
+					type: 'class',
+					item: 'btn_comment_readmore'
+				}
+			]
+
+		},
+		{
 			name: "百度经验",
 			url: 'jingyan.baidu.com/article',
 			handles: [
@@ -33,7 +51,6 @@
 					item: 'exp-content-container fold'
 				}
 			]
-
 		},
 		{
 			name: "百度知道",
@@ -50,14 +67,24 @@
 					item: "wgt-answers-mask"
 				},
 				{
-					handle: 'click_item',
+					handle: 'height_item',
 					type: "class",
-					item: "w-detail-display-btn"
+					item: "best-text mb-10",
+				},
+				{
+					handle: 'height_item',
+					type: "class",
+					item: "answer-text mb-10",
 				},
 				{
 					handle: 'click_item',
 					type: "id",
 					item: "show-answer-hide"
+				},
+				{
+					handle: 'click_item',
+					type: "class",
+					item: "show-hide-dispute"
 				}
 			]
 		}
@@ -72,7 +99,7 @@
 				for (var item of items) {
 					item.style.display = "none";
 				}
-			} else if (handle.handle == 'heiht_item') {
+			} else if (handle.handle == 'height_item') {
 				//加长内容部分
 				for (var item of items) {
 					item.style.height = 'unset';
@@ -85,7 +112,6 @@
 						item != null &&
 						item.getAttribute("opened") != "yes"
 					) {
-						console.log(item);
 						item.click();
 						item.setAttribute("opened", "yes");
 					}
@@ -119,7 +145,8 @@
 			return [document.getElementById(obj.item)];
 		} else if (obj.type == "tag") {
 			return document.getElementsByTagName(obj.item);
+		} else {
+			return [];
 		}
-		return [];
 	}
 })();
