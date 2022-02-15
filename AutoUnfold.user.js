@@ -1,14 +1,18 @@
 // ==UserScript==
 // @name         自动展开
-// @description  自动展开文档	隐藏部分
-// @version      1.1.3
+// @version      1.1.4
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @author       airbash
+// @description  自动展开文档	隐藏部分;长期维护、全平台支持;目前支持:CSDN、简书、知乎、百家号、百度新闻、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻
 // @match      	 *://*.jianshu.com/*
 // @match        *://blog.csdn.net/*
+// @match        *://www.zhihu.com/question/*
 // @match        *://jingyan.baidu.com/article*
 // @match        *://zhidao.baidu.com/question*
 // @match        *://tieba.baidu.com/p*
+// @match        *://baijiahao.baidu.com/s*
+// @match        *://mbd.baidu.com/newspage/data/*
+// @match        *://news.baidu.com/news*
 // @match        *://*.sina.cn/*
 // @match        *://3g.163.com/*
 // @match        *://m.sohu.com/a/*
@@ -26,235 +30,358 @@
 	var websites = [
 		{
 			name: "CSDN",
-			url: 'blog.csdn.net',
+			url: "blog.csdn.net",
 			handles: [
 				//自动展开代码块
 				{
-					type: 'click',
-					item: '.look-more-preCode'
+					type: "click",
+					item: ".look-more-preCode",
 				},
 				//移动版:弹出窗口
 				{
-					type: 'display',
-					item: '.weixin-shadowbox'
+					type: "display",
+					item: ".weixin-shadowbox",
 				},
 				//移动版:下载App按钮
 				{
-					type: 'display',
-					item: '.feed-Sign-span'
+					type: "display",
+					item: ".feed-Sign-span",
 				},
 				//移动版:阅读全文
 				{
-					type: 'display',
-					item: '.btn_mod'
+					type: "display",
+					item: ".btn_mod",
 				},
 				{
-					type: 'height',
-					item: '.article_content'
-
+					type: "height",
+					item: ".article_content",
 				},
 				{
-					type: 'display',
-					item: '.readall_box'
+					type: "display",
+					item: ".readall_box",
 				},
 				//移动版:展开评论
 				{
-					type: 'click',
-					item: '.btn_comment_readmore'
-				}
-			]
+					type: "click",
+					item: ".btn_comment_readmore",
+				},
+			],
 		},
 		{
 			name: "简书",
-			url: 'jianshu.com/p',
+			url: "jianshu.com/p",
 			handles: [
 				//移动版:弹出窗口
 				{
-					type: 'display',
-					item: '.download-app-guidance'
+					type: "display",
+					item: ".download-app-guidance",
 				},
-				//移动版:下载App按钮/
+				//移动版:下载App按钮
 				{
-					type: 'display',
-					item: '.call-app-btn'
+					type: "display",
+					item: ".call-app-btn",
 				},
 				//移动版:阅读全文
 				{
-					type: 'display',
-					item: '.collapse-tips'
+					type: "display",
+					item: ".collapse-tips",
 				},
 				{
-					type: 'height',
-					item: '.collapse-free-content'
+					type: "height",
+					item: ".collapse-free-content",
 				},
 				{
-					type: 'display',
-					item: '.copyright'
+					type: "display",
+					item: ".copyright",
 				},
 				// 移动版:允许滑动
 				{
-					type: 'overflow',
-					item: 'body'
-				}
-			]
+					type: "overflow",
+					item: "body",
+				},
+			],
 		},
 		{
 			name: "百度经验",
-			url: 'jingyan.baidu.com/article',
+			url: "jingyan.baidu.com/article",
 			handles: [
 				{
-					type: 'display',
-					item: ".read-whole-mask"
+					type: "display",
+					item: ".read-whole-mask",
 				},
 				{
-					type: 'height',
-					item: '.exp-content-container'
+					type: "height",
+					item: ".exp-content-container",
 				},
-				//移动版:
+				//移动版:展开内容
 				{
-					type: 'click',
-					item: '.more-img-opt'
-				}
-			]
+					type: "click",
+					item: ".more-img-opt",
+				},
+			],
 		},
 		{
 			name: "百度知道",
-			url: 'zhidao.baidu.com/question',
+			url: "zhidao.baidu.com/question",
 			handles: [
 				{
-					type: 'display',
-					item: ".wgt-best-mask"
+					type: "display",
+					item: ".wgt-best-mask",
 				},
 				{
-					type: 'height',
+					type: "height",
 					item: ".best-text",
 				},
 				{
-					type: 'display',
-					item: ".wgt-answers-mask"
+					type: "display",
+					item: ".wgt-answers-mask",
 				},
 				{
-					type: 'height',
+					type: "height",
 					item: ".answer-text",
 				},
 				{
-					type: 'click',
-					item: "#show-answer-hide"
+					type: "click",
+					item: "#show-answer-hide",
 				},
 				{
-					type: 'click',
-					item: ".show-hide-dispute"
+					type: "click",
+					item: ".show-hide-dispute",
 				},
-				//移动版
+				//移动版:展开内容
 				{
-					type: 'display',
-					item: '.w-detail-display-btn'
-				},
-				{
-					type: 'height',
-					item: '.w-detail-container'
+					type: "display",
+					item: ".w-detail-display-btn",
 				},
 				{
-					type: 'click',
-					item: '.show-more-replies'
+					type: "height",
+					item: ".w-detail-container",
 				},
-			]
+				{
+					type: "click",
+					item: ".show-more-replies",
+				},
+			],
 		},
 		{
 			name: "百度贴吧",
-			url: 'tieba.baidu.com/p',
+			url: "tieba.baidu.com/p",
 			handles: [
 				//自动展开图片
 				{
-					type: 'display',
-					item: ".replace_tip"
+					type: "display",
+					item: ".replace_tip",
 				},
 				{
-					type: 'height',
-					item: '.replace_div'
+					type: "height",
+					item: ".replace_div",
 				},
 				//自动展开回复
 				{
-					type: 'click',
-					item: ".j_lzl_m"
+					type: "click",
+					item: ".j_lzl_m",
 				},
 				//移动版:弹出窗口
 				{
-					type: 'display',
-					item: ".tb-backflow-defensive"
+					type: "display",
+					item: ".tb-backflow-defensive",
 				},
 				//移动版:允许滑动
 				{
-					type: 'overflow',
-					item: 'body'
-				}
-			]
+					type: "overflow",
+					item: "body",
+				},
+			],
+		},
+		{
+			name: "百家号",
+			url: "baijiahao.baidu.com/s",
+			handles: [
+				//移动版:弹出窗口
+				{
+					type: "display",
+					item: ".layer-wrap",
+				},
+				{
+					type: "overflow",
+					item: "body",
+				},
+				//移动版:阅读全文
+				{
+					type: "display",
+					item: ".oPadding",
+				},
+				{
+					type: "height",
+					item: ".mainContent",
+				},
+				//移动版:悬浮按钮
+				{
+					type: "display",
+					item: ".undefined",
+				},
+			],
+		},
+		{
+			name: "百度app新闻",
+			url: "mbd.baidu.com/newspage/data",
+			handles: [
+				//类似于百家
+				//移动版:弹出窗口
+				{
+					type: "display",
+					item: ".layer-wrap",
+				},
+				{
+					type: "overflow",
+					item: "body",
+				},
+				//移动版:阅读全文
+				{
+					type: "display",
+					item: ".height-fold",
+				},
+				{
+					type: "height",
+					item: ".dynamic-item",
+				},
+
+				//类似于百度
+				//移动版:阅读全文
+				{
+					type: "display",
+					item: ".packupButton",
+				},
+				{
+					type: "height",
+					item: ".mainContent",
+				},
+				//移动版:悬浮按钮
+				{
+					type: "display",
+					item: ".GcwrDCd4cJnZ_u",
+				},
+			],
+		},
+		{
+			name: "百度新闻",
+			url: "news.baidu.com/news#/detail",
+			handles: [
+				//移动版:阅读全文
+				{
+					type: "display",
+					item: ".show-more-btn-container",
+				},
+				{
+					type: "display",
+					item: ".show-more-end",
+				},
+				{
+					type: "height",
+					item: ".detail-content-main",
+				},
+			],
 		},
 		{
 			name: "新浪新闻",
-			url: 'sina.cn',
+			url: "sina.cn",
 			handles: [
 				//移动版:展开
 				{
-					type: 'display',
-					item: ".look_more"
+					type: "display",
+					item: ".look_more",
 				},
 				{
-					type: 'height',
-					item: ".s_card"
+					type: "height",
+					item: ".s_card",
 				},
 				//other:悬浮下载按钮
 				{
-					type: 'display',
-					item: '#float-btn'
-				}
-			]
+					type: "display",
+					item: "#float-btn",
+				},
+			],
 		},
 		{
 			name: "网易新闻",
-			url: '3g.163.com',
+			url: "3g.163.com",
 			handles: [
 				//移动版:展开
 				{
-					type: 'display',
-					item: ".show_article"
+					type: "display",
+					item: ".show_article",
 				},
 				{
-					type: 'height',
-					item: "article"
-				}
-			]
+					type: "height",
+					item: "article",
+				},
+			],
 		},
 		{
 			name: "搜狐新闻",
-			url: 'm.sohu.com/a',
+			url: "m.sohu.com/a",
 			handles: [
 				//移动版:展开
 				{
-					type: 'click',
-					item: ".surplus-btn"
-				}
-			]
+					type: "click",
+					item: ".surplus-btn",
+				},
+			],
 		},
 		{
 			name: "腾讯新闻",
-			url: 'xw.qq.com/cmsid',
+			url: "xw.qq.com/cmsid",
 			handles: [
 				//移动版:展开
 				{
-					type: 'display',
-					item: ".icon-content-more"
+					type: "display",
+					item: ".icon-content-more",
 				},
 				{
-					type: 'display',
-					item: ".mask"
+					type: "display",
+					item: ".mask",
 				},
 				{
-					type: 'height',
-					item: ".packed"
-				}
-			]
-		}
+					type: "height",
+					item: ".packed",
+				},
+			],
+		},
+		{
+			name: "知乎",
+			url: "www.zhihu.com/question",
+			handles: [
+				//PC版+移动版:展开全文
+				{
+					type: "display",
+					item: ".ContentItem-rightButton",
+				},
+				{
+					type: "height",
+					item: ".RichContent-inner",
+				},
+				//移动版:下载弹窗
+				{
+					type: "display",
+					item: ".ModalWrap",
+				},
+				//移动版:悬浮按钮
+				{
+					type: "display",
+					item: ".OpenInAppButton",
+				},
+				//移动版:允许滑动
+				{
+					type: "overflow",
+					item: "body",
+				},
+				//移动版:主页悬浮
+				// {
+				// 	type: "display",
+				// 	item: ".DownloadGuide-inner",
+				// }
+			],
+		},
 	];
 	var interval = setInterval(() => {
 		for (var website of websites) {
@@ -262,23 +389,33 @@
 				for (var handle of website.handles) {
 					var items = document.querySelectorAll(handle.item);
 					if (items.length != 0) {
-						if (handle.type == 'display') {
+						if (handle.type == "display") {
 							//使用css的display:none;隐藏遮挡部分
 							for (var item of items) {
 								item.style.display = "none";
 							}
-						} else if (handle.type == 'height') {
+						} else if (handle.type == "height") {
 							//加长内容部分
 							for (var item of items) {
-								item.style.height = 'unset';
-								item.style.maxHeight = 'unset';
-								item.style.minHeight = 'unset';
+								item.style.height = "unset";
+								item.style.maxHeight = "unset";
+								item.style.minHeight = "unset";
+								item.style.setProperty(
+									"-webkit-mask-image",
+									"unset",
+									"important"
+								);
 							}
 							//防止无法滑动
-						} else if (handle.type == 'overflow') {
+						} else if (handle.type == "overflow") {
 							for (var item of items) {
-								item.style.overflow = 'unset';
+								item.style.setProperty(
+									"overflow",
+									"unset",
+									"important"
+								);
 							}
+							//模拟点击,后续可能取消
 						} else {
 							for (var item of items) {
 								if (
