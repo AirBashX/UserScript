@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.1.4
+// @version      1.1.5
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @author       airbash
-// @description  自动展开文档	隐藏部分;长期维护、全平台支持;目前支持:CSDN、简书、知乎、百家号、百度新闻、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻
+// @description  自动展开文档	隐藏部分;长期维护、全平台支持:CSDN、简书、知乎、百家号、百度闻、新资讯、百度经验、百度知道、百度贴吧、百度新浪新闻、腾讯新闻、搜狐新闻、网易新闻、CSDN手机版、简书手机版、知乎手机版、百家号手机版、百度资讯手机版、百度经验手机版、百度知道手机版、百度贴吧手机版、百度新闻手机版、新浪新闻手机版、腾讯新闻手机版、搜狐新闻手机版、网易新闻手机版
 // @match      	 *://*.jianshu.com/*
 // @match        *://blog.csdn.net/*
 // @match        *://www.zhihu.com/question/*
@@ -13,6 +13,7 @@
 // @match        *://baijiahao.baidu.com/s*
 // @match        *://mbd.baidu.com/newspage/data/*
 // @match        *://news.baidu.com/news*
+// @match        *://m.baidu.com/sf_baijiahao/*
 // @match        *://*.sina.cn/*
 // @match        *://3g.163.com/*
 // @match        *://m.sohu.com/a/*
@@ -264,6 +265,35 @@
 			],
 		},
 		{
+			name: "百度资讯",
+			url: "m.baidu.com/sf_baijiahao",
+			handles: [
+				//移动版:下载弹窗
+				{
+					type: "display",
+					item: ".layer-wrap",
+				},
+				{
+					type: "overflow",
+					item: "body",
+				},
+				//移动版:展开全文
+				{
+					type: "display",
+					item: ".oPadding",
+				},
+				{
+					type: "height",
+					item: ".mainContent",
+				},
+				//移动版:悬浮按钮
+				{
+					type: "display",
+					item: ".undefined",
+				},
+			]
+		},
+		{
 			name: "百度新闻",
 			url: "news.baidu.com/news#/detail",
 			handles: [
@@ -324,7 +354,7 @@
 				//移动版:展开
 				{
 					type: "click",
-					item: ".surplus-btn",
+					item: ".look-all",
 				},
 			],
 		},
@@ -381,7 +411,7 @@
 				// 	item: ".DownloadGuide-inner",
 				// }
 			],
-		},
+		}
 	];
 	var interval = setInterval(() => {
 		for (var website of websites) {
@@ -400,6 +430,7 @@
 								item.style.height = "unset";
 								item.style.maxHeight = "unset";
 								item.style.minHeight = "unset";
+								//知乎删除遮挡
 								item.style.setProperty(
 									"-webkit-mask-image",
 									"unset",
@@ -415,7 +446,7 @@
 									"important"
 								);
 							}
-							//模拟点击,后续可能取消
+						//模拟点击,后续可能取消
 						} else {
 							for (var item of items) {
 								if (
