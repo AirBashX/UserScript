@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.1.5
+// @version      1.1.6
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @author       airbash
-// @description  自动展开文档	隐藏部分;长期维护、全平台支持:CSDN、简书、知乎、百家号、百度闻、新资讯、百度经验、百度知道、百度贴吧、百度新浪新闻、腾讯新闻、搜狐新闻、网易新闻、CSDN手机版、简书手机版、知乎手机版、百家号手机版、百度资讯手机版、百度经验手机版、百度知道手机版、百度贴吧手机版、百度新闻手机版、新浪新闻手机版、腾讯新闻手机版、搜狐新闻手机版、网易新闻手机版
+// @description  自动展开文档	隐藏部分;长期维护、全平台支持:CSDN、简书、知乎、百家号、百度资讯、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、CSDN手机版、简书手机版、知乎手机版、百家号手机版、百度资讯手机版、百度经验手机版、百度知道手机版、百度贴吧手机版、百度新闻手机版、新浪新闻手机版、腾讯新闻手机版、搜狐新闻手机版、网易新闻手机版、凤凰新闻手机版
 // @match      	 *://*.jianshu.com/*
 // @match        *://blog.csdn.net/*
 // @match        *://www.zhihu.com/question/*
@@ -18,6 +18,7 @@
 // @match        *://3g.163.com/*
 // @match        *://m.sohu.com/a/*
 // @match        *://xw.qq.com/*
+// @match        *://*.ifeng.com/c/*
 // @run-at       document-body
 // @icon         data:image/png;base64,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
 // @grant        none
@@ -103,6 +104,46 @@
 			],
 		},
 		{
+			name: "知乎",
+			url: "www.zhihu.com/question",
+			handles: [
+				//显示全部(问题描述)
+				{
+					type: "click",
+					item: ".QuestionRichText-more",
+				},
+				//移动版:下载弹窗
+				{
+					type: "display",
+					item: ".ModalWrap",
+				},
+				//移动版:允许滑动
+				{
+					type: "overflow",
+					item: "body",
+				},
+				//移动版:展开阅读全文+查看问题描述
+				{
+					type: "display",
+					item: ".ContentItem-rightButton",
+				},
+				{
+					type: "height",
+					item: ".RichContent-inner",
+				},
+				//移动版:悬浮按钮
+				{
+					type: "display",
+					item: ".OpenInAppButton",
+				},
+				//移动版:主页悬浮
+				// {
+				// 	type: "display",
+				// 	item: ".DownloadGuide-inner",
+				// }
+			],
+		},
+		{
 			name: "百度经验",
 			url: "jingyan.baidu.com/article",
 			handles: [
@@ -158,8 +199,9 @@
 					type: "height",
 					item: ".w-detail-container",
 				},
+				//移动版:更多回答
 				{
-					type: "click",
+					type: "tap",
 					item: ".show-more-replies",
 				},
 			],
@@ -291,7 +333,7 @@
 					type: "display",
 					item: ".undefined",
 				},
-			]
+			],
 		},
 		{
 			name: "百度新闻",
@@ -378,49 +420,38 @@
 			],
 		},
 		{
-			name: "知乎",
-			url: "www.zhihu.com/question",
+			name: "凤凰新闻",
+			url: "i.ifeng.com/c/",
 			handles: [
-				//PC版+移动版:展开全文
+				//移动版:点击展开全文
 				{
 					type: "display",
-					item: ".ContentItem-rightButton",
+					item: "[class^=tip]",
 				},
 				{
 					type: "height",
-					item: ".RichContent-inner",
+					item: "[class^=main_content]",
 				},
-				//移动版:下载弹窗
+				//移动版:展开
 				{
-					type: "display",
-					item: ".ModalWrap",
+					type: "click",
+					item: "[class^=unfoldIcon]",
 				},
-				//移动版:悬浮按钮
-				{
-					type: "display",
-					item: ".OpenInAppButton",
-				},
-				//移动版:允许滑动
-				{
-					type: "overflow",
-					item: "body",
-				},
-				//移动版:主页悬浮
-				// {
-				// 	type: "display",
-				// 	item: ".DownloadGuide-inner",
-				// }
 			],
-		}
+		},
 	];
+	var time = 0;
 	var interval = setInterval(() => {
+		if (++time == 100) {
+			clearInterval(interval);
+		}
 		for (var website of websites) {
 			if (location.href.indexOf(website.url) != -1) {
 				for (var handle of website.handles) {
 					var items = document.querySelectorAll(handle.item);
 					if (items.length != 0) {
 						if (handle.type == "display") {
-							//使用css的display:none;隐藏遮挡部分
+							//隐藏遮挡部分
 							for (var item of items) {
 								item.style.display = "none";
 							}
@@ -431,28 +462,17 @@
 								item.style.maxHeight = "unset";
 								item.style.minHeight = "unset";
 								//知乎删除遮挡
-								item.style.setProperty(
-									"-webkit-mask-image",
-									"unset",
-									"important"
-								);
+								item.style.setProperty("-webkit-mask-image", "unset", "important");
 							}
-							//防止无法滑动
 						} else if (handle.type == "overflow") {
+							//防止无法滑动
 							for (var item of items) {
-								item.style.setProperty(
-									"overflow",
-									"unset",
-									"important"
-								);
+								item.style.setProperty("overflow", "unset", "important");
 							}
-						//模拟点击,后续可能取消
 						} else {
+							//模拟点击,后续可能取消
 							for (var item of items) {
-								if (
-									item != null &&
-									item.getAttribute("opened") != "yes"
-								) {
+								if (item != null && item.getAttribute("opened") != "yes") {
 									item.click();
 									item.setAttribute("opened", "yes");
 								}
