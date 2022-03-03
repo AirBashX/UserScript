@@ -1,7 +1,8 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.1.6
+// @version      1.1.7
 // @namespace    https://github.com/AirBashX/AutoUnfold/
+// @homepage     https://github.com/AirBashX/airbash/
 // @author       airbash
 // @description  自动展开文档	隐藏部分;长期维护、全平台支持:CSDN、简书、知乎、百家号、百度资讯、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、CSDN手机版、简书手机版、知乎手机版、百家号手机版、百度资讯手机版、百度经验手机版、百度知道手机版、百度贴吧手机版、百度新闻手机版、新浪新闻手机版、腾讯新闻手机版、搜狐新闻手机版、网易新闻手机版、凤凰新闻手机版
 // @match      	 *://*.jianshu.com/*
@@ -437,6 +438,47 @@
 					type: "click",
 					item: "[class^=unfoldIcon]",
 				},
+			],
+		},
+		{
+			name: "澎湃新闻",
+			url: "m.thepaper.cn/newsDetail_forward",
+			handles: [
+				//移动版:展开全文
+				{
+					type: "display",
+					item: "#clickForMore",
+				},
+				{
+					type: "height",
+					item: ".newsdetail_body",
+				}
+			],
+		},
+		{
+			name: "新京报",
+			url: "m.bjnews.com.cn/detail/",
+			handles: [
+				//移动版:展开全文
+				{
+					type: "click",
+					item: ".shade-box",
+				}
+			],
+		},
+		{
+			name: "环球网",
+			url: "world.huanqiu.com/article",
+			handles: [
+				//移动版:展开全文
+				{
+					type: "click",
+					item: ".unfold-btn",
+				},
+				{
+					type: "height",
+					item: ".newsdetail_body",
+				}
 			],
 		},
 	];
