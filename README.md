@@ -8,8 +8,6 @@
 
 ## 脚本列表
 
-> _详细的**脚本介绍、使用说明**等，请点击 **\[安装\]** 前往 GreasyFork 查看，另外 **\[备用\]** 存在更新延迟 (24 小时缓存)_  
-
 | 脚本 | 名称 | 功能 | 安装 |
 | :----: | :---- | :---- | :----: |
 | AutoUnfold | **自动展开** | 自动展开文章或新闻等`隐藏`、`折叠`部分 | **[GreasyFork](https://greasyfork.org/zh-CN/scripts/438656)** <br> **[github](https://github.com/AirBashX/UserScript/raw/master/AutoUnfold.user.js)** <br> **[jsdelivr](https://cdn.jsdelivr.net/gh/AirBashX/UserScript/AutoUnfold.user.js)** |
