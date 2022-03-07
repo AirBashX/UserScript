@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.2.1
+// @version      1.2.2
 // @namespace    airbash/AnnoyancesInterception
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -9,12 +9,13 @@
 // @match      	 *://*.jianshu.com/*
 // @match        *://juejin.cn/*
 // @match        *://www.zhihu.com/*
-// @match        *://tieba.baidu.com/p*
+// @match        *://tieba.baidu.com/*
 // @match        *://baijiahao.baidu.com/s*
 // @match        *://mbd.baidu.com/newspage/data/*
 // @match        *://news.baidu.com/news*
 // @match        *://m.baidu.com/sf_baijiahao/*
 // @match        *://*.sina.cn/*
+// @match        *://xw.qq.com/cmsid/*
 // @match        *://m.v.qq.com/*
 // @match        *://m.youku.com/alipay_video/*
 // @match        *://*.iqiyi.com/*
@@ -54,7 +55,7 @@
 				//悬浮按钮:打开App,看更多相似好文
 				".call-app-btn",
 				//悬浮按钮:打开App,看更多好文(首页)
-				".index_call-app-btn"
+				".index_call-app-btn",
 			],
 			overflow: true,
 		},
@@ -80,18 +81,18 @@
 				//悬浮按钮:主页
 				".DownloadGuide-inner",
 				//悬浮按钮:App内打开(位于主页)
-				".OpenInAppButton"
+				".OpenInAppButton",
 			],
 			overflow: true,
 		},
 		{
 			name: "百度贴吧",
-			url: "tieba.baidu.com/p",
+			url: "tieba.baidu.com",
 			items: [
 				//下载弹窗
 				".tb-backflow-defensive",
 				//悬浮按钮:打开百度贴吧
-				".nav-bar-bottom",
+				".nav-bar-v2-fixed",
 			],
 			overflow: true,
 		},
@@ -127,12 +128,20 @@
 			],
 			overflow: true,
 		},
+		// {
+		// 	name: "新浪新闻",
+		// 	url: "sina.cn",
+		// 	items: [
+		// 		//悬浮按钮:主页
+		// 		"#float-btn",
+		// 	],
+		// },
 		{
-			name: "新浪新闻",
-			url: "sina.cn",
+			name: "腾讯新闻",
+			url: "xw.qq.com/cmsid",
 			items: [
-				//悬浮按钮:主页
-				"#float-btn",
+				//悬浮按钮:返回首页
+				".go-home",
 			],
 		},
 		{
@@ -180,8 +189,7 @@
 				//搜索结果:百度手机助手
 				"[srcid=app_mobile_simple]",
 				//搜索结果:百度手机助手:安全下载
-				"[srcid=app_mobile_simple_safety]"
-
+				"[srcid=app_mobile_simple_safety]",
 			],
 		},
 		{
