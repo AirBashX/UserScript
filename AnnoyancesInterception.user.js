@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.2.2
+// @version      1.2.3
 // @namespace    airbash/AnnoyancesInterception
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -198,6 +198,8 @@
 			items: [
 				//悬浮按钮:打开app,看你感兴趣的内容
 				".m-home-float-openapp",
+				//悬浮按钮:bilibili内打开
+				".m-float-openapp",
 			],
 		},
 	];
