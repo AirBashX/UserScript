@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.1.8
+// @version      1.1.9
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
 // @description  自动展开文档	隐藏部分;长期维护、全平台支持:CSDN、简书、知乎、百家号、百度资讯、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、CSDN手机版、简书手机版、知乎手机版、百家号手机版、百度资讯手机版、百度经验手机版、百度知道手机版、百度贴吧手机版、百度新闻手机版、新浪新闻手机版、腾讯新闻手机版、搜狐新闻手机版、网易新闻手机版、凤凰新闻手机版
 // @match      	 *://*.jianshu.com/*
 // @match        *://blog.csdn.net/*
+// @match        *://ask.csdn.net/questions/*
 // @match        *://*.it1352.com/*
 // @match        *://www.zhihu.com/question/*
 // @match        *://jingyan.baidu.com/article*
@@ -71,6 +72,21 @@
 				{
 					type: "click",
 					item: ".btn_comment_readmore",
+				},
+			],
+		},
+		{
+			name: "CSDN问答",
+			url: "ask.csdn.net/questions",
+			handles: [
+				//展开全部
+				{
+					type: "display",
+					item: ".expandBtn",
+				},
+				{
+					type: "height",
+					item: ".normal-style",
 				},
 			],
 		},
@@ -452,6 +468,10 @@
 					type: "height",
 					item: "[class^=main_content]",
 				},
+				{
+					type: "display",
+					item: "[class^=more]",
+				},
 				//移动版:展开
 				{
 					type: "click",
@@ -509,7 +529,6 @@
 		for (var website of websites) {
 			if (location.href.indexOf(website.url) != -1) {
 				for (var handle of website.handles) {
-					console.log(handle);
 					var items = document.querySelectorAll(handle.item);
 					if (items.length != 0) {
 						if (handle.type == "display") {
