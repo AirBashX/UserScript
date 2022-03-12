@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.2.0
+// @version      1.2.1
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -530,31 +530,12 @@
 			name: "丁香园",
 			url: "3g.dxy.cn",
 			handles: [
-				//移动版:展开全部
-				{
-					type: "height",
-					item: ".topic-body",
-				},
-				{
-					type: "display",
-					item: ".tapToReadAll"
-				},
 				//移动版:显示第一条评论
 				{
 					type: "height",
 					item: ".dicussion-text",
 				},
 			],
-			//减少定时器对页面的影响
-			fun: function () {
-				var item = document.querySelector(".topic-body");
-				if(item !=null){
-					if (item.getAttribute("class") != "topic-body") {
-					item.setAttribute("class", "topic-body");
-					}
-				}
-				
-			},
 		},
 	];
 	var time = 0;
