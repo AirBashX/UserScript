@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.2.1
+// @version      1.2.2
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -89,6 +89,11 @@
 					type: "height",
 					item: ".normal-style",
 				},
+				//查看等多回答
+				{
+					type: "click",
+					item: ".ic_ask_down_reeow",
+				}
 			],
 		},
 		{
