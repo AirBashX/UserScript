@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.2.2
+// @version      1.2.3
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -51,11 +51,6 @@
 					type: "display",
 					item: ".weixin-shadowbox",
 				},
-				//移动版:下载App按钮
-				// {
-				// 	type: "display",
-				// 	item: ".feed-Sign-span",
-				// },
 				//移动版:阅读全文
 				{
 					type: "display",
@@ -93,7 +88,7 @@
 				{
 					type: "click",
 					item: ".ic_ask_down_reeow",
-				}
+				},
 			],
 		},
 		{
@@ -173,16 +168,6 @@
 					type: "height",
 					item: ".RichContent-inner",
 				},
-				//移动版:悬浮按钮
-				// {
-				// 	type: "display",
-				// 	item: ".OpenInAppButton",
-				// },
-				//移动版:主页悬浮
-				// {
-				// 	type: "display",
-				// 	item: ".DownloadGuide-inner",
-				// }
 			],
 			//删除透明遮挡
 			fun: function () {
@@ -305,11 +290,6 @@
 					type: "height",
 					item: ".mainContent",
 				},
-				//移动版:悬浮按钮
-				// {
-				// 	type: "display",
-				// 	item: ".undefined",
-				// },
 			],
 		},
 		{
@@ -346,11 +326,6 @@
 					type: "height",
 					item: ".mainContent",
 				},
-				//移动版:悬浮按钮
-				// {
-				// 	type: "display",
-				// 	item: ".GcwrDCd4cJnZ_u",
-				// },
 			],
 		},
 		{
@@ -375,11 +350,6 @@
 					type: "height",
 					item: ".mainContent",
 				},
-				//移动版:悬浮按钮
-				// {
-				// 	type: "display",
-				// 	item: ".undefined",
-				// },
 			],
 		},
 		{
@@ -414,11 +384,6 @@
 					type: "height",
 					item: ".s_card",
 				},
-				//other:悬浮下载按钮
-				// {
-				// 	type: "display",
-				// 	item: "#float-btn",
-				// },
 			],
 		},
 		{
@@ -565,8 +530,8 @@
 							//加长内容部分
 							for (var item of items) {
 								item.style.setProperty("height", "unset", "important");
-								item.style.setProperty("maxHeight", "unset", "important");
-								item.style.setProperty("minHeight", "unset", "important");
+								item.style.setProperty("max-height", "unset", "important");
+								item.style.setProperty("max-height", "unset", "important");
 							}
 						} else if (handle.type == "overflow") {
 							//防止无法滑动

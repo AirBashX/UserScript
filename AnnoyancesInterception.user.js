@@ -228,7 +228,6 @@
 			}
 			//隐藏/拦截骚扰元素
 			for (var item of website.items) {
-				console.log(item);
 				var css = document.createElement("style");
 				css.innerText += item + "{display: none !important}";
 				document.head.appendChild(css);
