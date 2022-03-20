@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.2.4
+// @version      1.3.0
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  自动展开文档	隐藏部分;长期维护、全平台支持:CSDN、简书、知乎、百家号、百度资讯、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、CSDN手机版、简书手机版、知乎手机版、百家号手机版、百度资讯手机版、百度经验手机版、百度知道手机版、百度贴吧手机版、百度新闻手机版、新浪新闻手机版、腾讯新闻手机版、搜狐新闻手机版、网易新闻手机版、凤凰新闻手机版
+// @description  自动展开文档	隐藏部分;长期维护、PC+手机全平台支持;全平台支持:CSDN、简书、知乎、百家号、百度资讯、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、澎湃新闻、澎湃新闻、新京报、环球网、B站文章
 // @match      	 *://*.jianshu.com/*
 // @match        *://blog.csdn.net/*
 // @match        *://ask.csdn.net/questions/*
@@ -47,7 +47,7 @@
 					type: "click",
 					item: ".look-more-preCode",
 				},
-				//移动版:弹出窗口
+				//移动版:下载弹窗
 				{
 					type: "display",
 					item: ".weixin-shadowbox",
@@ -111,16 +111,11 @@
 			name: "简书",
 			url: "jianshu.com/p",
 			handles: [
-				//移动版:弹出窗口
+				//移动版:下载弹窗
 				{
 					type: "display",
 					item: ".download-app-guidance",
 				},
-				//移动版:下载App按钮
-				// {
-				// 	type: "display",
-				// 	item: ".call-app-btn",
-				// },
 				//移动版:阅读全文
 				{
 					type: "display",
@@ -149,11 +144,6 @@
 				{
 					type: "click",
 					item: ".QuestionRichText-more",
-				},
-				//移动版:下载弹窗
-				{
-					type: "display",
-					item: ".ModalWrap",
 				},
 				//移动版:允许滑动
 				{
@@ -257,31 +247,12 @@
 					type: "click",
 					item: ".j_lzl_m",
 				},
-				//移动版:弹出窗口
-				{
-					type: "display",
-					item: ".tb-backflow-defensive",
-				},
-				//移动版:允许滑动
-				{
-					type: "overflow",
-					item: "body",
-				},
 			],
 		},
 		{
 			name: "百家号",
 			url: "baijiahao.baidu.com/s",
 			handles: [
-				//移动版:弹出窗口
-				{
-					type: "display",
-					item: ".layer-wrap",
-				},
-				{
-					type: "overflow",
-					item: "body",
-				},
 				//移动版:阅读全文
 				{
 					type: "display",
@@ -298,15 +269,6 @@
 			url: "mbd.baidu.com/newspage/data",
 			handles: [
 				//类似于百家
-				//移动版:弹出窗口
-				{
-					type: "display",
-					item: ".layer-wrap",
-				},
-				{
-					type: "overflow",
-					item: "body",
-				},
 				//移动版:阅读全文
 				{
 					type: "display",
@@ -333,15 +295,6 @@
 			name: "百度资讯",
 			url: "m.baidu.com/sf_baijiahao",
 			handles: [
-				//移动版:下载弹窗
-				{
-					type: "display",
-					item: ".layer-wrap",
-				},
-				{
-					type: "overflow",
-					item: "body",
-				},
 				//移动版:展开全文
 				{
 					type: "display",
