@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.1
+// @version      1.3.2
 // @namespace    airbash/AnnoyancesInterception
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  手机、电脑全平台通用:自动拦截或删除`下载弹窗`、`悬浮按钮`等影响用户体验的元素;长期维护:CSDN、简书、知乎、百家号、百度贴吧、百度新闻、新浪新闻、腾讯视频、优酷视频、爱奇艺、好看视频、百度搜索、哔哩哔哩、丁香园、微博
+// @description  手机、电脑全平台通用:自动拦截或删除`下载弹窗`、`悬浮按钮`等影响用户体验的元素;长期维护:CSDN、简书、知乎、百家号、百度贴吧、百度新闻、新浪新闻、腾讯视频、优酷视频、爱奇艺、好看视频、百度搜索、哔哩哔哩、丁香园、微博、抖音
 // @match        *://*.csdn.net/*
 // @match      	 *://*.jianshu.com/*
 // @match        *://juejin.cn/*
@@ -17,7 +17,7 @@
 // @match        *://*.sina.cn/*
 // @match        *://xw.qq.com/cmsid/*
 // @match        *://m.v.qq.com/*
-// @match        *://m.youku.com/alipay_video/*
+// @match        *://youku.com/*
 // @match        *://*.iqiyi.com/*
 // @match        *://haokan.baidu.com/v*
 // @match        *://m.baidu.com/*
@@ -132,7 +132,7 @@
 		},
 		{
 			name: "优酷视频",
-			url: "youku.com/alipay_video",
+			url: "youku.com",
 			items: [
 				//下载弹窗
 				".callEnd_box",
@@ -216,6 +216,16 @@
 				".loginBenefitNotification",
 				//悬浮按钮:打开西瓜视频,看全网超清视频
 				".xigua-download"
+			],
+		},
+		{
+			name: "抖音电脑版",
+			url: "www.douyin.com",
+			items: [
+				//PC端:右上角登录提示
+				".login-guide-container",
+				//PC端:登陆后查看评论
+				".recommend-comment-login"
 			],
 		},
 	];
