@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.3
+// @version      1.3.4
 // @namespace    airbash/AnnoyancesInterception
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -17,7 +17,7 @@
 // @match        *://*.sina.cn/*
 // @match        *://xw.qq.com/cmsid/*
 // @match        *://m.v.qq.com/*
-// @match        *://youku.com/*
+// @match        *://*.youku.com/*
 // @match        *://*.iqiyi.com/*
 // @match        *://haokan.baidu.com/v*
 // @match        *://m.baidu.com/*
@@ -137,8 +137,10 @@
 			items: [
 				//下载弹窗
 				".callEnd_box",
-				//悬浮按钮:打开优酷APP更流畅
+				//悬浮按钮(主页):打开优酷APP更流畅
 				".callEnd_fixed_box",
+				//悬浮按钮:打开优酷APP更流畅
+				".undefined",
 				//悬浮按钮:红包
 				".Corner-container",
 			],
