@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.0
+// @version      1.3.1
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -361,10 +361,14 @@
 			handles: [
 				//移动版:展开
 				{
-					type: "click",
-					item: ".look-all",
-				},
+					type: "display",
+					item: ".lookall-box",
+				}
 			],
+			fun: function () {
+				var item = document.querySelector(".hidden-content");
+				item.classList.remove("hide");
+			},
 		},
 		{
 			name: "腾讯新闻",
