@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.4
+// @version      1.3.5
 // @namespace    airbash/AnnoyancesInterception
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -21,7 +21,7 @@
 // @match        *://*.iqiyi.com/*
 // @match        *://haokan.baidu.com/v*
 // @match        *://m.baidu.com/*
-// @match        *://m.bilibili.com/*
+// @match        *://*.bilibili.com/*
 // @match        *://www.bilibili.com/read/mobile*
 // @match        *://3g.dxy.cn/*
 // @match        *://m.weibo.cn/status/*
@@ -49,6 +49,8 @@
 				".feed-Sign-span",
 				//PC端:弹窗:学生认证
 				"#csdn-highschool-window",
+				//PC端:弹窗:登录账号
+				".passport-login-container"
 			],
 		},
 		{
@@ -185,6 +187,10 @@
 				".m-home-float-openapp",
 				//悬浮按钮:bilibili内打开
 				".m-float-openapp",
+				//PC端:登录提示(右下角)
+				".lt-row",
+				//pc端:播放器登录提示
+				".bilibili-player-video-toast-bottom"
 			],
 		},
 		{
@@ -246,7 +252,6 @@
 			}
 			//隐藏/拦截骚扰元素
 			for (var item of website.items) {
-				console.log(item);
 				var css = document.createElement("style");
 				css.innerText += item + "{display: none !important}";
 				document.head.appendChild(css);
