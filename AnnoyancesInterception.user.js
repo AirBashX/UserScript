@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.5
+// @version      1.3.6
 // @namespace    airbash/AnnoyancesInterception
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -74,6 +74,8 @@
 				".open-button",
 				//下载弹窗
 				".byte-drawer",
+				//PC端:下方拓展弹窗
+				".recommend-box"
 			],
 			overflow: true,
 		},
