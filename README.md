@@ -16,6 +16,7 @@
 | :----: | :---- | :---- | :----: |
 | AutoUnfold | **自动展开** | 自动展开文章或新闻等`隐藏`、`折叠`部分 | **[GreasyFork](https://greasyfork.org/zh-CN/scripts/438656)** <br> **[github](https://github.com/AirBashX/UserScript/raw/master/AutoUnfold.user.js)** <br> **[jsdelivr](https://cdn.jsdelivr.net/gh/AirBashX/UserScript/AutoUnfold.user.js)** |
 |AnnoyancesInterception | **骚扰拦截** | 自动拦截或删除`下载弹窗`、`悬浮按钮`等影响用户体验的骚扰元素 | **[GreasyFork](https://greasyfork.org/zh-CN/scripts/440871)** <br> **[github](https://github.com/AirBashX/UserScript/raw/master/AnnoyancesInterception.user.js)** <br> **[jsdelivr](https://cdn.jsdelivr.net/gh/AirBashX/UserScript/AnnoyancesInterception.user.js)** |
+|LinkManager | **链接管理** | 取消点击链接后跳转到安全页面| **[GreasyFork](https://greasyfork.org/zh-CN/scripts/443670)** <br> **[github](https://github.com/AirBashX/UserScript/raw/master/LinkManager.user.js)** <br> **[jsdelivr](https://cdn.jsdelivr.net/gh/AirBashX/UserScript/LinkManager.user.js)** |
 
 > _jsdelivr安装途径会比其他途径晚24小时刷新_  
 ****
