@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.2
+// @version      1.3.3
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  自动展开文档	隐藏部分;长期维护、PC+手机全平台支持;全平台支持:CSDN、简书、知乎、百家号、百度资讯、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、澎湃新闻、澎湃新闻、新京报、环球网、B站文章、开源中国
+// @description  自动展开文档	隐藏部分;长期维护、PC+手机全平台支持;全平台支持:CSDN、简书、知乎、百家号、百度资讯、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、澎湃新闻、澎湃新闻、新京报、环球网、B站专栏、开源中国
 // @match      	 *://*.jianshu.com/*
 // @match        *://blog.csdn.net/*
 // @match        *://ask.csdn.net/questions/*
@@ -478,13 +478,17 @@
 			],
 		},
 		{
-			name: "B站文章",
+			name: "B站专栏",
 			url: "www.bilibili.com/read/mobile",
 			handles: [
 				//移动版:显示第一条评论
 				{
 					type: "click",
 					item: ".read-icon-nav-back",
+				},
+				{
+					type: "click",
+					item: ".read-more",
 				},
 			],
 		},
