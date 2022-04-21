@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.6
+// @version      1.3.7
 // @namespace    airbash/AnnoyancesInterception
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -9,6 +9,7 @@
 // @match      	 *://*.jianshu.com/*
 // @match        *://juejin.cn/*
 // @match        *://www.zhihu.com/*
+// @match        *://zhuanlan.zhihu.com/p/*
 // @match        *://tieba.baidu.com/*
 // @match        *://baijiahao.baidu.com/s*
 // @match        *://mbd.baidu.com/newspage/data/*
@@ -85,6 +86,14 @@
 			items: [
 				//下载弹窗
 				".ModalWrap",
+				//悬浮按钮:App内打开
+				".OpenInAppButton",
+			],
+		},
+		{
+			name: "知乎专栏",
+			url: "zhuanlan.zhihu.com/p",
+			items: [
 				//悬浮按钮:App内打开
 				".OpenInAppButton",
 			],
