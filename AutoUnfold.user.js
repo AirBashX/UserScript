@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.3
+// @version      1.3.4
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -152,7 +152,7 @@
 					type: "overflow",
 					item: "body",
 				},
-				//移动版:展开阅读全文+查看问题描述
+				//PC+移动版:展开阅读全文+查看问题描述
 				{
 					type: "display",
 					item: ".ContentItem-rightButton",
@@ -164,8 +164,10 @@
 			],
 			//删除透明遮挡
 			fun: function () {
-				var item = document.querySelector(".RichContent-inner");
-				item.style.setProperty("-webkit-mask-image", "unset", "important");
+				var items = document.querySelectorAll(".RichContent-inner");
+				for(item of items){
+					item.style.setProperty("-webkit-mask-image", "none", "important");
+				}
 			},
 		},
 		{
@@ -375,7 +377,7 @@
 				{
 					type: "display",
 					item: ".lookall-box",
-				}
+				},
 			],
 			fun: function () {
 				var item = document.querySelector(".hidden-content");
