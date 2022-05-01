@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.4
+// @version      1.3.5
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -448,8 +448,12 @@
 			handles: [
 				//移动版:展开全文
 				{
-					type: "click",
-					item: ".shade-box",
+					type: "display",
+					item: ".shade",
+				},
+				{
+					type: "height",
+					item: ".article",
 				},
 			],
 		},
