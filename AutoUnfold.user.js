@@ -1,14 +1,15 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.5
+// @version      1.3.6
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  自动展开文档	隐藏部分;长期维护、PC+手机全平台支持;全平台支持:CSDN、简书、知乎、百家号、百度资讯、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、澎湃新闻、澎湃新闻、新京报、环球网、B站专栏、开源中国
+// @description  自动展开文档	隐藏部分;长期维护、PC+手机全平台支持;全平台支持:CSDN、it1352、编程之家、简书、知乎、百家号、百度资讯、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、澎湃新闻、澎湃新闻、新京报、环球网、日民日报、人民网、36氪、果壳、B站专栏、开源中国
 // @match      	 *://*.jianshu.com/*
 // @match        *://blog.csdn.net/*
 // @match        *://ask.csdn.net/questions/*
 // @match        *://*.it1352.com/*
+// @match        *://*.jb51.cc/*
 // @match        *://www.zhihu.com/question/*
 // @match        *://jingyan.baidu.com/article*
 // @match        *://zhidao.baidu.com/question*
@@ -110,6 +111,26 @@
 			],
 		},
 		{
+			name: "编程之家",
+			url: "jb51.cc",
+			handles: [
+				//阅读全文
+				{
+					type: "display",
+					item: "#read-more-wrap",
+				},
+				{
+					type: "height",
+					item: "#container",
+				},
+				//移动端
+				{
+					type: "height",
+					item: ".read-more-hidden",
+				}
+			],
+		},
+		{
 			name: "简书",
 			url: "jianshu.com/p",
 			handles: [
@@ -165,7 +186,7 @@
 			//删除透明遮挡
 			fun: function () {
 				var items = document.querySelectorAll(".RichContent-inner");
-				for(item of items){
+				for (item of items) {
 					item.style.setProperty("-webkit-mask-image", "none", "important");
 				}
 			},
