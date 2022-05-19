@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.7
+// @version      1.3.8
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  自动展开文档	隐藏部分;长期维护、PC+手机全平台支持;全平台支持:CSDN、it1352、编程之家、简书、知乎、百家号、百度资讯、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、澎湃新闻、澎湃新闻、新京报、环球网、日民日报、人民网、36氪、果壳、虎扑、虎嗅、头条、B站专栏、开源中国、360图书馆
+// @description  自动展开文档	隐藏部分;长期维护、PC+手机全平台支持;全平台支持:CSDN、it1352、编程之家、简书、知乎、百家号、百度资讯、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、澎湃新闻、澎湃新闻、新京报、环球网、日民日报、人民网、36氪、果壳、虎扑、虎嗅、头条、B站专栏、微博文章、开源中国、360图书馆
 // @match      	 *://*.jianshu.com/*
 // @match        *://blog.csdn.net/*
 // @match        *://ask.csdn.net/questions/*
@@ -29,6 +29,8 @@
 // @match        *://world.huanqiu.com/article/*
 // @match        *://3g.dxy.cn/*
 // @match        *://www.bilibili.com/read/mobile*
+// @match        *://weibo.com/ttarticle/p/show?id=*
+// @match        *://card.weibo.com/article/m/show/id*
 // @match        *://www.oschina.net/p/*
 // @match        *://www.360doc.cn/article/*
 // @match        *://www.360doc.com/content/*
@@ -518,6 +520,36 @@
 				{
 					type: "click",
 					item: ".read-more",
+				},
+			],
+		},
+		{
+			//https://weibo.com/ttarticle/p/show?id=2309404770482854428687
+			name: "微博文章PC版",
+			url: "weibo.com/ttarticle/p/show?id=",
+			handles: [
+				{
+					type: "height",
+					item: ".WB_editor_iframe_new",
+				},
+				{
+					type: "display",
+					item: ".btn_line",
+				},
+			],
+		},
+		{
+			//https://card.weibo.com/article/m/show/id/2309404770482854428687
+			name: "微博文章移动版",
+			url: "card.weibo.com/article/m/show/id",
+			handles: [
+				{
+					type: "height",
+					item: ".f-art",
+				},
+				{
+					type: "display",
+					item: ".f-art-opt",
 				},
 			],
 		},
