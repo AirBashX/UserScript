@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.14
+// @version      1.3.15
 // @namespace    airbash/AnnoyancesInterception
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -25,7 +25,7 @@
 // @match        *://www.bilibili.com/read/mobile*
 // @match        *://3g.dxy.cn/*
 // @match        *://m.weibo.cn/*
-// @match        *://cj.sina.cn/article/*
+// @match        *://cj.sina.cn/article*
 // @match        *://*.ixigua.com/*
 // @match        *://www.douyin.com/*
 // @match        *://m.elecfans.com/*
@@ -255,8 +255,9 @@
 			],
 		},
 		{
+			//https://cj.sina.cn/articles/view/2949462582/afcd3a36001015zoq
 			name: "新浪财经",
-			url: "cj.sina.cn/article/",
+			url: "cj.sina.cn/article",
 			items: [
 				//悬浮按钮:打开APP(顶部)
 				//"#sentiment",
