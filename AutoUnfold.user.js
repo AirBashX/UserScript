@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.9
+// @version      1.3.10
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -216,9 +216,12 @@
 			],
 		},
 		{
+			//https://zhidao.baidu.com/question/646382577725897205.html
+			//https://zhidao.baidu.com/question/422818846
 			name: "百度知道",
 			url: "zhidao.baidu.com/question",
 			handles: [
+				//展开全部(1)
 				{
 					type: "display",
 					item: ".wgt-best-mask",
@@ -227,6 +230,7 @@
 					type: "height",
 					item: ".best-text",
 				},
+				//展开全部(2)
 				{
 					type: "display",
 					item: ".wgt-answers-mask",
@@ -235,29 +239,26 @@
 					type: "height",
 					item: ".answer-text",
 				},
-				{
-					type: "click",
-					item: "#show-answer-hide",
-				},
-				{
-					type: "click",
-					item: ".show-hide-dispute",
-				},
-				//移动版:展开内容
+				//更多回答1
 				{
 					type: "display",
-					item: ".w-detail-display-btn",
+					item: "#show-hide-container",
 				},
+				//更多回答2
 				{
-					type: "height",
-					item: ".w-detail-container",
-				},
-				//移动版:更多回答
-				{
-					type: "tap",
-					item: ".show-more-replies",
+					type: "display",
+					item: ".show-answer-dispute",
 				},
 			],
+			fun: function () {
+				var items = document.querySelectorAll(".answer");
+				if (items) {
+					for (item of items) {
+						item.classList.remove("answer-hide");
+						item.classList.remove("answer-dispute-hide");
+					}
+				}
+			},
 		},
 		{
 			name: "百度贴吧",
