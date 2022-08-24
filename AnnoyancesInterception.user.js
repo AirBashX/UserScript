@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.18
+// @version      1.3.19
 // @namespace    airbash/AnnoyancesInterception
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -143,6 +143,16 @@
 			overflow: true,
 		},
 		{
+			//https://mbd.baidu.com/newspage/data/videoshare?nid=sv_7901154226614508362
+			name: "百度资讯2",
+			url: "mbd.baidu.com/newspage/data",
+			items: [
+				//悬浮按钮:百度APP内播放
+				".drag-bottom",
+			],
+			overflow: true,
+		},
+		{
 			name: "腾讯新闻",
 			url: "xw.qq.com/cmsid",
 			items: [
@@ -212,6 +222,8 @@
 				"[srcid=app_mobile_simple]",
 				//搜索结果:百度手机助手:安全下载
 				"[srcid=app_mobile_simple_safety]",
+				//搜索结果:百度应用搜索(IOS)
+				"[srcid=app_mobile_ios]",
 			],
 		},
 		{
@@ -346,11 +358,12 @@
 			],
 		},
 		{
+			//https://3g.163.com/dy/article/HFH8LOBF0552CT1E.html
 			name: "网易新闻",
 			url: "3g.163.com",
 			items: [
-				//固定按钮:打开(底部)
-				".widget-slider",
+				//固定按钮：App内打开(底部)
+				".backflow-floating",
 			],
 		},
 		{
