@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.20
+// @version      1.3.21
 // @namespace    airbash/AnnoyancesInterception
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -19,7 +19,7 @@
 // @match        *://m.v.qq.com/*
 // @match        *://*.youku.com/*
 // @match        *://*.iqiyi.com/*
-// @match        *://haokan.baidu.com/v*
+// @match        *://haokan.baidu.com/*
 // @match        *://m.baidu.com/*
 // @match        *://*.bilibili.com/*
 // @match        *://www.bilibili.com/read/mobile*
@@ -198,18 +198,22 @@
 		},
 		{
 			name: "好看视频",
-			url: "haokan.baidu.com/v",
+			url: "haokan.baidu.com/",
 			items: [
-				//悬浮按钮:打开好看app
+				//悬浮按钮:打开好看app(中间)
 				".open-app-button",
-				//悬浮按钮:打开APP(多)
+				//固定文字:打开APP(多)
 				".top-video-card-img-app",
-				//固定按钮:下载APP(视频暂停时)
+				//固定按钮:下载APP(视频播放时)
 				".video-player-download-tips",
 				//固定按钮:打开(底部)
 				".open-app-bottom",
 				//PC端固定按钮:下载APP(视频暂停时)
 				".player-pause-code",
+				//PC端登录提示:登录提示
+				"#passport-login-pop",
+				//PC端登录提示:朦胧背板
+				".pop-mask",
 			],
 		},
 		{
@@ -230,10 +234,14 @@
 			name: "哔哩哔哩",
 			url: "m.bilibili.com",
 			items: [
-				//悬浮按钮:打开app,看你感兴趣的内容
+				//悬浮按钮:打开app,看你感兴趣的内容(主页)
 				".m-home-float-openapp",
 				//悬浮按钮:bilibili内打开
 				".m-float-openapp",
+				//悬浮弹窗:打开
+				".openapp-dialog",
+				//固定按钮：播放时下载
+				".mplayer-widescreen-callapp",
 				//PC端:登录提示(右下角)
 				".lt-row",
 				//pc端:播放器登录提示
