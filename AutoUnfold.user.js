@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.12
+// @version      1.3.13
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -56,7 +56,7 @@
 				//自动展开代码块
 				{
 					type: "click",
-					item: ".look-more-preCode",
+					item: ".hide-preCode-bt",
 				},
 				//移动版:下载弹窗
 				{
