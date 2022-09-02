@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.13
+// @version      1.3.14
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  自动展开文档	隐藏部分;长期维护、PC+手机全平台支持;全平台支持:CSDN、it1352、编程之家、简书、知乎、百家号、百度资讯、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、澎湃新闻、澎湃新闻、新京报、环球网、日民日报、人民网、36氪、果壳、虎扑、虎嗅、头条、B站专栏、微博文章、开源中国、360图书馆、太平洋电脑网、中关村在线
+// @description  自动展开文档	隐藏部分;长期维护、PC+手机全平台支持;全平台支持:CSDN、it1352、编程之家、简书、知乎、百家号、百度资讯、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、澎湃新闻、澎湃新闻、新京报、环球网、日民日报、人民网、36氪、果壳、虎扑、虎嗅、头条、B站专栏、微博文章、豆瓣文章、开源中国、360图书馆、太平洋电脑网、中关村在线、汽车之家
 // @match      	 *://*.jianshu.com/*
 // @match        *://blog.csdn.net/*
 // @match        *://ask.csdn.net/questions/*
@@ -30,6 +30,7 @@
 // @match        *://3g.dxy.cn/*
 // @match        *://www.bilibili.com/read/mobile*
 // @match        *://weibo.com/ttarticle/p/show?id=*
+// @match        *://m.douban.com/group/topic/197415364/*
 // @match        *://card.weibo.com/article/m/show/id*
 // @match        *://www.oschina.net/p/*
 // @match        *://www.360doc.cn/article/*
@@ -666,6 +667,22 @@
 					item.classList.remove('fn-hide');
 				}			
 			},
+		},
+		{
+			//https://m.douban.com/group/topic/197415364/
+			name: "豆瓣文章",
+			url: "m.douban.com/group/topic/",
+			handles: [
+				//移动版:点击展开全文
+				{
+					type: "display",
+					item: ".oia-readall",
+				},
+				{
+					type: "height",
+					item: ".note-content",
+				},
+			],
 		},
 	];
 	var time = 0;
