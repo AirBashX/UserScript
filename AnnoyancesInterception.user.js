@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.21
+// @version      1.3.22
 // @namespace    airbash/AnnoyancesInterception
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -232,7 +232,7 @@
 		},
 		{
 			name: "哔哩哔哩",
-			url: "m.bilibili.com",
+			url: "bilibili.com",
 			items: [
 				//悬浮按钮:打开app,看你感兴趣的内容(主页)
 				".m-home-float-openapp",
@@ -244,6 +244,8 @@
 				".mplayer-widescreen-callapp",
 				//PC端:登录提示(右下角)
 				".lt-row",
+				//PC端:登录提示(右上角)
+				".v-popover",
 				//pc端:播放器登录提示
 				".bilibili-player-video-toast-bottom",
 			],
@@ -297,6 +299,8 @@
 			name: "西瓜视频",
 			url: "ixigua.com",
 			items: [
+				//打开弹窗:打开
+				".landing_guide",
 				//PC端:登录提示
 				".loginBenefitNotification",
 				//悬浮按钮:打开西瓜视频,看全网超清视频
