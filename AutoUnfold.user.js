@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.14
+// @version      1.3.15
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -225,6 +225,15 @@
 			name: "百度知道",
 			url: "zhidao.baidu.com/question",
 			handles: [
+				//移动端:展开剩余
+				{
+					type: "display",
+					item: ".w-detail-display-btn",
+				},
+				{
+					type: "height",
+					item: ".w-detail-container",
+				},
 				//展开全部(1)
 				{
 					type: "display",
@@ -657,15 +666,15 @@
 			fun: function () {
 				//替换图片:防止显示不出图片
 				var item = document.querySelector(".fn-hide img");
-				var date = item.getAttribute('data-src-webp-1');
-				if(date){
-					item.setAttribute('src',date);
+				var date = item.getAttribute("data-src-webp-1");
+				if (date) {
+					item.setAttribute("src", date);
 				}
 				//删除class
 				var items = document.querySelectorAll(".fn-hide");
 				for (item of items) {
-					item.classList.remove('fn-hide');
-				}			
+					item.classList.remove("fn-hide");
+				}
 			},
 		},
 		{
