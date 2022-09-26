@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.25
+// @version      1.3.26
 // @namespace    airbash/AnnoyancesInterception
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -63,10 +63,10 @@
 				".weixin-shadowbox",
 				//悬浮按钮:APP内打开+登录/打开注册(主页)
 				".feed-Sign-span",
-				//PC端:弹窗:学生认证
-				"#csdn-highschool-window",
-				//PC端:弹窗:登录账号
+				//PC端:登录弹窗(悬浮)
 				".passport-login-container",
+				//PC端:登录弹窗(固定)
+				"#csdn-toolbar-profile-nologin",
 			],
 		},
 		{
@@ -286,14 +286,19 @@
 				".v-popover",
 				//pc端:播放器登录提示
 				".bilibili-player-video-toast-bottom",
+				//PC端:登录提示
+				"div:has(.unlogin-popover-avatar)",
 			],
 		},
 		{
+			//https://www.bilibili.com/read/cv15684087
 			name: "B站文章",
-			url: "bilibili.com/read/mobile",
+			url: "bilibili.com/read/",
 			items: [
 				//悬浮按钮:立即体验
 				".h5-download-bar",
+				//PC端:登录提示
+				"div:has(.unlogin-popover-avatar)",
 			],
 		},
 		{
