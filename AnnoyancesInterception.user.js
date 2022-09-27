@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.25
+// @version      1.3.26
 // @namespace    airbash/AnnoyancesInterception
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -48,7 +48,7 @@
 // @grant        none
 // @license      GPL-3.0
 // ==/UserScript==
-
+ 
 (function () {
 	/**
 	 * 规则列表
@@ -63,10 +63,10 @@
 				".weixin-shadowbox",
 				//悬浮按钮:APP内打开+登录/打开注册(主页)
 				".feed-Sign-span",
-				//PC端:弹窗:学生认证
-				"#csdn-highschool-window",
-				//PC端:弹窗:登录账号
+				//PC端:登录弹窗(悬浮)
 				".passport-login-container",
+				//PC端:登录弹窗(固定)
+				"#csdn-toolbar-profile-nologin",
 			],
 		},
 		{
@@ -130,7 +130,7 @@
 						}
 					}
 				};
-
+ 
 				/**
 				 * 删除多余的登录按钮,重定向登录连接
 				 */
@@ -142,7 +142,7 @@
 						getXpath('//button[text()="登录/注册"]').outerHTML = '<a class="Button AppHeader-login Button--blue" href="https://www.zhihu.com/signin" target="_blank">登录/注册</a>';
 					}
 				}
-
+ 
 				//校验是否登录:未登录时监听并移除登录弹窗
 				if (!document.querySelector(".AppHeader-menu")) {
 					//执行监听
@@ -286,14 +286,19 @@
 				".v-popover",
 				//pc端:播放器登录提示
 				".bilibili-player-video-toast-bottom",
+				//PC端:登录提示
+				"div:has(.unlogin-popover-avatar)",
 			],
 		},
 		{
+			//https://www.bilibili.com/read/cv15684087
 			name: "B站文章",
-			url: "bilibili.com/read/mobile",
+			url: "bilibili.com/read/",
 			items: [
 				//悬浮按钮:立即体验
 				".h5-download-bar",
+				//PC端:登录提示
+				"div:has(.unlogin-popover-avatar)",
 			],
 		},
 		{
@@ -508,7 +513,7 @@
 			],
 		},
 	];
-
+ 
 	/**
 	 * 主体部分
 	 */
@@ -532,7 +537,7 @@
 			}
 		}
 	}
-
+ 
 	/**
 	 * 通过内容(xpath)获取节点
 	 *
