@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.26
+// @version      1.3.27
 // @namespace    airbash/AnnoyancesInterception
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -8,8 +8,7 @@
 // @match        *://*.csdn.net/*
 // @match      	 *://*.jianshu.com/*
 // @match        *://juejin.cn/*
-// @match        *://www.zhihu.com/*
-// @match        *://zhuanlan.zhihu.com/p/*
+// @match        *://*.zhihu.com/*
 // @match        *://tieba.baidu.com/*
 // @match        *://baijiahao.baidu.com/s*
 // @match        *://mbd.baidu.com/newspage/data/*
@@ -63,6 +62,8 @@
 				".weixin-shadowbox",
 				//悬浮按钮:APP内打开+登录/打开注册(主页)
 				".feed-Sign-span",
+				//PC端:弹窗:学生认证
+				"#csdn-highschool-window",
 				//PC端:登录弹窗(悬浮)
 				".passport-login-container",
 				//PC端:登录弹窗(固定)
@@ -97,7 +98,7 @@
 		},
 		{
 			name: "知乎/知乎专栏",
-			url: "www.zhihu.com/question",
+			url: "zhihu.com",
 			items: [
 				//下载弹窗
 				".ModalWrap",
@@ -132,7 +133,7 @@
 				};
 
 				/**
-				 * 删除多余的登录按钮,重定向登录连接
+				 * 删除多余的登录按钮,重定向登录链接
 				 */
 				function updateLoginLink() {
 					//屏蔽滑动到中间时的登录按钮
@@ -247,7 +248,7 @@
 				//固定按钮:打开(底部)
 				".open-app-bottom",
 				//PC端固定按钮:下载APP(视频暂停时)
-				".player-pause-code",
+				".player-lefttip-inner",
 				//PC端登录提示:登录提示
 				"#passport-login-pop",
 				//PC端登录提示:朦胧背板
