@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.15
+// @version      1.3.16
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -524,19 +524,21 @@
 			],
 		},
 		{
+			//https://www.bilibili.com/read/mobile?id=18846196
 			name: "B站专栏",
 			url: "www.bilibili.com/read/mobile",
 			handles: [
-				//移动版:显示第一条评论
+				//移动版:继续阅读全文
 				{
-					type: "click",
-					item: ".read-icon-nav-back",
-				},
-				{
-					type: "click",
+					type: "display",
 					item: ".read-more",
 				},
 			],
+			fun: function () {
+				var item = document.querySelector(".read-article-box");
+				item.classList.remove("limit");
+				item.classList.remove("show-later");
+			},
 		},
 		{
 			//https://weibo.com/ttarticle/p/show?id=2309404770482854428687
