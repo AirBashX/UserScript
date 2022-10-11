@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.27
+// @version      1.3.28
 // @namespace    airbash/AnnoyancesInterception
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -30,7 +30,7 @@
 // @match        *://m.elecfans.com/*
 // @match        *://m.bjnews.com.cn/detail/*
 // @match        *://*.guancha.cn/*
-// @match        *://m.thepaper.cn/newsDetail_forward_*
+// @match        *://m.thepaper.cn/newsDetail_forward*
 // @match        *://*.ifeng.com/*
 // @match        *://3g.163.com/*/article/*
 // @match        *://m.huxiu.com/*
@@ -328,15 +328,15 @@
 			url: "cj.sina.cn/article",
 			items: [
 				//悬浮按钮:打开APP(顶部)
-				//"#sentiment",
+				//"#m-sentiment3",
 				//悬浮按钮:打开APP(底部)
-				".m-cj-openclient",
+				".m-guss-caijing",
 				//悬浮按钮:去APP听语音播报
-				".voice2",
+				".broadcast",
 				//固定按钮:立即体验(底部)
 				"#norm_qrcode_link_auto",
-				//固定按钮:打开APP,看最新信息(2)
-				"[class^=m-hot-subject]",
+				// //固定按钮:打开APP,看最新信息(2)
+				// "[class^=m-hot-subject]",
 			],
 		},
 		{
@@ -395,10 +395,11 @@
 		},
 		{
 			name: "澎湃新闻",
-			url: "m.thepaper.cn/newsDetail_forward_",
+			url: "m.thepaper.cn/newsDetail_forward",
 			items: [
 				//悬浮按钮:新闻滚条(底部)
-				".footer_banner",
+				"[class^=index_footer_banner]",
+				"[.index_footer_banner__Mcr_R]",
 			],
 		},
 		{
