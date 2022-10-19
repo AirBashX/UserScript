@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         链接管理
-// @version      1.1.5
+// @version      1.1.6
 // @namespace    airbash/LinkManager
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -33,7 +33,7 @@
 					start: "?target=",
 				},
 			],
-			inter: 10,
+			noTimer: true,
 		},
 		{
 			//https://www.zhihu.com/question/465346075/answer/2048804228
@@ -122,16 +122,17 @@
 			],
 		},
 		{
-			//https://blog.51cto.com/transfer?http://www.msfn.org/
+			//https://blog.51cto.com/u_15127617/4063137
+			//https://blog.51cto.com/transfer?https://httpie.org/docs#examples
 			name: "51CTO",
-			url: "blog.51cto.com",
+			url: "blog.51cto.com/transfer?",
 			handlers: [
 				{
 					type: "forward",
 					start: "transfer?",
 				},
 			],
-			inter: 10,
+			noTimer: true,
 		},
 		{
 			//https://m.so.com/s?q=%E4%BD%A0%E5%A5%BD
@@ -160,40 +161,54 @@
 		},
 	];
 
+	//百度手机版
+	if (location.href.includes("baidu.com")) {
+		if (document.querySelectorAll(".c-result")) {
+			var items1 = document.querySelectorAll(".c-result");
+			for (item of items1) {
+				var str = item.getAttribute("data-log");
+				var json = JSON.parse(str);
+				var url = json.mu;
+				item.querySelector("[rl-link-href]").setAttribute("rl-link-href", url);
+				var as = item.querySelectorAll("a");
+				for (a of as) {
+					a.setAttribute("href", url);
+				}
+			}
+		}
+		// var items2 = document.querySelectorAll(".c-container");
+		// for (item of items2) {
+		// 	var url = item.getAttribute("mu");
+		// 	item.querySelector("a").setAttribute("href", url);
+		// }
+	}
+
+	//不执行定时器的网站
+	for(website of websites){
+		if (location.href.includes(website.url)) {
+			if (website.noTimer) {
+				for (handler of website.handlers) {
+					var start_index = location.href.indexOf(handler.start) + handler.start.length;
+					var str = location.href.substring(start_index);
+					var url = decodeURIComponent(str);
+					location.href = url;
+				}
+			}
+		}
+	}
+
 	/**
 	 * 主体部分
 	 */
-	//如果是百度
 	var time = 0;
 	var interval = setInterval(() => {
 		if (++time == 100) {
 			clearInterval(interval);
 		}
 		for (website of websites) {
-			if (location.href.includes("baidu.com")) {
-				if (document.querySelectorAll(".c-result")) {
-					var items1 = document.querySelectorAll(".c-result");
-					for (item of items1) {
-						var str = item.getAttribute("data-log");
-						var json = JSON.parse(str);
-						var url = json.mu;
-						item.querySelector("[rl-link-href]").setAttribute("rl-link-href", url);
-						var as = item.querySelectorAll("a");
-						for (a of as) {
-							a.setAttribute("href", url);
-						}
-					}
-				}
-				// var items2 = document.querySelectorAll(".c-container");
-				// for (item of items2) {
-				// 	var url = item.getAttribute("mu");
-				// 	item.querySelector("a").setAttribute("href", url);
-				// }
-				clearInterval(interval);
-			}
 			if (location.href.includes(website.url)) {
 				for (handler of website.handlers) {
-					if (!website.inter) {
+					if (!website.noTimer) {
 						var items = document.querySelectorAll(handler.selector);
 						for (item of items) {
 							if (item.getAttribute("href").includes(handler.start)) {
@@ -218,14 +233,6 @@
 								}
 							}
 						}
-					} else {
-						if (location.href.includes(handler.start)) {
-							var start_index = location.href.indexOf(handler.start) + handler.start.length;
-							var str = location.href.substring(start_index);
-							var url = decodeURIComponent(str);
-							location.href = url;
-						}
-						clearInterval(interval);
 					}
 				}
 			}
