@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.17
+// @version      1.3.18
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -15,6 +15,7 @@
 // @match        *://zhidao.baidu.com/question*
 // @match        *://tieba.baidu.com/p*
 // @match        *://wenku.baidu.com/view/*
+// @match        *://tanbi.baidu.com/h5apptopic/browse/*
 // @match        *://baijiahao.baidu.com/s*
 // @match        *://mbd.baidu.com/newspage/data/*
 // @match        *://news.baidu.com/news*
@@ -299,14 +300,34 @@
 			],
 		},
 		{
-			name: "百度文库",
-			url: "wenku.baidu.com/view/",
+			//https://wk.baidu.com/view/a87844da7f1922791688e862
+			name: "百度文库手机版1",
+			url: "wk.baidu.com/view",
+			handles: [
+				
+			],
+			fun: function () {
+				var item1 = document.querySelector(".reader-copy");
+				item1.setAttribute('style','height: auto;');
+				var item2 = document.querySelector(".is-go-on-read-intercept");
+				item.setAttribute('margin-top','no');
+			},
+		},
+		{
+			//https://tanbi.baidu.com/h5apptopic/browse/wkjumpdownload?fromKey=1028200x&docId=0e07a7f1ba0d4a7302763aea
+			name: "百度文库手机版2",
+			url: "tanbi.baidu.com/h5apptopic/browse/",
 			handles: [
 				{
-					type: "click",
-					item: ".read-all",
+					//移动版:下载app,继续阅读
+					type: "display",
+					item: ".continue-read-wrap",
 				},
 			],
+			fun: function () {
+				var item = document.querySelector("#read-view");
+				item.setAttribute('scrolling','yes');
+			},
 		},
 		{
 			name: "百家号",
