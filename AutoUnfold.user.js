@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.19
+// @version      1.3.20
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -14,7 +14,7 @@
 // @match        *://jingyan.baidu.com/article*
 // @match        *://zhidao.baidu.com/question*
 // @match        *://tieba.baidu.com/p*
-// @match        *://wenku.baidu.com/view/*
+// @match        *://wk.baidu.com/view/*
 // @match        *://tanbi.baidu.com/h5apptopic/browse/*
 // @match        *://baijiahao.baidu.com/s*
 // @match        *://mbd.baidu.com/newspage/data/*
