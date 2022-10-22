@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         链接管理
-// @version      1.1.6
+// @version      1.1.7
 // @namespace    airbash/LinkManager
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -10,7 +10,7 @@
 // @match        *://juejin.cn/*
 // @match        *://*.zhihu.com/*
 // @match        *://tieba.baidu.com/*
-// @match        *://my.oschina.net/*
+// @match        *://*.oschina.net/*
 // @match        *://blog.51cto.com/*
 // @match        *://*.baidu.com/*
 // @match        *://m.so.com/s?*
@@ -100,7 +100,7 @@
 		{
 			//https://my.oschina.net/lorryluMyRest/blog/731722
 			name: "开源中国",
-			url: "my.oschina.net",
+			url: "oschina.net",
 			handlers: [
 				{
 					selector: "a[href]",
