@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.18
+// @version      1.3.19
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -24,7 +24,7 @@
 // @match        *://3g.163.com/*
 // @match        *://m.sohu.com/a/*
 // @match        *://xw.qq.com/*
-// @match        *://*.ifeng.com/c/*
+// @match        *://*.ifeng.com/*
 // @match        *://m.thepaper.cn/newsDetail_forward*
 // @match        *://m.bjnews.com.cn/detail/*
 // @match        *://world.huanqiu.com/article/*
@@ -55,22 +55,22 @@
 			name: "CSDN",
 			url: "blog.csdn.net",
 			handles: [
-				//自动展开代码块
+				//PC端:自动展开代码块
 				{
 					type: "click",
 					item: ".hide-preCode-bt",
 				},
-				//关注博主即可阅读全文
+				//PC端:关注博主即可阅读全文
 				{
 					type: "display",
 					item: ".hide-article-box",
 				},
-				//移动版:下载弹窗
+				//下载弹窗
 				{
 					type: "display",
 					item: ".weixin-shadowbox",
 				},
-				//移动版:阅读全文
+				//阅读全文
 				{
 					type: "display",
 					item: ".btn_mod",
@@ -83,7 +83,7 @@
 					type: "display",
 					item: ".readall_box",
 				},
-				//移动版:展开评论
+				//展开评论
 				{
 					type: "click",
 					item: ".btn_comment_readmore",
@@ -94,7 +94,7 @@
 			name: "CSDN问答",
 			url: "ask.csdn.net/questions",
 			handles: [
-				//展开全部
+				//PC端:展开全部
 				{
 					type: "display",
 					item: ".expandBtn",
@@ -103,7 +103,7 @@
 					type: "height",
 					item: ".normal-style",
 				},
-				//查看等多回答
+				//PC端:查看等多回答
 				{
 					type: "click",
 					item: ".ic_ask_down_reeow",
@@ -114,7 +114,7 @@
 			name: "it1352",
 			url: "it1352.com",
 			handles: [
-				//查看全文:解除公众号限制
+				//PC端:查看全文:解除公众号限制
 				{
 					type: "display",
 					item: ".arc-body-main-more",
@@ -129,7 +129,7 @@
 			name: "编程之家",
 			url: "jb51.cc",
 			handles: [
-				//阅读全文
+				//PC端:阅读全文
 				{
 					type: "display",
 					item: "#read-more-wrap",
@@ -138,7 +138,7 @@
 					type: "height",
 					item: "#container",
 				},
-				//移动端
+				//展开
 				{
 					type: "height",
 					item: ".read-more-hidden",
@@ -149,12 +149,12 @@
 			name: "简书",
 			url: "jianshu.com/p",
 			handles: [
-				//移动版:下载弹窗
+				//下载弹窗
 				{
 					type: "display",
 					item: ".download-app-guidance",
 				},
-				//移动版:阅读全文
+				//阅读全文
 				{
 					type: "display",
 					item: ".collapse-tips",
@@ -167,7 +167,7 @@
 					type: "display",
 					item: ".copyright",
 				},
-				// 移动版:允许滑动
+				//允许滑动
 				{
 					type: "overflow",
 					item: "body",
@@ -178,12 +178,12 @@
 			name: "知乎",
 			url: "www.zhihu.com/question",
 			handles: [
-				//显示全部(问题描述)
+				//PC端:显示全部(问题描述)
 				{
 					type: "click",
 					item: ".QuestionRichText-more",
 				},
-				//移动版:允许滑动
+				//允许滑动
 				{
 					type: "overflow",
 					item: "body",
@@ -210,6 +210,7 @@
 			name: "百度经验",
 			url: "jingyan.baidu.com/article",
 			handles: [
+				//PC端:展开内容
 				{
 					type: "display",
 					item: ".read-whole-mask",
@@ -218,7 +219,7 @@
 					type: "height",
 					item: ".exp-content-container",
 				},
-				//移动版:展开内容
+				//展开内容
 				{
 					type: "click",
 					item: ".more-img-opt",
@@ -231,7 +232,7 @@
 			name: "百度知道",
 			url: "zhidao.baidu.com/question",
 			handles: [
-				//移动端:展开剩余
+				//展开剩余
 				{
 					type: "display",
 					item: ".w-detail-display-btn",
@@ -240,7 +241,7 @@
 					type: "height",
 					item: ".w-detail-container",
 				},
-				//展开全部(1)
+				//PC端:展开全部(1)
 				{
 					type: "display",
 					item: ".wgt-best-mask",
@@ -249,7 +250,7 @@
 					type: "height",
 					item: ".best-text",
 				},
-				//展开全部(2)
+				//PC端:展开全部(2)
 				{
 					type: "display",
 					item: ".wgt-answers-mask",
@@ -258,12 +259,12 @@
 					type: "height",
 					item: ".answer-text",
 				},
-				//更多回答1
+				//PC端:更多回答1
 				{
 					type: "display",
 					item: "#show-hide-container",
 				},
-				//更多回答2
+				//PC端:更多回答2
 				{
 					type: "display",
 					item: ".show-answer-dispute",
@@ -283,7 +284,7 @@
 			name: "百度贴吧",
 			url: "tieba.baidu.com/p",
 			handles: [
-				//自动展开图片
+				//PC端:自动展开图片
 				{
 					type: "display",
 					item: ".replace_tip",
@@ -292,7 +293,7 @@
 					type: "height",
 					item: ".replace_div",
 				},
-				//自动展开回复
+				//PC端:自动展开回复
 				{
 					type: "click",
 					item: ".j_lzl_m",
@@ -304,13 +305,21 @@
 			name: "百度文库手机版1",
 			url: "wk.baidu.com/view",
 			handles: [
-				
+				//自动展开
+				{
+					type: "height",
+					item: ".reader-copy",
+				},
+				{
+					//透明遮挡
+					type: "display",
+					item: ".blur-bg",
+				},
 			],
 			fun: function () {
-				var item1 = document.querySelector(".reader-copy");
-				item1.setAttribute('style','height: auto;');
-				var item2 = document.querySelector(".is-go-on-read-intercept");
-				item.setAttribute('margin-top','no');
+				//工具相关内容下移,避免遮挡
+				var item = document.querySelector(".fold-pager");
+				item.setAttribute("style","margin-top:0px;");
 			},
 		},
 		{
@@ -319,21 +328,21 @@
 			url: "tanbi.baidu.com/h5apptopic/browse/",
 			handles: [
 				{
-					//移动版:下载app,继续阅读
+					//下载app,继续阅读
 					type: "display",
 					item: ".continue-read-wrap",
 				},
 			],
 			fun: function () {
 				var item = document.querySelector("#read-view");
-				item.setAttribute('scrolling','yes');
+				item.setAttribute("scrolling", "yes");
 			},
 		},
 		{
 			name: "百家号",
 			url: "baijiahao.baidu.com/s",
 			handles: [
-				//移动版:阅读全文
+				//阅读全文
 				{
 					type: "display",
 					item: ".oPadding",
@@ -349,7 +358,7 @@
 			url: "mbd.baidu.com/newspage/data",
 			handles: [
 				//类似于百家
-				//移动版:阅读全文
+				//阅读全文
 				{
 					type: "display",
 					item: ".height-fold",
@@ -360,7 +369,7 @@
 				},
 
 				//类似于百度
-				//移动版:阅读全文
+				//阅读全文
 				{
 					type: "display",
 					item: ".packupButton",
@@ -375,7 +384,7 @@
 			name: "百度资讯",
 			url: "m.baidu.com/sf_baijiahao",
 			handles: [
-				//移动版:展开全文
+				//展开全文
 				{
 					type: "display",
 					item: ".oPadding",
@@ -390,7 +399,7 @@
 			name: "百度新闻",
 			url: "news.baidu.com/news#/detail",
 			handles: [
-				//移动版:阅读全文
+				//阅读全文
 				{
 					type: "display",
 					item: ".show-more-btn-container",
@@ -409,7 +418,7 @@
 			name: "新浪新闻",
 			url: "sina.cn",
 			handles: [
-				//移动版:展开
+				//展开
 				{
 					type: "display",
 					item: ".look_more",
@@ -424,7 +433,7 @@
 			name: "网易新闻",
 			url: "3g.163.com",
 			handles: [
-				//移动版:展开
+				//展开
 				{
 					type: "display",
 					item: ".show_article",
@@ -439,7 +448,7 @@
 			name: "搜狐新闻",
 			url: "m.sohu.com/a",
 			handles: [
-				//移动版:展开
+				//展开
 				{
 					type: "display",
 					item: ".lookall-box",
@@ -454,7 +463,7 @@
 			name: "腾讯新闻",
 			url: "xw.qq.com/cmsid",
 			handles: [
-				//移动版:展开
+				//展开
 				{
 					type: "display",
 					item: ".icon-content-more",
@@ -471,25 +480,35 @@
 		},
 		{
 			name: "凤凰新闻",
-			url: "i.ifeng.com/c/",
+			url: "ifeng.com/",
 			handles: [
-				//移动版:点击展开全文
+				//点击查看完整内容(房子)
+				{
+					type:"display",
+					item:".showall"
+				},
+				{
+					type:"height",
+					item:".article"
+				},
+				//点击展开全文(资讯)
 				{
 					type: "display",
 					item: "[class^=tip]",
+				},
+				//展开全文(汽车)
+				{
+					type: "display",
+					item: "[class^=more]",
 				},
 				{
 					type: "height",
 					item: "[class^=main_content]",
 				},
-				{
-					type: "display",
-					item: "[class^=more]",
-				},
-				//移动版:展开
+				//展开(财经视频介绍)
 				{
 					type: "click",
-					item: "[class^=unfoldIcon]",
+					item: "[class^=videoBrefTextBtn-]",
 				},
 			],
 		},
@@ -497,7 +516,7 @@
 			name: "澎湃新闻",
 			url: "m.thepaper.cn/newsDetail_forward",
 			handles: [
-				//移动版:展开全文
+				//展开全文
 				{
 					type: "display",
 					item: "#clickForMore",
@@ -512,7 +531,7 @@
 			name: "新京报",
 			url: "m.bjnews.com.cn/detail/",
 			handles: [
-				//移动版:展开全文
+				//展开全文
 				{
 					type: "display",
 					item: ".shade",
@@ -527,7 +546,7 @@
 			name: "环球网",
 			url: "world.huanqiu.com/article",
 			handles: [
-				//移动版:展开全文
+				//展开全文
 				{
 					type: "click",
 					item: ".unfold-btn",
@@ -542,7 +561,7 @@
 			name: "丁香园",
 			url: "3g.dxy.cn",
 			handles: [
-				//移动版:显示第一条评论
+				//显示第一条评论
 				{
 					type: "height",
 					item: ".dicussion-text",
@@ -554,7 +573,7 @@
 			name: "B站专栏",
 			url: "www.bilibili.com/read/mobile",
 			handles: [
-				//移动版:继续阅读全文
+				//继续阅读全文
 				{
 					type: "display",
 					item: ".read-more",
@@ -649,7 +668,7 @@
 			name: "太平洋电脑网",
 			url: "g.pconline.com.cn/x/",
 			handles: [
-				//移动版:展开全文
+				//展开全文
 				{
 					type: "display",
 					item: ".show_article",
@@ -665,7 +684,7 @@
 			name: "中关村在线",
 			url: "m.zol.com.cn/article/",
 			handles: [
-				//移动版:展开全文
+				//展开全文
 				{
 					type: "display",
 					item: ".unfold-article-btn",
@@ -680,12 +699,12 @@
 			name: "汽车之家",
 			url: "autohome.com.cn/",
 			handles: [
-				//移动版:展开全文
+				//展开全文
 				{
 					type: "display",
 					item: "#continue_reading",
 				},
-				//移动版:展开全文
+				//展开全文
 				{
 					type: "display",
 					item: ".unfold_warp",
@@ -710,7 +729,7 @@
 			name: "豆瓣文章",
 			url: "m.douban.com/group/topic/",
 			handles: [
-				//移动版:点击展开全文
+				//点击展开全文
 				{
 					type: "display",
 					item: ".oia-readall",
