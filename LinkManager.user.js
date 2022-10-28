@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         链接管理
-// @version      1.2.0
+// @version      1.2.1
 // @namespace    airbash/LinkManager
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  自动跳转或重定向到目标链接，直链访问,免去点击步骤,减少操作时间;支持CSDN+掘金+简书+知乎+知乎专栏+百度贴吧+开源中国+gitee+51CTO+百度搜索手机版+360搜索+必应搜索+423down
+// @description  自动跳转或重定向到目标链接，直链访问,免去点击步骤,减少操作时间;支持CSDN+掘金+简书+知乎+知乎专栏+百度贴吧+开源中国+gitee+51CTO+百度搜索+360搜索+必应搜索+423down
 // @match        *://link.csdn.net/*
 // @match        *://www.jianshu.com/p/*
 // @match        *://juejin.cn/*
@@ -23,227 +23,237 @@
 // @run-at       document-body
 // ==/UserScript==
 (function () {
-	var websites = [
-		{
-			//https://blog.csdn.net/weixin_50829653/article/details/118119039
-			name: "CSDN",
-			url: "link.csdn.net",
-			handlers: [
-				{
-					type: "forward",
-					start: "?target=",
-				},
-			],
-			noTimer: true,
-		},
-		{
-			//https://www.zhihu.com/question/465346075/answer/2048804228
-			//https://zhuanlan.zhihu.com/p/95937067
-			name: "知乎",
-			url: "zhihu.com",
-			handlers: [
-				{
-					selector: ".external,.LinkCard",
-					start: "?target=",
-					type: "sub",
-				},
-			],
-		},
-		{
-			//https://juejin.cn/post/6844903688524267534
-			name: "掘金",
-			url: "juejin.cn",
-			handlers: [
-				{
-					selector: "a[href]",
-					start: "?target=",
-					type: "sub",
-				},
-			],
-		},
-		{
-			//https://www.jianshu.com/p/cf7dc734dd6d
-			name: "简书",
-			url: "www.jianshu.com/p",
-			handlers: [
-				{
-					selector: "a[href]",
-					start: "go?to=",
-					type: "sub",
-				},
-			],
-		},
-		{
-			//https://tieba.baidu.com/p/6313991324
-			name: "百度贴吧",
-			url: "tieba.baidu.com/p/",
-			handlers: [
-				//PC版
-				{
-					selector: ".j-no-opener-url",
-					start: "jump.bdimg.com",
-					type: "text",
-				},
-				{
-					selector: ".j-no-opener-url",
-					start: "jump2.bdimg.com",
-					type: "text",
-				},
-				//手机版
-				{
-					selector: ".rich-link",
-					start: "checkurl?url=",
-					end: "&urlrefer=",
-					type: "sub",
-				},
-			],
-		},
-		{
-			//https://my.oschina.net/lorryluMyRest/blog/731722
-			name: "开源中国",
-			url: "oschina.net",
-			handlers: [
-				{
-					selector: "a[href]",
-					start: "GoToLink?url=",
-					type: "sub",
-				},
-			],
-		},
-		{
-			//https://gitee.com/iflytek/iflearner
-			name: "gitee",
-			url: "gitee.com",
-			handlers: [
-				{
-					selector: "a[href]",
-					start: "link?target=",
-					type: "sub",
-				},
-			],
-		},
-		{
-			//https://blog.51cto.com/u_15127617/4063137
-			//https://blog.51cto.com/transfer?https://httpie.org/docs#examples
-			name: "51CTO",
-			url: "blog.51cto.com/transfer?",
-			handlers: [
-				{
-					type: "forward",
-					start: "transfer?",
-				},
-			],
-			noTimer: true,
-		},
-		{
-			//https://m.so.com/s?q=%E4%BD%A0%E5%A5%BD
-			name: "360搜索手机版",
-			url: "m.so.com",
-			handlers: [
-				{
-					selector: "a[href]",
-					start: "jump?u=",
-					end: "&m=",
-					type: "sub",
-				},
-			],
-		},
-		{
-			//https://www.so.com/s?ie=UTF-8&q=%E4%BD%A0%E5%A5%BD
-			name: "360搜索PC版",
-			url: "www.so.com/s",
-			handlers: [
-				{
-					selector: "a[data-mdurl]",
-					attribute: "data-mdurl",
-					type: "attribute",
-				},
-			],
-		},
-		{
-			//https://www.423down.com/10579.html
-			name: "423down",
-			url: "www.423down.com",
-			handlers: [
-				{
-					selector: "p>a[href]",
-					start: "/go.php?url=",
-					type: "text",
-				},
-			],
-		},
-	];
+    var websites = [
+        {
+            //https://blog.csdn.net/weixin_50829653/article/details/118119039
+            name: "CSDN",
+            url: "link.csdn.net",
+            handlers: [
+                {
+                    type: "forward",
+                    start: "?target=",
+                },
+            ],
+            noTimer: true,
+        },
+        {
+            //https://www.zhihu.com/question/465346075/answer/2048804228
+            //https://zhuanlan.zhihu.com/p/95937067
+            name: "知乎",
+            url: "zhihu.com",
+            handlers: [
+                {
+                    selector: ".external,.LinkCard",
+                    start: "?target=",
+                    type: "sub",
+                },
+            ],
+        },
+        {
+            //https://juejin.cn/post/6844903688524267534
+            name: "掘金",
+            url: "juejin.cn",
+            handlers: [
+                {
+                    selector: "a[href]",
+                    start: "?target=",
+                    type: "sub",
+                },
+            ],
+        },
+        {
+            //https://www.jianshu.com/p/cf7dc734dd6d
+            name: "简书",
+            url: "www.jianshu.com/p",
+            handlers: [
+                {
+                    selector: "a[href]",
+                    start: "go?to=",
+                    type: "sub",
+                },
+            ],
+        },
+        {
+            //https://tieba.baidu.com/p/6313991324
+            name: "百度贴吧",
+            url: "tieba.baidu.com/p/",
+            handlers: [
+                //PC版
+                {
+                    selector: ".j-no-opener-url",
+                    start: "jump.bdimg.com",
+                    type: "text",
+                },
+                {
+                    selector: ".j-no-opener-url",
+                    start: "jump2.bdimg.com",
+                    type: "text",
+                },
+                //手机版
+                {
+                    selector: ".rich-link",
+                    start: "checkurl?url=",
+                    end: "&urlrefer=",
+                    type: "sub",
+                },
+            ],
+        },
+        {
+            //https://my.oschina.net/lorryluMyRest/blog/731722
+            name: "开源中国",
+            url: "oschina.net",
+            handlers: [
+                {
+                    selector: "a[href]",
+                    start: "GoToLink?url=",
+                    type: "sub",
+                },
+            ],
+        },
+        {
+            //https://gitee.com/iflytek/iflearner
+            name: "gitee",
+            url: "gitee.com",
+            handlers: [
+                {
+                    selector: "a[href]",
+                    start: "link?target=",
+                    type: "sub",
+                },
+            ],
+        },
+        {
+            //https://blog.51cto.com/u_15127617/4063137
+            //https://blog.51cto.com/transfer?https://httpie.org/docs#examples
+            name: "51CTO",
+            url: "blog.51cto.com/transfer?",
+            handlers: [
+                {
+                    type: "forward",
+                    start: "transfer?",
+                },
+            ],
+            noTimer: true,
+        },
+        {
+            //https://m.so.com/s?q=%E4%BD%A0%E5%A5%BD
+            name: "360搜索手机版",
+            url: "m.so.com",
+            handlers: [
+                {
+                    selector: "a[href]",
+                    start: "jump?u=",
+                    end: "&m=",
+                    type: "sub",
+                },
+            ],
+        },
+        {
+            //https://www.so.com/s?ie=UTF-8&q=%E4%BD%A0%E5%A5%BD
+            name: "360搜索PC版",
+            url: "www.so.com/s",
+            handlers: [
+                {
+                    selector: "a[data-mdurl]",
+                    attribute: "data-mdurl",
+                    type: "attribute",
+                },
+            ],
+        },
+        {
+            //https://www.423down.com/10579.html
+            name: "423down",
+            url: "www.423down.com",
+            handlers: [
+                {
+                    selector: "p>a[href]",
+                    start: "/go.php?url=",
+                    type: "text",
+                },
+            ],
+        },
+    ];
 
-	//百度手机版
-	if (location.href.includes("baidu.com")) {
-		if (document.querySelectorAll(".c-result")) {
-			var items1 = document.querySelectorAll(".c-result");
-			for (item of items1) {
-				var str = item.getAttribute("data-log");
-				var json = JSON.parse(str);
-				var url = json.mu;
-				item.querySelector("[rl-link-href]").setAttribute("rl-link-href", url);
-				var as = item.querySelectorAll("a");
-				for (a of as) {
-					a.setAttribute("href", url);
-				}
-			}
-		}
-		// var items2 = document.querySelectorAll(".c-container");
-		// for (item of items2) {
-		// 	var url = item.getAttribute("mu");
-		// 	item.querySelector("a").setAttribute("href", url);
-		// }
-	}
+    if (location.href.includes("baidu.com")) {
+        var time = 0;
+        setInterval(() => {
+            if (++time == 100) {
+                clearInterval(interval);
+            }
+            //百度手机版
+            var items1 = document.querySelectorAll("#results>div");
+            if (items1.length) {
+                for (item of items1) {
+                    var str = item.getAttribute("data-log");
+                    var json = JSON.parse(str);
+                    var url = json.mu;
+                    item.querySelector("[rl-link-href]").setAttribute("rl-link-href", url);
+                    var as = item.querySelectorAll("a");
+                    for (a of as) {
+                        a.setAttribute("href", url);
+                    }
+                }
+            }
+            //百度PC版
+            var items2 = document.querySelectorAll("#content_left>div");
+            if (items2.length) {
+                for (item of items2) {
+                    if ((url = item.getAttribute("mu"))) {
+                        item.querySelector("a").setAttribute("href", url);
+                    }
+                }
+            }
+        }, 100);
+    }
 
-	for (website of websites) {
-		if (location.href.includes(website.url)) {
-			if (website.noTimer) {
-				//不执行定时器的网站
-				for (handler of website.handlers) {
-					var start_index = location.href.indexOf(handler.start) + handler.start.length;
-					var str = location.href.substring(start_index);
-					var url = decodeURIComponent(str);
-					location.href = url;
-				}
-			} else {
-				//执行定时器的网站
-				var time = 0;
-				//不执行此步骤将无法正确获取到website
-				var web = website;
-				var interval = setInterval(() => {
-					if (++time == 100) {
-						clearInterval(interval);
-					}
-					for (handler of web.handlers) {
-						var items = document.querySelectorAll(handler.selector);
-						for (item of items) {
-							//进一步校验需要修改的元素,防止修改错元素
-							if (item.getAttribute("href").includes(handler.start)) {
-								if (handler.type == "sub") {
-									//从属性中截取地址
-									var href = item.getAttribute("href");
-									var start_index = href.indexOf(handler.start) + handler.start.length;
-									if (handler.end != null) {
-										var end_index = href.indexOf(handler.end);
-										var str = href.substring(start_index, end_index);
-									} else {
-										var str = href.substring(start_index);
-									}
-									var url = decodeURIComponent(str);
-									item.setAttribute("href", url);
-								} else if (handler.type == "attribute") {
-									//从属性中获取地址
-									item.setAttribute("href", item.getAttribute(handler.attribute));
-								} else {
-									//从文本中获取地址
-									item.setAttribute("href", item.innerText);
-								}
-							}
-						}
-					}
-				}, 100);
-			}
-		}
-	}
+    for (website of websites) {
+        if (location.href.includes(website.url)) {
+            if (website.noTimer) {
+                //不执行定时器的网站
+                for (handler of website.handlers) {
+                    var start_index = location.href.indexOf(handler.start) + handler.start.length;
+                    var str = location.href.substring(start_index);
+                    var url = decodeURIComponent(str);
+                    location.href = url;
+                }
+            } else {
+                //执行定时器的网站
+                var time = 0;
+                //不执行此步骤将无法正确获取到website
+                var web = website;
+                var interval = setInterval(() => {
+                    if (++time == 100) {
+                        clearInterval(interval);
+                    }
+                    for (handler of web.handlers) {
+                        var items = document.querySelectorAll(handler.selector);
+                        for (item of items) {
+                            //进一步校验需要修改的元素,防止修改错元素
+                            if (item.getAttribute("href").includes(handler.start)) {
+                                if (handler.type == "sub") {
+                                    //从属性中截取地址
+                                    var href = item.getAttribute("href");
+                                    var start_index = href.indexOf(handler.start) + handler.start.length;
+                                    if (handler.end != null) {
+                                        var end_index = href.indexOf(handler.end);
+                                        var str = href.substring(start_index, end_index);
+                                    } else {
+                                        var str = href.substring(start_index);
+                                    }
+                                    var url = decodeURIComponent(str);
+                                    item.setAttribute("href", url);
+                                } else if (handler.type == "attribute") {
+                                    //从属性中获取地址
+                                    item.setAttribute("href", item.getAttribute(handler.attribute));
+                                } else {
+                                    //从文本中获取地址
+                                    item.setAttribute("href", item.innerText);
+                                }
+                            }
+                        }
+                    }
+                }, 100);
+            }
+        }
+    }
 })();
