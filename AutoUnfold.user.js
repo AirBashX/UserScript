@@ -1,12 +1,12 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.21
+// @version      1.3.22
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
 // @description  自动展开文档	隐藏部分;长期维护、PC+手机全平台支持;全平台支持:CSDN、it1352、编程之家、简书、知乎、百家号、百度资讯、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、澎湃新闻、澎湃新闻、新京报、环球网、日民日报、人民网、36氪、果壳、虎扑、虎嗅、头条、B站专栏、微博文章、豆瓣文章、开源中国、360图书馆、太平洋电脑网、中关村在线、汽车之家、游侠网
 // @match      	 *://*.jianshu.com/*
-// @match        *://blog.csdn.net/*
+// @match        *://*.blog.csdn.net/*
 // @match        *://ask.csdn.net/questions/*
 // @match        *://*.it1352.com/*
 // @match        *://*.jb51.cc/*
@@ -47,6 +47,8 @@
 // @license      GPL-3.0
 // ==/UserScript==
 (function () {
+	"use strict";
+
 	/**
 	 * 网站列表
 	 * @type {name/url/操作类型}
@@ -202,7 +204,7 @@
 			//删除透明遮挡
 			fun: function () {
 				var items = document.querySelectorAll(".RichContent-inner");
-				for (item of items) {
+				for (var item of items) {
 					item.style.setProperty("-webkit-mask-image", "none", "important");
 				}
 			},
@@ -274,7 +276,7 @@
 			fun: function () {
 				var items = document.querySelectorAll(".answer");
 				if (items) {
-					for (item of items) {
+					for (var item of items) {
 						item.classList.remove("answer-hide");
 						item.classList.remove("answer-dispute-hide");
 					}
@@ -320,7 +322,7 @@
 			fun: function () {
 				//工具相关内容下移,避免遮挡
 				var item = document.querySelector(".fold-pager");
-				item.setAttribute("style","margin-top:0px;");
+				item.setAttribute("style", "margin-top:0px;");
 			},
 		},
 		{
@@ -485,12 +487,12 @@
 			handles: [
 				//点击查看完整内容(房子)
 				{
-					type:"display",
-					item:".showall"
+					type: "display",
+					item: ".showall",
 				},
 				{
-					type:"height",
-					item:".article"
+					type: "height",
+					item: ".article",
 				},
 				//点击展开全文(资讯)
 				{

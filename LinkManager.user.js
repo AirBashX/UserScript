@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         链接管理
-// @version      1.2.1
+// @version      1.2.2
 // @namespace    airbash/LinkManager
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -23,6 +23,8 @@
 // @run-at       document-body
 // ==/UserScript==
 (function () {
+    "use strict";
+
     var websites = [
         {
             //https://blog.csdn.net/weixin_50829653/article/details/118119039
@@ -183,13 +185,13 @@
             //百度手机版
             var items1 = document.querySelectorAll("#results>div");
             if (items1.length) {
-                for (item of items1) {
+                for (var item of items1) {
                     var str = item.getAttribute("data-log");
                     var json = JSON.parse(str);
                     var url = json.mu;
                     item.querySelector("[rl-link-href]").setAttribute("rl-link-href", url);
                     var as = item.querySelectorAll("a");
-                    for (a of as) {
+                    for (var a of as) {
                         a.setAttribute("href", url);
                     }
                 }
@@ -206,15 +208,15 @@
         }, 100);
     }
 
-    for (website of websites) {
+    for (var website of websites) {
         if (location.href.includes(website.url)) {
             if (website.noTimer) {
                 //不执行定时器的网站
-                for (handler of website.handlers) {
+                for (var handler of website.handlers) {
                     var start_index = location.href.indexOf(handler.start) + handler.start.length;
                     var str = location.href.substring(start_index);
                     var url = decodeURIComponent(str);
-                    location.href = url;
+                    location.replace(url);
                 }
             } else {
                 //执行定时器的网站
@@ -225,9 +227,9 @@
                     if (++time == 100) {
                         clearInterval(interval);
                     }
-                    for (handler of web.handlers) {
+                    for (var handler of web.handlers) {
                         var items = document.querySelectorAll(handler.selector);
-                        for (item of items) {
+                        for (var item of items) {
                             //进一步校验需要修改的元素,防止修改错元素
                             if (item.getAttribute("href").includes(handler.start)) {
                                 if (handler.type == "sub") {
