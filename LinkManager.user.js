@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         链接管理
-// @version      1.2.2
+// @version      1.2.3
 // @namespace    airbash/LinkManager
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -200,7 +200,8 @@
             var items2 = document.querySelectorAll("#content_left>div");
             if (items2.length) {
                 for (item of items2) {
-                    if ((url = item.getAttribute("mu"))) {
+                    var url = item.getAttribute("mu");
+                    if (url && !url.includes("nourl.ubs.baidu.com")) {
                         item.querySelector("a").setAttribute("href", url);
                     }
                 }
