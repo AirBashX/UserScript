@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.22
+// @version      1.3.23
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -23,7 +23,7 @@
 // @match        *://*.sina.cn/*
 // @match        *://3g.163.com/*
 // @match        *://m.sohu.com/a/*
-// @match        *://xw.qq.com/*
+// @match        *://view.inews.qq.com/*
 // @match        *://*.ifeng.com/*
 // @match        *://m.thepaper.cn/newsDetail_forward*
 // @match        *://m.bjnews.com.cn/detail/*
@@ -322,7 +322,7 @@
 			fun: function () {
 				//工具相关内容下移,避免遮挡
 				var item = document.querySelector(".fold-pager");
-				item.setAttribute("style", "margin-top:0px;");
+				item.style.setProperty('margin-top','0px');
 			},
 		},
 		{
@@ -464,20 +464,20 @@
 		},
 		{
 			name: "腾讯新闻",
-			url: "xw.qq.com/cmsid",
+			url: "view.inews.qq.com/",
 			handles: [
-				//展开
+				//点击展开全文
 				{
 					type: "display",
-					item: ".icon-content-more",
+					item: "[class^=show-more_outer__]",
 				},
 				{
 					type: "display",
-					item: ".mask",
+					item: "[class^=show-more-article_cover__]",
 				},
 				{
 					type: "height",
-					item: ".packed",
+					item: "[class^=show-more_height-not-full__]",
 				},
 			],
 		},
