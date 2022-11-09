@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.31
+// @version      1.3.32
 // @namespace    airbash/AnnoyancesInterception
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -15,7 +15,7 @@
 // @match        *://mbd.baidu.com/newspage/data/*
 // @match        *://news.baidu.com/news*
 // @match        *://m.baidu.com/sf_baijiahao/*
-// @match        *://xw.qq.com/cmsid/*
+// @match        *://view.inews.qq.com/*
 // @match        *://m.v.qq.com/*
 // @match        *://*.youku.com/*
 // @match        *://*.iqiyi.com/*
@@ -25,6 +25,7 @@
 // @match        *://www.bilibili.com/read/mobile*
 // @match        *://3g.dxy.cn/*
 // @match        *://m.weibo.cn/*
+// @match        *://finance.sina.cn/*
 // @match        *://cj.sina.cn/article*
 // @match        *://*.ixigua.com/*
 // @match        *://www.douyin.com/*
@@ -106,15 +107,11 @@
 			items: [
 				//悬浮按钮:打开知乎(主页),打开
 				".OpenInAppButton",
-				//PC端:登录弹窗
-				//".Modal-wrapper",
-				//PC端:发现页登录
-				//"button.AppHeader-login",
 			],
 
 			fun: function () {
 				/**
-				 * 屏蔽登录弹窗
+				 * PC端:屏蔽登录弹窗
 				 * @param      {<type>}  mutationsList  The mutations list
 				 * @param      {<type>}  observer       The observer
 				 */
@@ -214,10 +211,11 @@
 		},
 		{
 			name: "腾讯新闻",
-			url: "xw.qq.com/cmsid",
+			url: "view.inews.qq.com/",
 			items: [
 				//悬浮按钮:返回首页
-				".go-home",
+				"[class^=downloader-floating-bar_floatingRight__]",
+				"[class^=video-bottom-bar_newsOpen__]",
 			],
 		},
 		{
@@ -344,11 +342,19 @@
 			],
 		},
 		{
+			name: "新浪财经主页",
+			url: "finance.sina.cn",
+			items: [
+				//悬浮按钮:打开APP(主页)
+				".m-sentiment-blk",
+			],
+		},
+		{
 			name: "新浪财经",
 			url: "cj.sina.cn/article",
 			items: [
 				//悬浮按钮:打开APP(顶部)
-				//"#m-sentiment3",
+				//".m-sentiment-blk",
 				//悬浮按钮:打开APP(底部)
 				".m-guss-caijing",
 				//悬浮按钮:去APP听语音播报
