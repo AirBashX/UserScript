@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.24
+// @version      1.3.25
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
 // @description  自动展开文档	隐藏部分;长期维护、PC+手机全平台支持;全平台支持:CSDN、it1352、编程之家、简书、知乎、百家号、百度资讯、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、澎湃新闻、澎湃新闻、新京报、环球网、日民日报、人民网、36氪、果壳、虎扑、虎嗅、头条、B站专栏、微博文章、豆瓣文章、开源中国、360图书馆、太平洋电脑网、中关村在线、汽车之家、游侠网
-// @match      	 *://*.jianshu.com/*
+// @match        *://*.jianshu.com/*
 // @match        *://*.blog.csdn.net/*
-// @match        *://*blog.csdn.net/*
+// @match        *://blog.csdn.net/*
 // @match        *://ask.csdn.net/questions/*
 // @match        *://*.it1352.com/*
 // @match        *://*.jb51.cc/*
@@ -28,7 +28,8 @@
 // @match        *://*.ifeng.com/*
 // @match        *://m.thepaper.cn/newsDetail_forward*
 // @match        *://m.bjnews.com.cn/detail/*
-// @match        *://world.huanqiu.com/article/*
+// @match        *://*.huanqiu.com/article/*
+// @match        *://3w.huanqiu.com/a/*
 // @match        *://3g.dxy.cn/*
 // @match        *://www.bilibili.com/read/mobile*
 // @match        *://weibo.com/ttarticle/p/show?id=*
@@ -39,7 +40,7 @@
 // @match        *://www.360doc.com/content/*
 // @match        *://g.pconline.com.cn/x/*
 // @match        *://m.zol.com.cn/article/*
-// @match        *://autohome.com.cn/*
+// @match        *://m.autohome.com.cn/*
 // @match        *://chejiahao.m.autohome.com.cn/info/*
 // @match        *://3g.ali213.net/*
 // @run-at       document-body
@@ -323,7 +324,7 @@
 			fun: function () {
 				//工具相关内容下移,避免遮挡
 				var item = document.querySelector(".fold-pager");
-				item.style.setProperty('margin-top','0px');
+				item.style.setProperty("margin-top", "0px");
 			},
 		},
 		{
@@ -547,17 +548,24 @@
 			],
 		},
 		{
-			name: "环球网",
-			url: "world.huanqiu.com/article",
+			name: "环球网1",
+			url: "huanqiu.com/article/",
 			handles: [
 				//展开全文
 				{
 					type: "click",
 					item: ".unfold-btn",
 				},
+			],
+		},
+		{
+			name: "环球网2",
+			url: "3w.huanqiu.com/a/",
+			handles: [
+				//展开全文
 				{
-					type: "height",
-					item: ".newsdetail_body",
+					type: "click",
+					item: "#more",
 				},
 			],
 		},
@@ -701,13 +709,8 @@
 		},
 		{
 			name: "汽车之家",
-			url: "autohome.com.cn/",
+			url: "chejiahao.m.autohome.com.cn",
 			handles: [
-				//展开全文
-				{
-					type: "display",
-					item: "#continue_reading",
-				},
 				//展开全文
 				{
 					type: "display",
@@ -715,15 +718,9 @@
 				},
 			],
 			fun: function () {
-				//替换图片:防止显示不出图片
-				var item = document.querySelector(".fn-hide img");
-				var date = item.getAttribute("data-src-webp-1");
-				if (date) {
-					item.setAttribute("src", date);
-				}
 				//删除class
-				var items = document.querySelectorAll(".fn-hide");
-				for (item of items) {
+				var items = document.querySelectorAll(".pgc-details .fn-hide");
+				for (var item of items) {
 					item.classList.remove("fn-hide");
 				}
 			},
