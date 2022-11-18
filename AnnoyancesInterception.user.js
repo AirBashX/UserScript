@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.33
+// @version      1.3.34
 // @namespace    airbash/AnnoyancesInterception
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -56,6 +56,7 @@
 
 (function () {
 	"use strict";
+
 	/**
 	 * 规则列表
 	 * @type {name/url/items}
@@ -71,11 +72,52 @@
 				".feed-Sign-span",
 				//PC端:弹窗:学生认证
 				"#csdn-highschool-window",
-				//PC端:登录弹窗(悬浮)
-				".passport-login-container",
 				//PC端:登录弹窗(固定)
 				"#csdn-toolbar-profile-nologin",
+				//PC端:登录弹窗(悬浮)
+				//".passport-login-container",
 			],
+			fun: function () {
+				/**
+				 * PC端:屏蔽登录弹窗
+				 * @param      {<list>}  mutationsList  The mutations list
+				 * @param      {<observer>}  observer       The observer
+				 */
+				let removeLoginNotice = function (mutationsList, observer) {
+					for (let mutation of mutationsList) {
+						for (let node of mutation.addedNodes) {
+							if (document.querySelector(".passport-login-container")) {
+								//有登陆弹窗1时:模拟点击关闭按钮
+								let button = node.querySelector("span");
+								if (button) {
+									if (LoginFlag == true) {
+										button.click();
+										return (LoginFlag = false);
+									}
+								}
+							}
+						}
+					}
+				};
+
+				//是否拦截:默认拦截
+				let LoginFlag = true;
+				document.onreadystatechange = function () {
+					if (document.readyState === "interactive") {
+						let loginBtn = document.querySelector(".toolbar-btn-login>.toolbar-btn-loginfun");
+						if (loginBtn) {
+							//未登录:
+							//添加事件,不拦截
+							loginBtn.addEventListener("click", function () {
+								LoginFlag = false;
+							});
+							//执行监听
+							let observer = new MutationObserver(removeLoginNotice);
+							observer.observe(document, { childList: true, subtree: true });
+						}
+					}
+				};
+			},
 		},
 		{
 			name: "简书",
