@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.34
+// @version      1.3.35
 // @namespace    airbash/AnnoyancesInterception
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -146,12 +146,16 @@
 			overflow: true,
 		},
 		{
-			name: "知乎/知乎专栏",
-			url: "zhihu.com",
+			name: "知乎手机版",
+			url: "m.zhihu.com",
 			items: [
 				//悬浮按钮:打开知乎(主页),打开
 				".OpenInAppButton",
 			],
+		},
+		{
+			name: "知乎PC版",
+			url: "www.zhihu.com/question",
 			fun: function () {
 				/**
 				 * PC端:屏蔽登录弹窗
@@ -164,6 +168,7 @@
 							if (node.querySelector(".signFlowModal")) {
 								//有登陆弹窗1时:模拟点击关闭按钮
 								var button = node.querySelector(".Button.Modal-closeButton.Button--plain");
+								console.log(button);
 								if (button) {
 									if (LoginFlag == true) {
 										button.click();
@@ -183,6 +188,56 @@
 				document.onreadystatechange = function () {
 					if (document.readyState === "interactive") {
 						var loginBtn = document.querySelector(".AppHeader-profile button");
+						var loginCls = loginBtn.getAttribute("class").includes("Button");
+
+						if (loginCls) {
+							//未登录:添加事件,不拦截
+							loginBtn.addEventListener("click", function () {
+								LoginFlag = false;
+							});
+							//未登录:执行监听
+							var observer = new MutationObserver(removeLoginNotice);
+							observer.observe(document, { childList: true, subtree: true });
+						}
+					}
+				};
+			},
+		},
+		{
+			name: "知乎专栏",
+			url: "zhuanlan.zhihu.com/p/",
+			fun: function () {
+				/**
+				 * PC端:屏蔽登录弹窗
+				 * @param      {<list>}  mutationsList  The mutations list
+				 * @param      {<observer>}  observer       The observer
+				 */
+				var removeLoginNotice = function (mutationsList, observer) {
+					for (var mutation of mutationsList) {
+						for (var node of mutation.addedNodes) {
+							if (node.querySelector(".signFlowModal")) {
+								//有登陆弹窗1时:模拟点击关闭按钮
+								var button = node.querySelector(".Button.Modal-closeButton.Button--plain");
+								console.log(button);
+								if (button) {
+									if (LoginFlag == true) {
+										button.click();
+										return (LoginFlag = false);
+									}
+								}
+							} else if (getXpath('//button[text()="立即登录/注册"]', node)) {
+								//没有登录弹窗1时会出现弹窗2
+								getXpath('//button[text()="立即登录/注册"]', node).parentElement.parentElement.remove();
+							}
+						}
+					}
+				};
+
+				//是否拦截:默认拦截
+				var LoginFlag = true;
+				document.onreadystatechange = function () {
+					if (document.readyState === "interactive") {
+						var loginBtn = document.querySelector(".ColumnPageHeader-profile button");
 						var loginCls = loginBtn.getAttribute("class").includes("Button");
 
 						if (loginCls) {
@@ -611,10 +666,12 @@
 	for (var website of websites) {
 		if (location.href.indexOf(website.url) != -1) {
 			//隐藏/拦截骚扰元素
-			for (var item of website.items) {
-				var css = document.createElement("style");
-				css.innerText += item + "{display: none !important}";
-				document.head.appendChild(css);
+			if(website.items){
+				for (var item of website.items) {
+					var css = document.createElement("style");
+					css.innerText += item + "{display: none !important}";
+					document.head.appendChild(css);
+				}
 			}
 			//修复移动版页面不允许滑动
 			if (website.overflow) {
