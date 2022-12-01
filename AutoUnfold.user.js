@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.26
+// @version      1.3.27
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -581,6 +581,15 @@
 				{
 					type: "height",
 					item: ".dicussion-text",
+				},
+				//展开阅读全文
+				{
+					type: "display",
+					item: "[class^=contentWrapBottom___]",
+				},
+				{
+					type: "height",
+					item: "[class^=contentWrap___]",
 				},
 			],
 		},
