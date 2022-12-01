@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.35
+// @version      1.3.36
 // @namespace    airbash/AnnoyancesInterception
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -40,7 +40,8 @@
 // @match        *://m.hupu.com/*
 // @match        *://m.douban.com/movie/subject/*
 // @match        *://g.pconline.com.cn/*
-// @match        *://m.zol.com.cn/article/*
+// @match        *://m.zol.com.cn/*
+// @match        *://wap.zol.com.cn/*
 // @match        *://www.autohome.com.cn/*
 // @match        *://www.taptap.com/*
 // @match        *://m.ithome.com/*
@@ -421,7 +422,10 @@
 			url: "3g.dxy.cn",
 			items: [
 				//悬浮按钮:APP内打开
+				"[class^=fixedBtn]",
+				//悬浮按钮:App内打开(主页)
 				".wrap",
+
 			],
 		},
 		{
@@ -587,10 +591,22 @@
 		},
 		{
 			name: "中关村在线",
-			url: "m.zol.com.cn/article/",
+			url: "m.zol.com.cn",
 			items: [
-				//固定按钮:发评论,赚金豆
-				".bottom-comment-tip",
+				//悬浮按钮:打开APP
+				".cover-back_s",
+				//悬浮按钮:APP内打开
+				"#bottom-fixed-wrapper > span",
+			],
+		},
+		{
+			name: "中关村在线2(报价+论坛)",
+			url: "wap.zol.com.cn",
+			items: [
+				//悬浮按钮:打开APP
+				".cover-back_s",
+				//悬浮按钮:APP内打开
+				"#bottom-fixed-wrapper > span",
 			],
 		},
 		{
