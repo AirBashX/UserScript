@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         链接管理
-// @version      1.2.4
+// @version      1.2.5
 // @namespace    airbash/LinkManager
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  绕过搜索引擎(百度、搜狗、360、必应)搜索结果中的重定向链接,直链访问原始网站;删除网站重定向到安全页面,减少操作步骤和响应时间;支持CSDN+掘金+简书+知乎+知乎专栏+百度贴吧+开源中国+gitee+51CTO+百度搜索+360搜索+搜狗搜索+必应搜索+423down
+// @description  绕过搜索引擎(百度、搜狗、360、必应、谷歌)搜索结果中的重定向链接,直链访问原始网站;删除网站重定向到安全页面,减少操作步骤和响应时间;支持CSDN+掘金+简书+知乎+知乎专栏+百度贴吧+开源中国+gitee+51CTO+百度搜索+360搜索+搜狗搜索+必应搜索+423down
 // @match        *://link.csdn.net/*
 // @match        *://www.jianshu.com/p/*
 // @match        *://juejin.cn/*
