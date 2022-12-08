@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.36
+// @version      1.3.37
 // @namespace    airbash/AnnoyancesInterception
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -24,6 +24,7 @@
 // @match        *://*.bilibili.com/*
 // @match        *://www.bilibili.com/read/mobile*
 // @match        *://3g.dxy.cn/*
+// @match        *://*.sina.cn/*
 // @match        *://m.weibo.cn/*
 // @match        *://finance.sina.cn/*
 // @match        *://cj.sina.cn/article*
@@ -43,7 +44,7 @@
 // @match        *://m.zol.com.cn/*
 // @match        *://wap.zol.com.cn/*
 // @match        *://www.autohome.com.cn/*
-// @match        *://www.taptap.com/*
+// @match        *://www.taptap.cn/*
 // @match        *://m.ithome.com/*
 // @match        *://www.360doc.com/content/*
 // @match        *://www.oschina.net/*
@@ -71,6 +72,8 @@
 				".weixin-shadowbox",
 				//悬浮按钮:APP内打开+登录/打开注册(主页)
 				".feed-Sign-span",
+				//登录弹窗
+				".passport-login-container",
 				//PC端:弹窗:学生认证
 				"#csdn-highschool-window",
 				//PC端:登录弹窗(固定)
@@ -441,6 +444,14 @@
 			],
 		},
 		{
+			name: "新浪新闻",
+			url: "sina.cn",
+			items: [
+				//悬浮按钮:打开APP
+				".callApp_fl_btn",
+			],
+		},
+		{
 			name: "新浪财经主页",
 			url: "finance.sina.cn",
 			items: [
@@ -620,7 +631,7 @@
 		{
 			//www.taptap.com
 			name: "taptap",
-			url: "www.taptap.com",
+			url: "www.taptap.cn",
 			items: [
 				//悬浮按钮:打开taptap
 				".open-app-button",
@@ -679,19 +690,19 @@
 	/**
 	 * 主体部分
 	 */
-	for (var website of websites) {
+	for (let website of websites) {
 		if (location.href.indexOf(website.url) != -1) {
 			//隐藏/拦截骚扰元素
 			if(website.items){
-				for (var item of website.items) {
-					var css = document.createElement("style");
+				for (let item of website.items) {
+					let css = document.createElement("style");
 					css.innerText += item + "{display: none !important}";
 					document.head.appendChild(css);
 				}
 			}
 			//修复移动版页面不允许滑动
 			if (website.overflow) {
-				var cssVlaue = document.createElement("style");
+				let cssVlaue = document.createElement("style");
 				cssVlaue.innerText = "body{overflow: unset !important}";
 				document.head.appendChild(cssVlaue);
 			}
