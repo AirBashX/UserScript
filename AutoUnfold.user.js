@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.27
+// @version      1.3.28
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -23,7 +23,7 @@
 // @match        *://m.baidu.com/sf_baijiahao/*
 // @match        *://*.sina.cn/*
 // @match        *://3g.163.com/*
-// @match        *://m.sohu.com/a/*
+// @match        *://*.sohu.com/a/*
 // @match        *://view.inews.qq.com/*
 // @match        *://*.ifeng.com/*
 // @match        *://m.thepaper.cn/newsDetail_forward*
@@ -455,7 +455,7 @@
 		},
 		{
 			name: "搜狐新闻",
-			url: "m.sohu.com/a",
+			url: "sohu.com/a",
 			handles: [
 				//展开
 				{
@@ -465,7 +465,10 @@
 			],
 			fun: function () {
 				var item = document.querySelector(".hidden-content");
+				//移动版
 				item.classList.remove("hide");
+				//pc版
+				item.classList.remove("control-hide");
 			},
 		},
 		{
@@ -860,19 +863,19 @@
 							}
 						} else if (handle.type == "height") {
 							//加长内容部分
-							for (var item of items) {
+							for (let item of items) {
 								item.style.setProperty("height", "unset", "important");
 								item.style.setProperty("max-height", "unset", "important");
 								item.style.setProperty("max-height", "unset", "important");
 							}
 						} else if (handle.type == "overflow") {
 							//防止无法滑动
-							for (var item of items) {
+							for (let item of items) {
 								item.style.setProperty("overflow", "unset", "important");
 							}
 						} else {
 							//模拟点击,后续可能取消
-							for (var item of items) {
+							for (let item of items) {
 								if (item != null && item.getAttribute("opened") != "yes") {
 									item.click();
 									item.setAttribute("opened", "yes");
