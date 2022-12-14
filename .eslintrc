@@ -1,0 +1,15 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true,
+        "greasemonkey": true
+    },
+    "extends": "eslint:recommended",
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module"
+    },
+    "rules": {
+        "no-unused-vars":"warn"
+    }
+}
