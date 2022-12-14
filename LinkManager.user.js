@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         链接管理
-// @version      1.2.5
+// @version      1.2.6
 // @namespace    airbash/LinkManager
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -11,6 +11,7 @@
 // @match        *://*.zhihu.com/*
 // @match        *://tieba.baidu.com/*
 // @match        *://*.oschina.net/*
+// @match        *://*.gitee.com/*
 // @match        *://blog.51cto.com/*
 // @match        *://*.baidu.com/*
 // @match        *://m.so.com/s?*
