@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.28
+// @version      1.3.29
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -172,16 +172,18 @@
 					type: "height",
 					item: ".collapse-free-content",
 				},
-				{
-					type: "display",
-					item: ".copyright",
-				},
 				//允许滑动
 				{
 					type: "overflow",
 					item: "body",
 				},
 			],
+			//删除遮挡栏
+			fun: function () {
+				let css = document.createElement('style');
+				css.innerText = '.collapse-free-content::after {height: 0px !important}';
+				document.head.appendChild(css);
+			}
 		},
 		{
 			name: "知乎",
