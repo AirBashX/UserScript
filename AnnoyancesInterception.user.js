@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.37
+// @version      1.3.38
 // @namespace    airbash/AnnoyancesInterception
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  手机、电脑全平台通用:自动拦截或删除`下载弹窗`、`悬浮按钮`等影响用户体验的元素;长期维护:CSDN、简书、知乎、百家号、百度贴吧、百度文库、百度新闻、新浪新闻、腾讯视频、优酷视频、爱奇艺、好看视频、百度搜索、哔哩哔哩、丁香园、微博、新浪财经、抖音、电子发烧友、新京报、观察者网、澎湃新闻、凤凰新闻、网易新闻、虎嗅、虎扑、豆瓣、太平洋电脑、汽车之家、taptap、it之家、360doc、开源中国、36氪、小红书
+// @description  手机、电脑全平台通用:自动拦截或删除`下载弹窗`、`悬浮按钮`等影响用户体验的元素;长期维护:CSDN、简书、知乎、百家号、百度贴吧、百度文库、百度新闻、新浪新闻、腾讯视频、优酷视频、爱奇艺、好看视频、百度搜索、哔哩哔哩、丁香园、微博、新浪财经、抖音、电子发烧友、人民网、新京报、观察者网、澎湃新闻、凤凰新闻、网易新闻、虎嗅、虎扑、豆瓣、太平洋电脑、汽车之家、taptap、it之家、360doc、开源中国、36氪、小红书
 // @match        *://*.csdn.net/*
 // @match      	 *://*.jianshu.com/*
 // @match        *://juejin.cn/*
@@ -31,6 +31,7 @@
 // @match        *://*.ixigua.com/*
 // @match        *://www.douyin.com/*
 // @match        *://m.elecfans.com/*
+// @match        *://app.people.cn/*
 // @match        *://m.bjnews.com.cn/detail/*
 // @match        *://*.guancha.cn/*
 // @match        *://m.thepaper.cn/newsDetail_forward*
@@ -428,7 +429,6 @@
 				"[class^=fixedBtn]",
 				//悬浮按钮:App内打开(主页)
 				".wrap",
-
 			],
 		},
 		{
@@ -512,10 +512,18 @@
 			],
 		},
 		{
+			name: "人民网",
+			url: "app.people.cn",
+			items: [
+				//悬浮按钮:打开(底部)
+				".app-bot-wrap",
+			],
+		},
+		{
 			name: "新京报",
 			url: "m.bjnews.com.cn/detail/",
 			items: [
-				////悬浮按钮:立即打开(顶部)
+				//悬浮按钮:立即打开(顶部)
 				".xjb-top",
 			],
 		},
@@ -693,7 +701,7 @@
 	for (let website of websites) {
 		if (location.href.indexOf(website.url) != -1) {
 			//隐藏/拦截骚扰元素
-			if(website.items){
+			if (website.items) {
 				for (let item of website.items) {
 					let css = document.createElement("style");
 					css.innerText += item + "{display: none !important}";
