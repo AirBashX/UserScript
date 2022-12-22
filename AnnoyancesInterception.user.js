@@ -30,6 +30,7 @@
 // @match        *://cj.sina.cn/article*
 // @match        *://*.ixigua.com/*
 // @match        *://www.douyin.com/*
+// @match        *://www.tiktok.com/*
 // @match        *://m.elecfans.com/*
 // @match        *://app.people.cn/*
 // @match        *://m.bjnews.com.cn/detail/*
@@ -499,6 +500,14 @@
 				".login-mask-enter-done",
 			],
 		},
+                {
+			name: "tiktok移动网页版",
+			url: "www.tiktok.com",
+			items: [
+				//移动网页端:在应用上获得完整体验
+				".e1pecv674.tiktok-a5lqug-DivFooterGuide",
+			],
+                },
 		{
 			name: "电子发烧友",
 			url: "m.elecfans.com",
@@ -519,6 +528,7 @@
 				".app-bot-wrap",
 			],
 		},
+
 		{
 			name: "新京报",
 			url: "m.bjnews.com.cn/detail/",
