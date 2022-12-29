@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         链接管理
-// @version      1.2.7
+// @version      1.2.8
 // @namespace    airbash/LinkManager
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -27,7 +27,7 @@
 (function () {
     "use strict";
 
-    var websites = [
+    const websites = [
         {
             //https://blog.csdn.net/weixin_50829653/article/details/118119039
             name: "CSDN",
@@ -140,6 +140,19 @@
             noTimer: true,
         },
         {
+            //https://www.so.com/s?ie=UTF-8&q=123
+            name: "360搜索PC版",
+            url: "www.so.com/s",
+            handlers: [
+                {
+                    selector: "a[data-mdurl]",
+                    start: "link?m=",
+                    attribute: "data-mdurl",
+                    type: "attribute",
+                },
+            ],
+        },
+        {
             //https://m.so.com/s?q=%E4%BD%A0%E5%A5%BD
             name: "360搜索手机版",
             url: "m.so.com",
@@ -212,14 +225,35 @@
                     }
                 }
             }
-            //百度PC版
+
+            //百度电脑版
             let items2 = document.querySelectorAll("#content_left>div");
             if (items2.length) {
                 for (let item of items2) {
-                    let url = item.getAttribute("mu");
-                    if (url && !url.includes("nourl.ubs.baidu.com") && !url.includes("recommend_list.baidu.com")) {
+                    //常规操作
+                    let url;
+                    if ((url=item.getAttribute("mu")) && !url.includes("nourl.ubs.baidu.com") && !url.includes("recommend_list.baidu.com")) {
                         item.querySelector("a").setAttribute("href", url);
+
                     }
+                    //xxx的最新相关信息
+                    let items3 = item.querySelectorAll('[class^=single-card-wrapper] div');
+                    if(items3.length){
+                        for (let item3 of items3) {
+                            let as = item3.querySelectorAll("a");
+                            let divs = item3.querySelectorAll('div');
+                            let data_url;
+                            for (let div of divs) {
+                                if(div.getAttribute('data-url')){
+                                    data_url = div.getAttribute('data-url')
+                                }
+                            }
+                            for (let a of as) {
+                                a.setAttribute("href",data_url)
+                            }
+                        }
+                    }
+
                 }
             }
         }, 100);
