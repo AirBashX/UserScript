@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.29
+// @version      1.3.30
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -14,6 +14,7 @@
 // @match        *://www.zhihu.com/question/*
 // @match        *://jingyan.baidu.com/article*
 // @match        *://zhidao.baidu.com/question*
+// @match        *://baike.baidu.com/item/*
 // @match        *://tieba.baidu.com/p*
 // @match        *://wk.baidu.com/view/*
 // @match        *://tanbi.baidu.com/h5apptopic/browse/*
@@ -59,7 +60,7 @@
 	 * 网站列表
 	 * @type {name/url/操作类型}
 	 */
-	var websites = [
+	const websites = [
 		{
 			name: "CSDN",
 			url: "blog.csdn.net",
@@ -211,8 +212,8 @@
 			],
 			//删除透明遮挡
 			fun: function () {
-				var items = document.querySelectorAll(".RichContent-inner");
-				for (var item of items) {
+				let items = document.querySelectorAll(".RichContent-inner");
+				for (let item of items) {
 					item.style.setProperty("-webkit-mask-image", "none", "important");
 				}
 			},
@@ -282,14 +283,25 @@
 				},
 			],
 			fun: function () {
-				var items = document.querySelectorAll(".answer");
+				let items = document.querySelectorAll(".answer");
 				if (items) {
-					for (var item of items) {
+					for (let item of items) {
 						item.classList.remove("answer-hide");
 						item.classList.remove("answer-dispute-hide");
 					}
 				}
 			},
+		},
+		{
+			name: "百度百科",
+			url: "baike.baidu.com/item",
+			handles: [
+				//展开全部
+				{
+					type: "click",
+					item: ".table-show-all",
+				},
+			],
 		},
 		{
 			name: "百度贴吧",
@@ -329,7 +341,7 @@
 			],
 			fun: function () {
 				//工具相关内容下移,避免遮挡
-				var item = document.querySelector(".fold-pager");
+				let item = document.querySelector(".fold-pager");
 				item.style.setProperty("margin-top", "0px");
 			},
 		},
@@ -345,7 +357,7 @@
 				},
 			],
 			fun: function () {
-				var item = document.querySelector("#read-view");
+				let item = document.querySelector("#read-view");
 				item.setAttribute("scrolling", "yes");
 			},
 		},
@@ -466,7 +478,7 @@
 				},
 			],
 			fun: function () {
-				var item = document.querySelector(".hidden-content");
+				let item = document.querySelector(".hidden-content");
 				//移动版
 				item.classList.remove("hide");
 				//pc版
@@ -610,7 +622,7 @@
 				},
 			],
 			fun: function () {
-				var item = document.querySelector(".read-article-box");
+				let item = document.querySelector(".read-article-box");
 				item.classList.remove("limit");
 				item.classList.remove("show-later");
 			},
@@ -689,7 +701,7 @@
 				// },
 			],
 			fun: function () {
-				var item = document.querySelector("body");
+				let item = document.querySelector("body");
 				item.classList.remove("articleMaxH");
 			},
 		},
@@ -737,8 +749,8 @@
 			],
 			fun: function () {
 				//删除class
-				var items = document.querySelectorAll(".pgc-details .fn-hide");
-				for (var item of items) {
+				let items = document.querySelectorAll(".pgc-details .fn-hide");
+				for (let item of items) {
 					item.classList.remove("fn-hide");
 				}
 			},
@@ -845,22 +857,22 @@
 			],
 		},
 	];
-	var time = 0;
-	var interval = setInterval(() => {
+	let time = 0;
+	let interval = setInterval(() => {
 		if (++time == 100) {
 			clearInterval(interval);
 		}
-		for (var website of websites) {
+		for (let website of websites) {
 			if (location.href.indexOf(website.url) != -1) {
 				if (website.fun) {
 					website.fun();
 				}
-				for (var handle of website.handles) {
-					var items = document.querySelectorAll(handle.item);
+				for (let handle of website.handles) {
+					let items = document.querySelectorAll(handle.item);
 					if (items.length != 0) {
 						if (handle.type == "display") {
 							//隐藏遮挡部分
-							for (var item of items) {
+							for (let item of items) {
 								item.style.display = "none";
 							}
 						} else if (handle.type == "height") {
