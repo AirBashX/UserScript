@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.38
+// @version      1.3.39
 // @namespace    airbash/AnnoyancesInterception
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -22,7 +22,6 @@
 // @match        *://haokan.baidu.com/*
 // @match        *://m.baidu.com/*
 // @match        *://*.bilibili.com/*
-// @match        *://www.bilibili.com/read/mobile*
 // @match        *://3g.dxy.cn/*
 // @match        *://*.sina.cn/*
 // @match        *://m.weibo.cn/*
@@ -64,7 +63,7 @@
 	 * 规则列表
 	 * @type {name/url/items}
 	 */
-	var websites = [
+	const websites = [
 		{
 			name: "CSDN",
 			url: "csdn.net",
@@ -167,12 +166,12 @@
 				 * @param      {<list>}  mutationsList  The mutations list
 				 * @param      {<observer>}  observer       The observer
 				 */
-				var removeLoginNotice = function (mutationsList, observer) {
-					for (var mutation of mutationsList) {
-						for (var node of mutation.addedNodes) {
+				let removeLoginNotice = function (mutationsList, observer) {
+					for (let mutation of mutationsList) {
+						for (let node of mutation.addedNodes) {
 							if (node.querySelector(".signFlowModal")) {
 								//有登陆弹窗1时:模拟点击关闭按钮
-								var button = node.querySelector(".Button.Modal-closeButton.Button--plain");
+								let button = node.querySelector(".Button.Modal-closeButton.Button--plain");
 								console.log(button);
 								if (button) {
 									if (LoginFlag == true) {
@@ -189,11 +188,11 @@
 				};
 
 				//是否拦截:默认拦截
-				var LoginFlag = true;
+				let LoginFlag = true;
 				document.onreadystatechange = function () {
 					if (document.readyState === "interactive") {
-						var loginBtn = document.querySelector(".AppHeader-profile button");
-						var loginCls = loginBtn.getAttribute("class").includes("Button");
+						let loginBtn = document.querySelector(".AppHeader-profile button");
+						let loginCls = loginBtn.getAttribute("class").includes("Button");
 
 						if (loginCls) {
 							//未登录:添加事件,不拦截
@@ -201,7 +200,7 @@
 								LoginFlag = false;
 							});
 							//未登录:执行监听
-							var observer = new MutationObserver(removeLoginNotice);
+							let observer = new MutationObserver(removeLoginNotice);
 							observer.observe(document, { childList: true, subtree: true });
 						}
 					}
@@ -217,12 +216,12 @@
 				 * @param      {<list>}  mutationsList  The mutations list
 				 * @param      {<observer>}  observer       The observer
 				 */
-				var removeLoginNotice = function (mutationsList, observer) {
-					for (var mutation of mutationsList) {
-						for (var node of mutation.addedNodes) {
+				let removeLoginNotice = function (mutationsList, observer) {
+					for (let mutation of mutationsList) {
+						for (let node of mutation.addedNodes) {
 							if (node.querySelector(".signFlowModal")) {
 								//有登陆弹窗1时:模拟点击关闭按钮
-								var button = node.querySelector(".Button.Modal-closeButton.Button--plain");
+								let button = node.querySelector(".Button.Modal-closeButton.Button--plain");
 								console.log(button);
 								if (button) {
 									if (LoginFlag == true) {
@@ -239,11 +238,11 @@
 				};
 
 				//是否拦截:默认拦截
-				var LoginFlag = true;
+				let LoginFlag = true;
 				document.onreadystatechange = function () {
 					if (document.readyState === "interactive") {
-						var loginBtn = document.querySelector(".ColumnPageHeader-profile button");
-						var loginCls = loginBtn.getAttribute("class").includes("Button");
+						let loginBtn = document.querySelector(".ColumnPageHeader-profile button");
+						let loginCls = loginBtn.getAttribute("class").includes("Button");
 
 						if (loginCls) {
 							//未登录:添加事件,不拦截
@@ -251,7 +250,7 @@
 								LoginFlag = false;
 							});
 							//未登录:执行监听
-							var observer = new MutationObserver(removeLoginNotice);
+							let observer = new MutationObserver(removeLoginNotice);
 							observer.observe(document, { childList: true, subtree: true });
 						}
 					}
@@ -415,8 +414,8 @@
 			name: "B站文章",
 			url: "bilibili.com/read/",
 			items: [
-				//悬浮按钮:立即体验
-				".h5-download-bar",
+				//悬浮按钮:打开App,看更多精彩内容
+				".float-btn",
 				//PC端:登录提示
 				"div:has(.unlogin-popover-avatar)",
 			],
@@ -729,7 +728,7 @@
 	 * @return     {<Node>}  元素
 	 */
 	function getXpath(xpath, parent) {
-		var xpathResult = document.evaluate(xpath, parent || document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+		let xpathResult = document.evaluate(xpath, parent || document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
 		return xpathResult.singleNodeValue;
 	}
 })();
