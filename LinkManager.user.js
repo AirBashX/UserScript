@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         链接管理
-// @version      1.2.8
+// @version      1.2.9
 // @namespace    airbash/LinkManager
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -217,11 +217,18 @@
                 for (let item of items1) {
                     let str = item.getAttribute("data-log");
                     let json = JSON.parse(str);
-                    let url = json.mu;
-                    item.querySelector("[rl-link-href]").setAttribute("rl-link-href", url);
-                    let as = item.querySelectorAll("a");
-                    for (let a of as) {
-                        a.setAttribute("href", url);
+                    if (json) {
+                        let url = json.mu;
+                        if (url) {
+                            let rl_link_href;
+                            if ((rl_link_href = item.querySelector("[rl-link-href]"))) {
+                                rl_link_href.setAttribute("rl-link-href", url);
+                                let as = item.querySelectorAll("a");
+                                for (let a of as) {
+                                    a.setAttribute("href", url);
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -232,28 +239,26 @@
                 for (let item of items2) {
                     //常规操作
                     let url;
-                    if ((url=item.getAttribute("mu")) && !url.includes("nourl.ubs.baidu.com") && !url.includes("recommend_list.baidu.com")) {
+                    if ((url = item.getAttribute("mu")) && !url.includes("nourl.ubs.baidu.com") && !url.includes("recommend_list.baidu.com")) {
                         item.querySelector("a").setAttribute("href", url);
-
                     }
                     //xxx的最新相关信息
-                    let items3 = item.querySelectorAll('[class^=single-card-wrapper] div');
-                    if(items3.length){
+                    let items3 = item.querySelectorAll("[class^=single-card-wrapper] div");
+                    if (items3.length) {
                         for (let item3 of items3) {
                             let as = item3.querySelectorAll("a");
-                            let divs = item3.querySelectorAll('div');
+                            let divs = item3.querySelectorAll("div");
                             let data_url;
                             for (let div of divs) {
-                                if(div.getAttribute('data-url')){
-                                    data_url = div.getAttribute('data-url')
+                                if (div.getAttribute("data-url")) {
+                                    data_url = div.getAttribute("data-url");
                                 }
                             }
                             for (let a of as) {
-                                a.setAttribute("href",data_url)
+                                a.setAttribute("href", data_url);
                             }
                         }
                     }
-
                 }
             }
         }, 100);
