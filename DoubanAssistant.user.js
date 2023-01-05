@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         豆瓣助手
-// @version      0.0.3
+// @version      0.0.4
 // @namespace    airbash/DoubanAssistant
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  恢复`IMDB`的链接,以及增加快捷搜索`SubHD`+`字幕库`+`射手网`字幕的功能
+// @description  恢复`IMDB`的链接,以及增加快捷搜索`SubHD`、`字幕库`、`射手网`、`WebHD`、`rargb`中资源的功能
 // @match        *://movie.douban.com/subject/*
 // @grant        GM_registerMenuCommand
 // @grant        GM_unregisterMenuCommand
@@ -21,30 +21,6 @@
 	const url = location.href;
 	const head = document.head;
 
-	/**
-	 * 侧边栏功能列表
-	 */
-	const webSites = [
-		{
-			name: "SubHD",
-			url: "subhd.tv",
-			search: "https://subhd.tv/search/",
-			id: "douban_name",
-		},
-		{
-			name: "字幕库",
-			url: "zimuku.org",
-			search: "https://so.zimuku.org/search?q=",
-			id: "douban_name",
-		},
-		{
-			name: "射手网",
-			url: "assrt.net",
-			search: "https://assrt.net/sub/?searchword=",
-			id: "douban_name",
-		},
-	];
-
 	//获取imdbitem
 	let info_item = document.querySelector("#info");
 	let imdb_item = document.evaluate('//span[text()="IMDb:"]', info_item, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
@@ -56,8 +32,15 @@
 	//获取douban_id
 	let douban_id = url.split("/")[4];
 
-	//获取douban_name
-	let douban_name = head.querySelector("title").innerText.slice(9, -6);
+	//获取douban_cn_name
+	let douban_cn_name = head.querySelector("title").innerText.slice(9, -6);
+
+	//获取douban_en_name
+	let douban_all_name = document.querySelector("#content > h1 > span:nth-child(1)").innerHTML;
+	let douban_en_name = douban_all_name.split(douban_cn_name)[1].trim();
+	if (douban_en_name == null) {
+		douban_en_name = douban_cn_name;
+	}
 
 	imdb();
 	/**
@@ -72,14 +55,63 @@
 		imdb_id_item.remove();
 	}
 
+	/**
+	 * 侧边栏功能列表
+	 */
+	const webSites = [
+		{
+			name: "字幕搜索",
+			links: [
+				{
+					name: "SubHD",
+					url: "subhd.tv",
+					search: "https://subhd.tv/search/",
+					id: douban_cn_name,
+				},
+				{
+					name: "字幕库",
+					url: "zimuku.org",
+					search: "https://so.zimuku.org/search?q=",
+					id: douban_cn_name,
+				},
+				{
+					name: "射手网",
+					url: "assrt.net",
+					search: "https://assrt.net/sub/?searchword=",
+					id: douban_cn_name,
+				},
+			],
+		},
+		{
+			name: "影视资源",
+			links: [
+				{
+					name: "WebHD",
+					url: "webhd.cc",
+					search: "https://webhd.cc/search/",
+					id: douban_cn_name,
+				},
+				{
+					name: "rargb",
+					url: "rargb.to",
+					search: "https://rargb.to/search/?search=",
+					id: douban_en_name,
+				},
+			],
+		},
+	];
+
+	/**
+	 * 注册油侯菜单
+	 */
 	if (GM_getValue("resource", true) == true) {
 		aside();
-		GM_registerMenuCommand("√字幕搜索", () => {
+		GM_registerMenuCommand("√侧边栏", () => {
 			GM_setValue("resource", false);
 			location.reload();
 		});
 	} else {
-		GM_registerMenuCommand("X字幕搜索", () => {
+		GM_registerMenuCommand("X侧边栏", () => {
 			GM_setValue("resource", true);
 			location.reload();
 		});
@@ -91,15 +123,17 @@
 	function aside() {
 		let aside = document.querySelector(".aside");
 
-		let d = document.createElement("div");
-		d.className = "resource";
-
-		d.innerHTML = "<h2><i>字幕搜索</i>· · · · · ·</h2>";
-		d.innerHTML += '<ul class="resources"></ul>';
-		aside.prepend(d);
-
 		for (let webSite of webSites) {
-			document.querySelector(".resources").innerHTML += '<a href="' + webSite.search + douban_name + '" target="_blank">' + webSite.name + "</a>";
+			let d = document.createElement("div");
+			aside.prepend(d);
+			d.className = "resource";
+			d.innerHTML = "<h2><i>" + webSite.name + "</i>· · · · · ·</h2>";
+			let html = '<ul class="resources">';
+			for (let link of webSite.links) {
+				html += '<a href="' + link.search + link.id + '" target="_blank">' + link.name + "</a>";
+			}
+			html += "</ul>";
+			d.innerHTML += html;
 		}
 
 		const resourceStyle = document.createElement("style");
