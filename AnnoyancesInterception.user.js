@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.39
+// @version      1.3.40
 // @namespace    airbash/AnnoyancesInterception
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -44,6 +44,7 @@
 // @match        *://m.zol.com.cn/*
 // @match        *://wap.zol.com.cn/*
 // @match        *://www.autohome.com.cn/*
+// @match        *://m.autohome.com.cn/*
 // @match        *://www.taptap.cn/*
 // @match        *://m.ithome.com/*
 // @match        *://www.360doc.com/content/*
@@ -134,7 +135,6 @@
 				//悬浮按钮:打开App,看更多好文(首页)
 				".index_call-app-btn",
 			],
-			overflow: true,
 		},
 		{
 			name: "掘金",
@@ -280,6 +280,8 @@
 				//悬浮按钮(上方):百度文库
 				".wk-student-limit-jump",
 				".bartop",
+				//悬浮按钮(下方):下载App,继续阅读
+				".wk-bottom-btn"
 			],
 		},
 		{
@@ -291,7 +293,6 @@
 				//悬浮按钮:xxx独家语音
 				".undefined",
 			],
-			overflow: true,
 		},
 		{
 			name: "百度资讯",
@@ -300,7 +301,6 @@
 				//悬浮按钮:xxx独家语音
 				".undefined",
 			],
-			overflow: true,
 		},
 		{
 			name: "百度资讯2",
@@ -309,7 +309,6 @@
 				//悬浮按钮:百度APP内播放
 				".drag-bottom",
 			],
-			overflow: true,
 		},
 		{
 			name: "腾讯新闻",
@@ -628,11 +627,19 @@
 			],
 		},
 		{
-			name: "汽车之家",
-			url: "www.autohome.com.cn/",
+			name: "汽车之家PC版",
+			url: "www.autohome.com.cn",
 			items: [
 				//悬浮按钮:登录提示(PC端)
 				"#loginGuide",
+			],
+		},
+		{
+			name: "汽车之家移动版",
+			url: "m.autohome.com.cn",
+			items: [
+				//悬浮按钮: App内打开
+				"#float_new_button",
 			],
 		},
 		{
@@ -647,7 +654,6 @@
 				//苹果端:固定按钮:添加到桌面
 				".add-to-screen-wrap",
 			],
-			overflow: true,
 		},
 		{
 			//https://m.ithome.com/
@@ -670,7 +676,7 @@
 			],
 		},
 		{
-			name: "开源中国手机版",
+			name: "开源中国",
 			url: "www.oschina.net",
 			items: [
 				//悬浮按钮(底部):立即打开
