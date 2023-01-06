@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.40
+// @version      1.3.41
 // @namespace    airbash/AnnoyancesInterception
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -44,8 +44,10 @@
 // @match        *://m.zol.com.cn/*
 // @match        *://wap.zol.com.cn/*
 // @match        *://www.autohome.com.cn/*
+// @match        *://*.m.autohome.com.cn/*
 // @match        *://m.autohome.com.cn/*
 // @match        *://www.taptap.cn/*
+// @match        *://m.taptap.cn/*
 // @match        *://m.ithome.com/*
 // @match        *://www.360doc.com/content/*
 // @match        *://www.oschina.net/*
@@ -649,6 +651,15 @@
 			items: [
 				//悬浮按钮:打开taptap
 				".open-app-button",
+			],
+		},
+		{
+			//m.taptap.com
+			name: "taptap",
+			url: "m.taptap.cn",
+			items: [
+				//悬浮按钮:打开taptap查看更多精彩内容
+				".app-download__wrapper",
 				//苹果端:悬浮按钮:添加到桌面
 				".show-add-to-screen",
 				//苹果端:固定按钮:添加到桌面
