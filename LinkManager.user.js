@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         链接管理
-// @version      1.2.9
+// @version      1.3.1
 // @namespace    airbash/LinkManager
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  绕过搜索引擎(百度、搜狗、360、必应、谷歌)搜索结果中的重定向链接,直链访问原始网站;删除网站重定向到安全页面,减少操作步骤和响应时间;支持CSDN+掘金+简书+知乎+知乎专栏+百度贴吧+开源中国+gitee+51CTO+百度搜索+360搜索+搜狗搜索+必应搜索+423down
+// @description  绕过搜索引擎(百度、搜狗、360、必应、谷歌)搜索结果中的重定向链接,直链访问原始网站,删除网站重定向到安全页面,自动跳转中文文档,减少操作步骤和响应时间;长期维护、PC+手机全平台支持:CSDN+掘金+简书+知乎+知乎专栏+百度贴吧+开源中国+gitee+51CTO+百度搜索+360搜索+搜狗搜索+必应搜索+423down+eslint;
 // @match        *://link.csdn.net/*
 // @match        *://www.jianshu.com/p/*
 // @match        *://juejin.cn/*
@@ -19,10 +19,15 @@
 // @match        *://www.sogou.com/web?
 // @match        *://bing.com/*
 // @match        *://www.423down.com/*
+// @match        *://*.eslint.org/docs/latest/*
 // @icon         data:image/png;base64,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
-// @grant        none
+// @grant        GM_registerMenuCommand
+// @grant        GM_setValue
+// @grant        GM_getValue
+// @grant        GM_info
 // @license      GPL-3.0
 // @run-at       document-body
+//
 // ==/UserScript==
 (function () {
     "use strict";
@@ -166,19 +171,6 @@
             ],
         },
         {
-            //https://www.so.com/s?ie=UTF-8&q=123
-            name: "360搜索PC版",
-            url: "www.so.com/s",
-            handlers: [
-                {
-                    selector: "a[data-mdurl]",
-                    start: "link?m=",
-                    attribute: "data-mdurl",
-                    type: "attribute",
-                },
-            ],
-        },
-        {
             //https://www.sogou.com/web?ie=UTF-8&query=123
             name: "搜狗搜索",
             url: "www.sogou.com/web",
@@ -205,6 +197,9 @@
         },
     ];
 
+    /**
+     * 百度单独规则
+     */
     if (location.href.includes("baidu.com")) {
         let time = 0;
         let interval = setInterval(() => {
@@ -264,13 +259,15 @@
         }, 100);
     }
 
+    /**
+     * 免跳转代码
+     */
     for (let website of websites) {
         if (location.href.includes(website.url)) {
             if (website.noTimer) {
                 //不执行定时器的网站
                 for (let handler of website.handlers) {
-                    let start_index = location.href.indexOf(handler.start) + handler.start.length;
-                    let str = location.href.substring(start_index);
+                    let str = location.href.split(handler.start)[1];
                     let url = decodeURIComponent(str);
                     location.replace(url);
                 }
@@ -290,11 +287,12 @@
                                     //从属性中截取地址
                                     let href = item.getAttribute("href");
                                     let start_index = href.indexOf(handler.start) + handler.start.length;
+                                    let str;
                                     if (handler.end != null) {
                                         let end_index = href.indexOf(handler.end);
-                                        var str = href.substring(start_index, end_index);
+                                        str = href.substring(start_index, end_index);
                                     } else {
-                                        var str = href.substring(start_index);
+                                        str = href.substring(start_index);
                                     }
                                     let url = decodeURIComponent(str);
                                     item.setAttribute("href", url);
@@ -309,6 +307,34 @@
                         }
                     }
                 }, 100);
+            }
+        }
+    }
+
+    /**
+     * GM相关APi的操作
+     */
+    if (GM_info) {
+        const scriptHandler = GM_info.scriptHandler;
+        /**
+         * 仅在油侯插件上运行,避免无法点击注册开关
+         */
+        if (scriptHandler == "Tampermonkey" || scriptHandler == "Violentmonkey" || scriptHandler == "ScriptCat") {
+            if ((GM_getValue("forward_zh"))) {
+                GM_registerMenuCommand("[√]跳转中文文档", function () {
+                    GM_setValue("forward_zh", false);
+                    location.reload();
+                });
+                let en_url = location.href;
+                if (en_url.startsWith("https://eslint.org/docs/latest/")) {
+                    let zh_url = "https://zh-hans.eslint.org/docs/latest/" + en_url.split("https://eslint.org/docs/latest/")[1];
+                    location.replace(zh_url);
+                }
+            } else {
+                GM_registerMenuCommand("[x]跳转中文文档", function () {
+                    GM_setValue("forward_zh", true);
+                    location.reload();
+                });
             }
         }
     }
