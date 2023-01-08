@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         链接管理
-// @version      1.3.1
+// @version      1.3.2
 // @namespace    airbash/LinkManager
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  绕过搜索引擎(百度、搜狗、360、必应、谷歌)搜索结果中的重定向链接,直链访问原始网站,删除网站重定向到安全页面,自动跳转中文文档,减少操作步骤和响应时间;长期维护、PC+手机全平台支持:CSDN+掘金+简书+知乎+知乎专栏+百度贴吧+开源中国+gitee+51CTO+百度搜索+360搜索+搜狗搜索+必应搜索+423down+eslint;
+// @description  绕过搜索引擎(百度、搜狗、360、必应、谷歌)搜索结果中的重定向链接,直链访问原始网站,删除网站重定向到安全页面,自动跳转中文文档,减少操作步骤和响应时间;长期维护、PC+手机全平台支持:CSDN+掘金+简书+知乎+知乎专栏+百度贴吧+开源中国+gitee+51CTO+百度搜索+360搜索+搜狗搜索+必应搜索+423down+eslint+微软文档+火狐MDN;
 // @match        *://link.csdn.net/*
 // @match        *://www.jianshu.com/p/*
 // @match        *://juejin.cn/*
@@ -20,6 +20,8 @@
 // @match        *://bing.com/*
 // @match        *://www.423down.com/*
 // @match        *://*.eslint.org/docs/latest/*
+// @match        *://learn.microsoft.com/*
+// @match        *://developer.mozilla.org/*
 // @icon         data:image/png;base64,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
 // @grant        GM_registerMenuCommand
 // @grant        GM_setValue
@@ -238,19 +240,19 @@
                         item.querySelector("a").setAttribute("href", url);
                     }
                     //xxx的最新相关信息
-                    let items3 = item.querySelectorAll("[class^=single-card-wrapper] div");
+                    //https://www.baidu.com/s?wd=中国阳后出现肺炎人群约为8%
+                    let items3 = item.querySelectorAll("[class^=single-card-wrapper] div,[class^=group-wrapper] div");
                     if (items3.length) {
                         for (let item3 of items3) {
-                            let as = item3.querySelectorAll("a");
-                            let divs = item3.querySelectorAll("div");
                             let data_url;
+                            let divs = item3.querySelectorAll("div");
                             for (let div of divs) {
-                                if (div.getAttribute("data-url")) {
-                                    data_url = div.getAttribute("data-url");
+                                if ((data_url = div.getAttribute("data-url"))) {
+                                    let as = item3.querySelectorAll("a");
+                                    for (let a of as) {
+                                        a.setAttribute("href", data_url);
+                                    }
                                 }
-                            }
-                            for (let a of as) {
-                                a.setAttribute("href", data_url);
                             }
                         }
                     }
@@ -311,6 +313,33 @@
         }
     }
 
+    const otherSites=[
+        {
+            //https://eslint.org/docs/latest/user-guide/configuring/configuration-files
+            //https://zh-hans.eslint.org/docs/latest/user-guide/configuring/configuration-files
+            "name":"eslint",
+            "url":"eslint.org/docs/latest",
+            "en_str":"eslint.org",
+            "zh_str":"zh-hans.eslint.org"
+        },
+        {
+            //https://learn.microsoft.com/en-us/powershell/scripting/how-to-use-docs
+            //https://learn.microsoft.com/zh-cn/powershell/scripting/how-to-use-docs
+            "name":"microsoft",
+            "url":"learn.microsoft.com/en-us/",
+            "en_str":"en-us",
+            "zh_str":"zh-cn"
+        },
+        {
+            //https://developer.mozilla.org/en-US/
+            //https://developer.mozilla.org/zh-CN/
+            "name":"MDN",
+            "url":"developer.mozilla.org/en-US/",
+            "en_str":"en-US",
+            "zh_str":"zh-CN"
+        },
+    ]
+
     /**
      * GM相关APi的操作
      */
@@ -320,15 +349,20 @@
          * 仅在油侯插件上运行,避免无法点击注册开关
          */
         if (scriptHandler == "Tampermonkey" || scriptHandler == "Violentmonkey" || scriptHandler == "ScriptCat") {
+            /**
+             * 自动跳转中文文档
+             */
             if ((GM_getValue("forward_zh"))) {
                 GM_registerMenuCommand("[√]跳转中文文档", function () {
                     GM_setValue("forward_zh", false);
                     location.reload();
                 });
                 let en_url = location.href;
-                if (en_url.startsWith("https://eslint.org/docs/latest/")) {
-                    let zh_url = "https://zh-hans.eslint.org/docs/latest/" + en_url.split("https://eslint.org/docs/latest/")[1];
-                    location.replace(zh_url);
+                for (let otherSite of otherSites) {
+                    if (en_url.startsWith("https://"+otherSite.url)) {
+                        let zh_url = en_url.replace(otherSite.en_str,otherSite.zh_str);
+                        location.replace(zh_url);
+                    }
                 }
             } else {
                 GM_registerMenuCommand("[x]跳转中文文档", function () {
