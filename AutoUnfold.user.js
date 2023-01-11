@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.31
+// @version      1.3.32
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -42,8 +42,9 @@
 // @match        *://www.360doc.com/content/*
 // @match        *://g.pconline.com.cn/x/*
 // @match        *://m.zol.com.cn/article/*
-// @match        *://m.autohome.com.cn/*
+// @match        *://m.autohome.com.cn/news/*
 // @match        *://chejiahao.m.autohome.com.cn/info/*
+// @match        *://club.m.autohome.com.cn/bbs/*
 // @match        *://3g.ali213.net/*
 // @match        *://blog.didispace.com/*
 // @match        *://*.wang1314.com/doc/*
@@ -750,18 +751,58 @@
 			],
 		},
 		{
-			name: "汽车之家",
-			url: "chejiahao.m.autohome.com.cn",
+			name: "汽车之家:新闻",
+			url: "m.autohome.com.cn/news/",
 			handles: [
-				//展开全文
+				//点击展开剩余部分
 				{
 					type: "display",
-					item: ".unfold_warp",
+					item: "#continue_reading",
+				},
+			],
+			fun: function () {
+				//删除class
+				let items = document.querySelectorAll("#content .fn-hide");
+				for (let item of items) {
+					item.classList.remove("fn-hide");
+				}
+			},
+		},
+		{
+			name: "汽车之家:车家号",
+			url: "chejiahao.m.autohome.com.cn/info/",
+			handles: [
+				//点击展开剩余部分
+				{
+					type: "display",
+					item: "#continue_reading_new",
 				},
 			],
 			fun: function () {
 				//删除class
 				let items = document.querySelectorAll(".pgc-details .fn-hide");
+				for (let item of items) {
+					item.classList.remove("fn-hide");
+				}
+			},
+		},
+		{
+			name: "汽车之家:论坛",
+			url: "club.m.autohome.com.cn/bbs/",
+			handles: [
+				//点击展开剩余部分
+				{
+					type: "display",
+					item: "#continue_reading",
+				},
+				{
+					type: "height",
+					item: "#topicContentSection"
+				}
+			],
+			fun: function () {
+				//删除class
+				let items = document.querySelectorAll("#topicContentSection .fn-hide");
 				for (let item of items) {
 					item.classList.remove("fn-hide");
 				}
