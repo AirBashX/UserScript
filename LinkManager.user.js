@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         链接管理
-// @version      1.3.2
+// @version      1.3.3
 // @namespace    airbash/LinkManager
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -216,7 +216,8 @@
                     let json = JSON.parse(str);
                     if (json) {
                         let url = json.mu;
-                        if (url) {
+                        //https://m.baidu.com/sf:       https://m.baidu.com/s?ie=UTF-8&wd=暗区 死了以后为什么没有武器
+                        if (url && !url.startsWith("https://m.baidu.com/sf")) {
                             let rl_link_href;
                             if ((rl_link_href = item.querySelector("[rl-link-href]"))) {
                                 rl_link_href.setAttribute("rl-link-href", url);
@@ -235,12 +236,14 @@
             if (items2.length) {
                 for (let item of items2) {
                     //常规操作
+                    //url!=null            https://www.baidu.com/s?ie=UTF-8&wd=es6
                     let url;
-                    if ((url = item.getAttribute("mu")) && !url.includes("nourl.ubs.baidu.com") && !url.includes("recommend_list.baidu.com")) {
+                    if ((url = item.getAttribute("mu")) && !url.includes("nourl.ubs.baidu.com") && url != "null") {
                         item.querySelector("a").setAttribute("href", url);
                     }
                     //xxx的最新相关信息
-                    //https://www.baidu.com/s?wd=中国阳后出现肺炎人群约为8%
+                    //single-card-wrapper: https://www.baidu.com/s?wd=es6
+                    //group-wrapper:       https://www.baidu.com/s?wd=中国阳后出现肺炎人群约为8%
                     let items3 = item.querySelectorAll("[class^=single-card-wrapper] div,[class^=group-wrapper] div");
                     if (items3.length) {
                         for (let item3 of items3) {
@@ -313,32 +316,32 @@
         }
     }
 
-    const otherSites=[
+    const otherSites = [
         {
             //https://eslint.org/docs/latest/user-guide/configuring/configuration-files
             //https://zh-hans.eslint.org/docs/latest/user-guide/configuring/configuration-files
-            "name":"eslint",
-            "url":"eslint.org/docs/latest",
-            "en_str":"eslint.org",
-            "zh_str":"zh-hans.eslint.org"
+            name: "eslint",
+            url: "eslint.org/docs/latest",
+            en_str: "eslint.org",
+            zh_str: "zh-hans.eslint.org",
         },
         {
             //https://learn.microsoft.com/en-us/powershell/scripting/how-to-use-docs
             //https://learn.microsoft.com/zh-cn/powershell/scripting/how-to-use-docs
-            "name":"microsoft",
-            "url":"learn.microsoft.com/en-us/",
-            "en_str":"en-us",
-            "zh_str":"zh-cn"
+            name: "microsoft",
+            url: "learn.microsoft.com/en-us/",
+            en_str: "en-us",
+            zh_str: "zh-cn",
         },
         {
             //https://developer.mozilla.org/en-US/
             //https://developer.mozilla.org/zh-CN/
-            "name":"MDN",
-            "url":"developer.mozilla.org/en-US/",
-            "en_str":"en-US",
-            "zh_str":"zh-CN"
+            name: "MDN",
+            url: "developer.mozilla.org/en-US/",
+            en_str: "en-US",
+            zh_str: "zh-CN",
         },
-    ]
+    ];
 
     /**
      * GM相关APi的操作
@@ -352,15 +355,15 @@
             /**
              * 自动跳转中文文档
              */
-            if ((GM_getValue("forward_zh"))) {
+            if (GM_getValue("forward_zh")) {
                 GM_registerMenuCommand("[√]跳转中文文档", function () {
                     GM_setValue("forward_zh", false);
                     location.reload();
                 });
                 let en_url = location.href;
                 for (let otherSite of otherSites) {
-                    if (en_url.startsWith("https://"+otherSite.url)) {
-                        let zh_url = en_url.replace(otherSite.en_str,otherSite.zh_str);
+                    if (en_url.startsWith("https://" + otherSite.url)) {
+                        let zh_url = en_url.replace(otherSite.en_str, otherSite.zh_str);
                         location.replace(zh_url);
                     }
                 }
