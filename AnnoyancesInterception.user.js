@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.41
+// @version      1.3.42
 // @namespace    airbash/AnnoyancesInterception
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -707,7 +707,10 @@
 			//https://www.xiaohongshu.com/discovery/item/636cbbc1000000001c03c332
 			name: "小红书",
 			url: "www.xiaohongshu.com",
-			items: [".cube-z-bottom-bar"],
+			items: [
+				//App内打开
+				".bottom-button-box"
+			],
 		},
 	];
 
