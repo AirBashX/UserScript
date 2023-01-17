@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.32
+// @version      1.3.33
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  自动展开文档	隐藏部分;长期维护、PC+手机全平台支持;全平台支持:CSDN、it1352、编程之家、简书、知乎、微博、百家号、百度资讯、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、澎湃新闻、澎湃新闻、新京报、环球网、日民日报、人民网、36氪、果壳、虎扑、虎嗅、头条、B站专栏、微博文章、豆瓣文章、豆瓣小组、开源中国、360图书馆、太平洋电脑网、中关村在线、汽车之家、游侠网
+// @description  自动展开文档	隐藏部分;长期维护、PC+手机全平台支持;全平台支持:CSDN、it1352、编程之家、简书、知乎、微博、百家号、百度资讯、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、澎湃新闻、澎湃新闻、新京报、环球网、人民日报、人民网、丁香园、健康界、36氪、果壳、虎扑、虎嗅、头条、B站专栏、微博文章、豆瓣文章、豆瓣小组、开源中国、360图书馆、太平洋电脑网、中关村在线、汽车之家、游侠网
 // @match        *://*.blog.csdn.net/*
 // @match        *://blog.csdn.net/*
 // @match        *://ask.csdn.net/questions/*
@@ -32,6 +32,7 @@
 // @match        *://*.huanqiu.com/article/*
 // @match        *://3w.huanqiu.com/a/*
 // @match        *://3g.dxy.cn/*
+// @match        *://www.cn-healthcare.com/articlewm/*
 // @match        *://www.bilibili.com/read/mobile*
 // @match        *://weibo.com/ttarticle/p/show?id=*
 // @match        *://m.douban.com/book/review/*
@@ -620,6 +621,22 @@
 				{
 					type: "height",
 					item: "[class^=contentWrap___]",
+				},
+			],
+		},
+		{
+			//https://www.cn-healthcare.com/articlewm/20220411/wap-content-1337062.html
+			name: "健康界",
+			url: "www.cn-healthcare.com/articlewm/",
+			handles: [
+				//阅读全文
+				{
+					type: "display",
+					item: ".mask",
+				},
+				{
+					type: "height",
+					item: "#artbody",
 				},
 			],
 		},
