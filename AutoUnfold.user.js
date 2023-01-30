@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.33
+// @version      1.3.34
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  自动展开文档	隐藏部分;长期维护、PC+手机全平台支持;全平台支持:CSDN、it1352、编程之家、简书、知乎、微博、百家号、百度资讯、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、澎湃新闻、澎湃新闻、新京报、环球网、人民日报、人民网、丁香园、健康界、36氪、果壳、虎扑、虎嗅、头条、B站专栏、微博文章、豆瓣文章、豆瓣小组、开源中国、360图书馆、太平洋电脑网、中关村在线、汽车之家、游侠网
+// @description  自动展开文档	隐藏部分;长期维护、PC+手机全平台支持;全平台支持:CSDN、it1352、编程之家、简书、知乎、微博、百家号、百度资讯、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、澎湃新闻、澎湃新闻、新京报、环球网、人民日报、人民网、丁香园、健康界、36氪、果壳、虎扑、虎嗅、头条、B站专栏、微博文章、豆瓣文章、豆瓣小组、开源中国、360图书馆、太平洋电脑网、中关村在线、汽车之家、游侠网、360问答
 // @match        *://*.blog.csdn.net/*
 // @match        *://blog.csdn.net/*
 // @match        *://ask.csdn.net/questions/*
@@ -37,7 +37,6 @@
 // @match        *://weibo.com/ttarticle/p/show?id=*
 // @match        *://m.douban.com/book/review/*
 // @match        *://m.douban.com/group/topic/*
-// @match        *://card.weibo.com/article/m/show/id*
 // @match        *://www.oschina.net/p/*
 // @match        *://www.360doc.cn/article/*
 // @match        *://www.360doc.com/content/*
@@ -47,6 +46,8 @@
 // @match        *://chejiahao.m.autohome.com.cn/info/*
 // @match        *://club.m.autohome.com.cn/bbs/*
 // @match        *://3g.ali213.net/*
+// @match        *://wenda.so.com/q/*
+// @match        *://m.wenda.so.com/q/*
 // @match        *://blog.didispace.com/*
 // @match        *://*.wang1314.com/doc/*
 // @match        *://*.k4china.com/*
@@ -184,10 +185,10 @@
 			],
 			//删除遮挡栏
 			fun: function () {
-				let css = document.createElement('style');
-				css.innerText = '.collapse-free-content::after {height: 0px !important}';
+				let css = document.createElement("style");
+				css.innerText = ".collapse-free-content::after {height: 0px !important}";
 				document.head.appendChild(css);
-			}
+			},
 		},
 		{
 			name: "知乎",
@@ -220,17 +221,6 @@
 					item.style.setProperty("-webkit-mask-image", "none", "important");
 				}
 			},
-		},
-		{
-			name: "微博",
-			url: "s.weibo.com/weibo?q=",
-			handles: [
-				//PC端:
-				{
-					type: "display",
-					item: "[node-type=feed_list_content_full]",
-				},
-			],
 		},
 		{
 			name: "百度经验",
@@ -688,6 +678,36 @@
 			],
 		},
 		{
+			name: "豆瓣文章",
+			url: "m.douban.com/book/review/",
+			handles: [
+				//点击展开全文
+				{
+					type: "display",
+					item: ".oia-readall",
+				},
+				{
+					type: "height",
+					item: ".note-content",
+				},
+			],
+		},
+		{
+			name: "豆瓣小组",
+			url: "m.douban.com/group/topic/",
+			handles: [
+				//点击展开全文
+				{
+					type: "display",
+					item: ".oia-readall",
+				},
+				{
+					type: "height",
+					item: ".note-content",
+				},
+			],
+		},
+		{
 			//https://www.oschina.net/p/xmind
 			name: "开源中国",
 			url: "www.oschina.net/p/",
@@ -814,8 +834,8 @@
 				},
 				{
 					type: "height",
-					item: "#topicContentSection"
-				}
+					item: "#topicContentSection",
+				},
 			],
 			fun: function () {
 				//删除class
@@ -824,37 +844,6 @@
 					item.classList.remove("fn-hide");
 				}
 			},
-		},
-		{
-			
-			name: "豆瓣文章",
-			url: "m.douban.com/book/review/",
-			handles: [
-				//点击展开全文
-				{
-					type: "display",
-					item: ".oia-readall",
-				},
-				{
-					type: "height",
-					item: ".note-content",
-				},
-			],
-		},
-		{
-			name: "豆瓣小组",
-			url: "m.douban.com/group/topic/",
-			handles: [
-				//点击展开全文
-				{
-					type: "display",
-					item: ".oia-readall",
-				},
-				{
-					type: "height",
-					item: ".note-content",
-				},
-			],
 		},
 		{
 			//https://3g.ali213.net/news/html/716303.html
@@ -875,6 +864,52 @@
 					item: ".detail-content",
 				},
 			],
+		},
+		{
+			name: "360文档",
+			url: "wenda.so.com/q/",
+			handles: [
+				//PC端:展开问答
+				{
+					type: "display",
+					item: ".answer-part__has-folder__btn",
+				},
+				{
+					type: "height",
+					item: ".answer-part__has-folder",
+				},
+				//PC端:更多回答
+				{
+					type: "display",
+					item: ".js-unfold-page",
+				},
+				//展开完整答案
+				{
+					type: "display",
+					item: ".overflow-cover",
+				},
+				{
+					type: "height",
+					item: ".max-height",
+				},
+				//更多回答
+				{
+					type: "display",
+					item: ".js-rest-icon",
+				},
+			],
+			fun: function () {
+				//PC端:更多回答
+				let item1s = document.querySelectorAll(".hide.js-unfold-answer.answer-fold-box");
+				for (let item of item1s) {
+					item.classList.remove("hide");
+				}
+				//更多回答
+				let item2s = document.querySelectorAll(".ans-box.hide");
+				for (let item of item2s) {
+					item.classList.remove("hide");
+				}
+			},
 		},
 		{
 			name: "程序猿DD",
@@ -907,12 +942,12 @@
 				//阅读原文全部内容
 				{
 					type: "display",
-					item: "#show_content_bar"
+					item: "#show_content_bar",
 				},
 				{
 					type: "height",
-					item: "#body_content"
-				}
+					item: "#body_content",
+				},
 			],
 		},
 		{
@@ -933,7 +968,7 @@
 				//阅读全部
 				{
 					type: "height",
-					item: ".panel-default"
+					item: ".panel-default",
 				},
 				{
 					type: "display",
