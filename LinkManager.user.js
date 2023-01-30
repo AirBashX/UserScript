@@ -1,17 +1,17 @@
 // ==UserScript==
 // @name         链接管理
-// @version      1.3.3
+// @version      1.3.4
 // @namespace    airbash/LinkManager
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
 // @description  绕过搜索引擎(百度、搜狗、360、必应、谷歌)搜索结果中的重定向链接,直链访问原始网站,删除网站重定向到安全页面,自动跳转中文文档,减少操作步骤和响应时间;长期维护、PC+手机全平台支持:CSDN+掘金+简书+知乎+知乎专栏+百度贴吧+开源中国+gitee+51CTO+百度搜索+360搜索+搜狗搜索+必应搜索+423down+eslint+微软文档+火狐MDN;
 // @match        *://link.csdn.net/*
-// @match        *://www.jianshu.com/p/*
+// @match        *://link.juejin.cn/*
 // @match        *://juejin.cn/*
 // @match        *://*.zhihu.com/*
 // @match        *://tieba.baidu.com/*
 // @match        *://*.oschina.net/*
-// @match        *://*.gitee.com/*
+// @match        *://gitee.com/*
 // @match        *://blog.51cto.com/*
 // @match        *://*.baidu.com/*
 // @match        *://m.so.com/s?*
@@ -34,19 +34,89 @@
 (function () {
     "use strict";
 
-    const websites = [
+    const safePages = [
         {
             //https://blog.csdn.net/weixin_50829653/article/details/118119039
+            //https://link.csdn.net/?target=https://baidu.com
             name: "CSDN",
-            url: "link.csdn.net",
+            url: "link.csdn.net/?target=",
             handlers: [
                 {
                     type: "forward",
                     start: "?target=",
                 },
             ],
-            noTimer: true,
         },
+        {
+            //https://link.zhihu.com/?target=https://www.apifox.cn/
+            name: "知乎",
+            url: "link.zhihu.com/?target=",
+            handlers: [
+                {
+                    type: "forward",
+                    start: "?target=",
+                },
+            ],
+        },
+        {
+            //https://link.juejin.cn/?target=https://baidu.com
+            name: "掘金",
+            url: "link.juejin.cn/?target=",
+            handlers: [
+                {
+                    type: "forward",
+                    start: "?target=",
+                },
+            ],
+        },
+        {
+            //https://www.jianshu.com/go-wild?ac=2&url=https://baidu.com
+            name: "简书",
+            url: "www.jianshu.com/go-wild?",
+            handlers: [
+                {
+                    type: "forward",
+                    start: "&url=",
+                },
+            ],
+        },
+        {
+            //https://www.oschina.net/action/GoToLink?url=https://baidu.com
+            name: "开源中国",
+            url: "www.oschina.net/action/GoToLink?url=",
+            handlers: [
+                {
+                    type: "forward",
+                    start: "GoToLink?url=",
+                },
+            ],
+        },
+        {
+            //https://gitee.com/link?target=https://baidu.com
+            name: "码云",
+            url: "gitee.com/link?target=",
+            handlers: [
+                {
+                    type: "forward",
+                    start: "?target=",
+                },
+            ],
+        },
+        {
+            //https://blog.51cto.com/u_15127617/4063137
+            //https://blog.51cto.com/transfer?https://baidu.com
+            name: "51CTO",
+            url: "blog.51cto.com/transfer?",
+            handlers: [
+                {
+                    type: "forward",
+                    start: "transfer?",
+                },
+            ],
+        },
+    ];
+
+    const websites = [
         {
             //https://www.zhihu.com/question/465346075/answer/2048804228
             //https://zhuanlan.zhihu.com/p/95937067
@@ -132,19 +202,6 @@
                     type: "sub",
                 },
             ],
-        },
-        {
-            //https://blog.51cto.com/u_15127617/4063137
-            //https://blog.51cto.com/transfer?https://httpie.org/docs#examples
-            name: "51CTO",
-            url: "blog.51cto.com/transfer?",
-            handlers: [
-                {
-                    type: "forward",
-                    start: "transfer?",
-                },
-            ],
-            noTimer: true,
         },
         {
             //https://www.so.com/s?ie=UTF-8&q=123
@@ -265,57 +322,63 @@
     }
 
     /**
-     * 免跳转代码
+     * 安全页面直接跳转
      */
-    for (let website of websites) {
-        if (location.href.includes(website.url)) {
-            if (website.noTimer) {
-                //不执行定时器的网站
-                for (let handler of website.handlers) {
-                    let str = location.href.split(handler.start)[1];
-                    let url = decodeURIComponent(str);
-                    location.replace(url);
-                }
-            } else {
-                //执行定时器的网站
-                let time = 0;
-                let interval = setInterval(() => {
-                    if (++time == 100) {
-                        clearInterval(interval);
-                    }
-                    for (let handler of website.handlers) {
-                        let items = document.querySelectorAll(handler.selector);
-                        for (let item of items) {
-                            //进一步校验需要修改的元素,防止修改错元素
-                            if (item.getAttribute("href").includes(handler.start)) {
-                                if (handler.type == "sub") {
-                                    //从属性中截取地址
-                                    let href = item.getAttribute("href");
-                                    let start_index = href.indexOf(handler.start) + handler.start.length;
-                                    let str;
-                                    if (handler.end != null) {
-                                        let end_index = href.indexOf(handler.end);
-                                        str = href.substring(start_index, end_index);
-                                    } else {
-                                        str = href.substring(start_index);
-                                    }
-                                    let url = decodeURIComponent(str);
-                                    item.setAttribute("href", url);
-                                } else if (handler.type == "attribute") {
-                                    //从属性中获取地址
-                                    item.setAttribute("href", item.getAttribute(handler.attribute));
-                                } else {
-                                    //从文本中获取地址
-                                    item.setAttribute("href", item.innerText);
-                                }
-                            }
-                        }
-                    }
-                }, 100);
+    for (let safePage of safePages) {
+        if (location.href.includes(safePage.url)) {
+            for (let handler of safePage.handlers) {
+                let str = location.href.split(handler.start)[1];
+                let url = decodeURIComponent(str);
+                location.replace(url);
             }
         }
     }
 
+    /**
+     * 文章页面处理跳转
+     */
+    for (let website of websites) {
+        if (location.href.includes(website.url)) {
+            let time = 0;
+            let interval = setInterval(() => {
+                if (++time == 100) {
+                    clearInterval(interval);
+                }
+                for (let handler of website.handlers) {
+                    let items = document.querySelectorAll(handler.selector);
+                    for (let item of items) {
+                        //进一步校验需要修改的元素,防止修改错元素
+                        if (item.getAttribute("href").includes(handler.start)) {
+                            if (handler.type == "sub") {
+                                //从属性中截取地址
+                                let href = item.getAttribute("href");
+                                let start_index = href.indexOf(handler.start) + handler.start.length;
+                                let str;
+                                if (handler.end != null) {
+                                    let end_index = href.indexOf(handler.end);
+                                    str = href.substring(start_index, end_index);
+                                } else {
+                                    str = href.substring(start_index);
+                                }
+                                let url = decodeURIComponent(str);
+                                item.setAttribute("href", url);
+                            } else if (handler.type == "attribute") {
+                                //从属性中获取地址
+                                item.setAttribute("href", item.getAttribute(handler.attribute));
+                            } else {
+                                //从文本中获取地址
+                                item.setAttribute("href", item.innerText);
+                            }
+                        }
+                    }
+                }
+            }, 100);
+        }
+    }
+
+    /**
+     * 跳转中文文档规则
+     */
     const otherSites = [
         {
             //https://eslint.org/docs/latest/user-guide/configuring/configuration-files
