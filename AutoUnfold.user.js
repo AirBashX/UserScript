@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.34
+// @version      1.3.35
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  自动展开文档	隐藏部分;长期维护、PC+手机全平台支持;全平台支持:CSDN、it1352、编程之家、简书、知乎、微博、百家号、百度资讯、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、澎湃新闻、澎湃新闻、新京报、环球网、人民日报、人民网、丁香园、健康界、36氪、果壳、虎扑、虎嗅、头条、B站专栏、微博文章、豆瓣文章、豆瓣小组、开源中国、360图书馆、太平洋电脑网、中关村在线、汽车之家、游侠网、360问答
+// @description  自动展开文档	隐藏部分;长期维护、PC+手机全平台支持;全平台支持:CSDN、it1352、编程之家、简书、知乎、微博、百家号、百度资讯、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、澎湃新闻、澎湃新闻、新京报、环球网、人民日报、人民网、丁香园、健康界、36氪、果壳、虎扑、虎嗅、头条、B站专栏、微博文章、豆瓣文章、豆瓣小组、开源中国、360图书馆、太平洋电脑网、中关村在线、汽车之家、游侠网、360问答、天眼查
 // @match        *://*.blog.csdn.net/*
 // @match        *://blog.csdn.net/*
 // @match        *://ask.csdn.net/questions/*
@@ -32,7 +32,7 @@
 // @match        *://*.huanqiu.com/article/*
 // @match        *://3w.huanqiu.com/a/*
 // @match        *://3g.dxy.cn/*
-// @match        *://www.cn-healthcare.com/articlewm/*
+// @match        *://www.cn-healthcare.com/*
 // @match        *://www.bilibili.com/read/mobile*
 // @match        *://weibo.com/ttarticle/p/show?id=*
 // @match        *://m.douban.com/book/review/*
@@ -48,6 +48,7 @@
 // @match        *://3g.ali213.net/*
 // @match        *://wenda.so.com/q/*
 // @match        *://m.wenda.so.com/q/*
+// @match        *://n.tianyancha.com/content/*
 // @match        *://blog.didispace.com/*
 // @match        *://*.wang1314.com/doc/*
 // @match        *://*.k4china.com/*
@@ -615,9 +616,8 @@
 			],
 		},
 		{
-			//https://www.cn-healthcare.com/articlewm/20220411/wap-content-1337062.html
 			name: "健康界",
-			url: "www.cn-healthcare.com/articlewm/",
+			url: "www.cn-healthcare.com/",
 			handles: [
 				//阅读全文
 				{
@@ -910,6 +910,21 @@
 					item.classList.remove("hide");
 				}
 			},
+		},
+		{
+			name: "天眼查",
+			url: "n.tianyancha.com/content",
+			handles: [
+				//展开剩余内容
+				{
+					type: "display",
+					item: "[class^=index_other-content-more__]",
+				},
+				{
+					type: "height",
+					item: "[class^=index_other-content-container__]",
+				},
+			],
 		},
 		{
 			name: "程序猿DD",
