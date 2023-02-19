@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         链接管理
-// @version      1.3.4
+// @version      1.3.5
 // @namespace    airbash/LinkManager
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -273,8 +273,9 @@
                     let json = JSON.parse(str);
                     if (json) {
                         let url = json.mu;
-                        //https://m.baidu.com/sf:       https://m.baidu.com/s?ie=UTF-8&wd=暗区 死了以后为什么没有武器
-                        if (url && !url.startsWith("https://m.baidu.com/sf")) {
+                        //https://m.baidu.com/sf        https://m.baidu.com/s?ie=UTF-8&wd=暗区 死了以后为什么没有武器
+                        //https://nourl.ubs.baidu.com   https://m.baidu.com/s?ie=UTF-8&wd=石药市值  第二个div
+                        if (url && !url.includes("nourl.ubs.baidu.com") && !url.startsWith("https://m.baidu.com/sf")) {
                             let rl_link_href;
                             if ((rl_link_href = item.querySelector("[rl-link-href]"))) {
                                 rl_link_href.setAttribute("rl-link-href", url);
