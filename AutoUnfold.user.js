@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.35
+// @version      1.3.36
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  自动展开文档	隐藏部分;长期维护、PC+手机全平台支持;全平台支持:CSDN、it1352、编程之家、简书、知乎、微博、百家号、百度资讯、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、澎湃新闻、澎湃新闻、新京报、环球网、人民日报、人民网、丁香园、健康界、36氪、果壳、虎扑、虎嗅、头条、B站专栏、微博文章、豆瓣文章、豆瓣小组、开源中国、360图书馆、太平洋电脑网、中关村在线、汽车之家、游侠网、360问答、天眼查
+// @description  自动展开文档	隐藏部分;长期维护、PC+手机全平台支持;全平台支持:CSDN、it1352、编程之家、简书、知乎、微博、百家号、百度资讯、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、澎湃新闻、澎湃新闻、新京报、环球网、人民日报、人民网、丁香园、健康界、36氪、果壳、虎扑、虎嗅、头条、B站专栏、微博文章、豆瓣文章、豆瓣小组、开源中国、阿里云开发者社区、腾讯云开发者社区、360图书馆、太平洋电脑网、中关村在线、汽车之家、游侠网、360问答、天眼查
 // @match        *://*.blog.csdn.net/*
 // @match        *://blog.csdn.net/*
 // @match        *://ask.csdn.net/questions/*
@@ -38,6 +38,8 @@
 // @match        *://m.douban.com/book/review/*
 // @match        *://m.douban.com/group/topic/*
 // @match        *://www.oschina.net/p/*
+// @match        *://developer.aliyun.com/article/*
+// @match        *://cloud.tencent.com/developer/article/*
 // @match        *://www.360doc.cn/article/*
 // @match        *://www.360doc.com/content/*
 // @match        *://g.pconline.com.cn/x/*
@@ -723,6 +725,36 @@
 				},
 			],
 		},
+		{
+			name: "阿里云开发者社区",
+			url: "developer.aliyun.com/article",
+			handles: [
+				//关注
+				{
+					type: "height",
+					item: ".article-hide-content",
+				},
+				{
+					type: "display",
+					item: ".article-hide-box",
+				},
+			],
+		},
+		{
+			name: "腾讯云开发者社区",
+			url: "cloud.tencent.com/developer/article/",
+			handles: [
+				//展开阅读全文
+				{
+					type: "height",
+					item: ".com-markdown-collpase-main",
+				},
+				{
+					type: "display",
+					item: ".com-markdown-collpase-toggle",
+				},
+			],
+		},
 		//移动版:http://www.360doc.cn/article/60244337_924865821.html
 		{
 			name: "360图书馆手机版",
@@ -846,7 +878,6 @@
 			},
 		},
 		{
-			//https://3g.ali213.net/news/html/716303.html
 			name: "游侠网",
 			url: "3g.ali213.net",
 			handles: [
