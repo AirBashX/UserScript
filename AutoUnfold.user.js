@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.36
+// @version      1.3.37
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  自动展开文档	隐藏部分;长期维护、PC+手机全平台支持;全平台支持:CSDN、it1352、编程之家、简书、知乎、微博、百家号、百度资讯、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、澎湃新闻、澎湃新闻、新京报、环球网、人民日报、人民网、丁香园、健康界、36氪、果壳、虎扑、虎嗅、头条、B站专栏、微博文章、豆瓣文章、豆瓣小组、开源中国、阿里云开发者社区、腾讯云开发者社区、360图书馆、太平洋电脑网、中关村在线、汽车之家、游侠网、360问答、天眼查
+// @description  自动展开文档	隐藏部分;长期维护、PC+手机全平台支持;全平台支持:CSDN、it1352、编程之家、简书、知乎、微博、百家号、百度资讯、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、澎湃新闻、澎湃新闻、新京报、环球网、人民日报、人民网、丁香园、健康界、36氪、果壳、虎扑、虎嗅、头条、B站专栏、微博文章、豆瓣文章、豆瓣小组、开源中国、阿里云开发者社区、腾讯云开发者社区、360图书馆、太平洋电脑网、中关村在线、汽车之家、游侠网、360问答、天眼查、天涯社区
 // @match        *://*.blog.csdn.net/*
 // @match        *://blog.csdn.net/*
 // @match        *://ask.csdn.net/questions/*
@@ -51,6 +51,7 @@
 // @match        *://wenda.so.com/q/*
 // @match        *://m.wenda.so.com/q/*
 // @match        *://n.tianyancha.com/content/*
+// @match        *://bbs.tianya.cn/m/*
 // @match        *://blog.didispace.com/*
 // @match        *://*.wang1314.com/doc/*
 // @match        *://*.k4china.com/*
@@ -956,6 +957,27 @@
 					item: "[class^=index_other-content-container__]",
 				},
 			],
+		},
+		{
+			name: "天涯社区",
+			url: "bbs.tianya.cn/m/",
+			handles: [
+				//点击展开完整贴文
+				{
+					type: "display",
+					item: ".openFullPost",
+				},
+				{
+					type: "height",
+					item: ".onhide",
+				},
+			],
+			//删除透明遮挡
+			fun: function () {
+				let css = document.createElement("style");
+				css.innerHTML = ".item-lz .bd.onhide:before{content:none}";
+				document.head.append(css);
+			},
 		},
 		{
 			name: "程序猿DD",
