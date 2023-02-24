@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         链接管理
-// @version      1.3.5
+// @version      1.3.6
 // @namespace    airbash/LinkManager
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -16,8 +16,8 @@
 // @match        *://*.baidu.com/*
 // @match        *://m.so.com/s?*
 // @match        *://www.so.com/s?*
-// @match        *://www.sogou.com/web?
-// @match        *://bing.com/*
+// @match        *://www.sogou.com/web?*
+// @match        *://*.bing.com/search?q=*
 // @match        *://www.423down.com/*
 // @match        *://*.eslint.org/docs/latest/*
 // @match        *://learn.microsoft.com/*
@@ -34,6 +34,10 @@
 (function () {
     "use strict";
 
+    /**
+     * 安全页面列表
+     * @type       {安全页面网站}
+     */
     const safePages = [
         {
             //https://blog.csdn.net/weixin_50829653/article/details/118119039
@@ -116,6 +120,10 @@
         },
     ];
 
+    /**
+     * 去除重定向网站列表
+     * @type       {重定向网站}
+     */
     const websites = [
         {
             //https://www.zhihu.com/question/465346075/answer/2048804228
@@ -234,11 +242,17 @@
             name: "搜狗搜索",
             url: "www.sogou.com/web",
             handlers: [
+                // {
+                //     selector: "a",
+                //     start: "//search.sogoucdn.com",
+                //     type: "attribute",
+                //     attribute: "linkurl",
+                // },
                 {
                     selector: "a",
                     start: "/link?url=",
-                    attribute: "linkurl",
                     type: "attribute",
+                    attribute: "linkurl",
                 },
             ],
         },
@@ -317,6 +331,27 @@
                             }
                         }
                     }
+                }
+            }
+        }, 100);
+    }
+
+    /**
+     * 必应单独规则
+     * https://www.bing.com/search?q=必应
+     */
+    if (location.href.includes("bing.com/search?q=")) {
+        let time = 0;
+        let interval = setInterval(() => {
+            if (++time == 100) {
+                clearInterval(interval);
+            }
+            let items = document.querySelectorAll(".b_algo");
+            if (items.length) {
+                for (let item of items) {
+                    let a = item.querySelector("h2 > a");
+                    let cite = item.querySelector("cite");
+                    a.href = cite.innerHTML;
                 }
             }
         }, 100);
