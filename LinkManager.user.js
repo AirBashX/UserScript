@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         链接管理
-// @version      1.3.6
+// @version      1.3.7
 // @namespace    airbash/LinkManager
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -351,7 +351,9 @@
                 for (let item of items) {
                     let a = item.querySelector("h2 > a");
                     let cite = item.querySelector("cite");
-                    a.href = cite.innerHTML;
+                    if(cite){
+                        a.href = cite.innerHTML;
+                    }
                 }
             }
         }, 100);
