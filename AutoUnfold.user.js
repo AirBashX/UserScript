@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.37
+// @version      1.3.38
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  自动展开文档	隐藏部分;长期维护、PC+手机全平台支持;全平台支持:CSDN、it1352、编程之家、简书、知乎、微博、百家号、百度资讯、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、澎湃新闻、澎湃新闻、新京报、环球网、人民日报、人民网、丁香园、健康界、36氪、果壳、虎扑、虎嗅、头条、B站专栏、微博文章、豆瓣文章、豆瓣小组、开源中国、阿里云开发者社区、腾讯云开发者社区、360图书馆、太平洋电脑网、中关村在线、汽车之家、游侠网、360问答、天眼查、天涯社区
+// @description  自动展开文档	隐藏部分;长期维护、PC+手机全平台支持;全平台支持:CSDN、it1352、编程之家、简书、知乎、微博、百家号、百度资讯、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、澎湃新闻、澎湃新闻、新京报、环球网、人民日报、人民网、丁香园、健康界、36氪、果壳、虎扑、虎嗅、头条、B站专栏、微博文章、豆瓣文章、豆瓣小组、开源中国、阿里云开发者社区、腾讯云开发者社区、360图书馆、太平洋电脑网、中关村在线、汽车之家、游侠网、360问答、天眼查、天涯社区、东方财富网
 // @match        *://*.blog.csdn.net/*
 // @match        *://blog.csdn.net/*
 // @match        *://ask.csdn.net/questions/*
@@ -52,6 +52,9 @@
 // @match        *://m.wenda.so.com/q/*
 // @match        *://n.tianyancha.com/content/*
 // @match        *://bbs.tianya.cn/m/*
+// @match        *://wap.eastmoney.com/a/*
+// @match        *://mguba.eastmoney.com/*
+// @match        *://emcreative.eastmoney.com/*
 // @match        *://blog.didispace.com/*
 // @match        *://*.wang1314.com/doc/*
 // @match        *://*.k4china.com/*
@@ -978,6 +981,60 @@
 				css.innerHTML = ".item-lz .bd.onhide:before{content:none}";
 				document.head.append(css);
 			},
+		},
+		{
+			name: "东方财富网",
+			url: "wap.eastmoney.com/a/",
+			handles: [
+				//点击展开完整贴文
+				{
+					type: "display",
+					item: ".fold-btn",
+				},
+				{
+					type: "display",
+					item: ".fold-arrow",
+				},
+				{
+					type: "height",
+					item: "#articleContent",
+				},
+				//删除透明遮挡
+				{
+					type: "display",
+					item: ".fold-mask",
+				},
+			],
+		},
+		{
+			name: "东方财富网:社区",
+			url: "emcreative.eastmoney.com/",
+			handles: [
+				//点击阅读全文
+				{
+					type: "display",
+					item: ".my_ad_wrap",
+				},
+				{
+					type: "height",
+					item: "#text-content",
+				},
+			],
+		},
+		{
+			name: "东方财富网:股吧",
+			url: "mguba.eastmoney.com/",
+			handles: [
+				//点击阅读全文
+				{
+					type: "display",
+					item: "#foldup_box",
+				},
+				{
+					type: "height",
+					item: "#content",
+				},
+			],
 		},
 		{
 			name: "程序猿DD",
