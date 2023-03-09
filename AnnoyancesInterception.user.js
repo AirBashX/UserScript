@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.47
+// @version      1.3.48
 // @namespace    airbash/AnnoyancesInterception
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  手机、电脑全平台通用:自动拦截或删除`下载弹窗`、`悬浮按钮`等影响用户体验的元素;长期维护:CSDN、简书、知乎、百家号、百度贴吧、百度文库、百度新闻、新浪新闻、腾讯视频、优酷视频、爱奇艺、好看视频、百度搜索、哔哩哔哩、丁香园、健康界、微博、新浪财经、抖音、电子发烧友、人民网、新京报、观察者网、澎湃新闻、凤凰新闻、网易新闻、虎嗅、虎扑、豆瓣、太平洋电脑、汽车之家、taptap、it之家、360doc、开源中国、阿里云开发者社区、腾讯云开发者社区、36氪、雪球、天眼查、小红书、中国知网、装备前线
+// @description  手机、电脑全平台通用:自动拦截或删除`下载弹窗`、`悬浮按钮`等影响用户体验的元素;长期维护:CSDN、简书、知乎、百家号、百度贴吧、百度文库、百度新闻、新浪新闻、腾讯视频、优酷视频、爱奇艺、好看视频、百度搜索、哔哩哔哩、丁香园、健康界、微博、新浪财经、东方财富网、抖音、电子发烧友、人民网、新京报、观察者网、澎湃新闻、凤凰新闻、网易新闻、虎嗅、虎扑、豆瓣、太平洋电脑、汽车之家、太平洋汽车网、taptap、it之家、360doc、开源中国、阿里云开发者社区、腾讯云开发者社区、36氪、雪球、天眼查、小红书、中国知网、装备前线、太平洋汽车网
 // @match        *://*.csdn.net/*
 // @match      	 *://*.jianshu.com/*
 // @match        *://juejin.cn/*
@@ -26,6 +26,8 @@
 // @match        *://www.cn-healthcare.com/*
 // @match        *://*.sina.cn/*
 // @match        *://m.weibo.cn/*
+// @match        *://wap.eastmoney.com/*
+// @match        *://mguba.eastmoney.com/*
 // @match        *://*.ixigua.com/*
 // @match        *://www.douyin.com/*
 // @match        *://m.elecfans.com/*
@@ -34,6 +36,8 @@
 // @match        *://*.guancha.cn/*
 // @match        *://m.thepaper.cn/newsDetail_forward*
 // @match        *://*.ifeng.com/*
+// @match        *://m.163.com/*/article/*
+// @match        *://m.163.com/v/video/*
 // @match        *://3g.163.com/*/article/*
 // @match        *://3g.163.com/v/video/*
 // @match        *://m.huxiu.com/*
@@ -45,6 +49,7 @@
 // @match        *://www.autohome.com.cn/*
 // @match        *://*.m.autohome.com.cn/*
 // @match        *://m.autohome.com.cn/*
+// @match        *://m.pcauto.com.cn/*
 // @match        *://www.taptap.cn/*
 // @match        *://m.taptap.cn/*
 // @match        *://m.ithome.com/*
@@ -484,6 +489,30 @@
 			],
 		},
 		{
+			name: "东方财富网",
+			url: "wap.eastmoney.com/",
+			items: [
+				//悬浮按钮:打开APP(顶部)
+				".fixed_top",
+				//固定按钮:下载(主页:顶部)
+				"#IndexDT",
+				//悬浮按钮:打开下载(主页:顶部)
+				".emwapas_xldt_fixed",
+				//悬浮按钮:打开APP(主页:底部)
+				".open-inapp",
+			],
+		},
+		{
+			name: "东方财富网:股吧",
+			url: "mguba.eastmoney.com/",
+			items: [
+				//悬浮弹窗:打开APP
+				"#appbox",
+				//悬浮按钮:东方财富APP内打开(底部)
+				"#open_app",
+			],
+		},
+		{
 			name: "西瓜视频",
 			url: "ixigua.com",
 			items: [
@@ -505,6 +534,8 @@
 				".recommend-comment-login",
 				//PC端:登录提示
 				".login-mask-enter-done",
+				//PC端:扫码提示
+				".related-video-card-login-guide__content",
 			],
 		},
 		{
@@ -573,6 +604,14 @@
 		{
 			name: "网易新闻",
 			url: "3g.163.com",
+			items: [
+				//固定按钮：App内打开(底部)
+				".backflow-floating",
+			],
+		},
+		{
+			name: "网易新闻",
+			url: "m.163.com",
 			items: [
 				//固定按钮：App内打开(底部)
 				".backflow-floating",
@@ -650,6 +689,16 @@
 			items: [
 				//悬浮按钮: App内打开
 				"#float_new_button",
+			],
+		},
+		{
+			name: "太平洋汽车",
+			url: "m.pcauto.com.cn/",
+			items: [
+				//悬浮弹窗: App内打开
+				"#home-bottom-half-dialog",
+				//悬浮按钮: 轮播评论
+				"#dmListOuter",
 			],
 		},
 		{
@@ -743,7 +792,7 @@
 				//悬浮按钮:打开app(主页)
 				".swiper-container",
 				//悬浮按钮:下载APP(企业)
-				"#banner_mobile_v2"
+				"#banner_mobile_v2",
 			],
 		},
 		{
