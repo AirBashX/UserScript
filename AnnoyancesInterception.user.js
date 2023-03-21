@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.48
+// @version      1.3.49
 // @namespace    airbash/AnnoyancesInterception
-// @homepage     https://github.com/AirBashX/UserScript
+// @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
 // @description  手机、电脑全平台通用:自动拦截或删除`下载弹窗`、`悬浮按钮`等影响用户体验的元素;长期维护:CSDN、简书、知乎、百家号、百度贴吧、百度文库、百度新闻、新浪新闻、腾讯视频、优酷视频、爱奇艺、好看视频、百度搜索、哔哩哔哩、丁香园、健康界、微博、新浪财经、东方财富网、抖音、电子发烧友、人民网、新京报、观察者网、澎湃新闻、凤凰新闻、网易新闻、虎嗅、虎扑、豆瓣、太平洋电脑、汽车之家、太平洋汽车网、taptap、it之家、360doc、开源中国、阿里云开发者社区、腾讯云开发者社区、36氪、雪球、天眼查、小红书、中国知网、装备前线、太平洋汽车网
 // @match        *://*.csdn.net/*
@@ -183,7 +183,6 @@
 							if (node.querySelector(".signFlowModal")) {
 								//有登陆弹窗1时:模拟点击关闭按钮
 								let button = node.querySelector(".Button.Modal-closeButton.Button--plain");
-								console.log(button);
 								if (button) {
 									if (LoginFlag == true) {
 										button.click();
@@ -416,9 +415,48 @@
 				".lt-row",
 				//PC端:登录提示(右上角)
 				".login-panel-popover:has(.login-tip-content)",
-				//pc端:播放器登录提示
-				".bilibili-player-video-toast-bottom",
+				//pc端:登录提示(播放器)
+				".bpx-player-toast-wrap",
 			],
+			fun: function () {
+				/**
+				 * PC端:屏蔽登录弹窗
+				 * @param      {<list>}  mutationsList  The mutations list
+				 */
+				let removeLoginNotice = function (mutationsList) {
+					//添加事件:不拦截
+					let loginBtn;
+					if ((loginBtn = document.querySelector(".header-login-entry"))) {
+						loginBtn.addEventListener("click", function () {
+							LoginFlag = false;
+						});
+						for (let mutation of mutationsList) {
+							for (let node of mutation.addedNodes) {
+								//有登陆弹窗时:模拟点击关闭按钮
+								if (document.querySelector(".bili-mini-mask")) {
+									let button;
+									if ((button = node.querySelector(".bili-mini-close-icon"))) {
+										if (LoginFlag == true) {
+											button.click();
+											return (LoginFlag = false);
+										}
+									}
+								}
+							}
+						}
+					}
+				};
+
+				//是否拦截:默认拦截
+				let LoginFlag = true;
+				document.onreadystatechange = function () {
+					if (document.readyState === "interactive") {
+						//执行监听
+						let observer = new MutationObserver(removeLoginNotice);
+						observer.observe(document, { childList: true, subtree: true });
+					}
+				};
+			},
 		},
 		{
 			name: "B站文章",
@@ -535,7 +573,7 @@
 				//PC端:登录提示
 				".login-mask-enter-done",
 				//PC端:扫码提示
-				".related-video-card-login-guide__content",
+				//".related-video-card-login-guide__content",
 			],
 		},
 		{
