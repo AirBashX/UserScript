@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         链接管理
-// @version      1.3.7
+// @version      1.3.8
 // @namespace    airbash/LinkManager
-// @homepage     https://github.com/AirBashX/UserScript
+// @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
 // @description  绕过搜索引擎(百度、搜狗、360、必应、谷歌)搜索结果中的重定向链接,直链访问原始网站,删除网站重定向到安全页面,自动跳转中文文档,减少操作步骤和响应时间;长期维护、PC+手机全平台支持:CSDN+掘金+简书+知乎+知乎专栏+百度贴吧+开源中国+gitee+51CTO+百度搜索+360搜索+搜狗搜索+必应搜索+423down+eslint+微软文档+火狐MDN;
 // @match        *://link.csdn.net/*
@@ -35,7 +35,7 @@
     "use strict";
 
     /**
-     * 安全页面列表
+     * 安全页面重定向列表
      * @type       {安全页面网站}
      */
     const safePages = [
@@ -121,7 +121,7 @@
     ];
 
     /**
-     * 去除重定向网站列表
+     * 去除页面重定向列表
      * @type       {重定向网站}
      */
     const websites = [
@@ -360,7 +360,7 @@
     }
 
     /**
-     * 安全页面直接跳转
+     * 安全页面跳转:处理
      */
     for (let safePage of safePages) {
         if (location.href.includes(safePage.url)) {
@@ -373,7 +373,7 @@
     }
 
     /**
-     * 文章页面处理跳转
+     * 页面重定向跳转:处理
      */
     for (let website of websites) {
         if (location.href.includes(website.url)) {
@@ -452,7 +452,7 @@
         /**
          * 仅在油侯插件上运行,避免无法点击注册开关
          */
-        if (scriptHandler == "Tampermonkey" || scriptHandler == "Violentmonkey" || scriptHandler == "ScriptCat") {
+        if (scriptHandler == "Tampermonkey" || scriptHandler == "Violentmonkey" || scriptHandler == "ScriptCat" || scriptHandler == "Via") {
             /**
              * 自动跳转中文文档
              */
