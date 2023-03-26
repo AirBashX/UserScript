@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         链接管理
-// @version      1.3.8
+// @version      1.3.9
 // @namespace    airbash/LinkManager
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  绕过搜索引擎(百度、搜狗、360、必应、谷歌)搜索结果中的重定向链接,直链访问原始网站,删除网站重定向到安全页面,自动跳转中文文档,减少操作步骤和响应时间;长期维护、PC+手机全平台支持:CSDN+掘金+简书+知乎+知乎专栏+百度贴吧+开源中国+gitee+51CTO+百度搜索+360搜索+搜狗搜索+必应搜索+423down+eslint+微软文档+火狐MDN;
+// @description  绕过搜索引擎(百度、搜狗、360、必应、谷歌)搜索结果中的重定向链接,直链访问原始网站,删除网站重定向到安全页面,自动跳转中文文档,减少操作步骤和响应时间;长期维护、PC+手机全平台支持:CSDN+掘金+简书+知乎+知乎专栏+百度贴吧+开源中国+gitee+51CTO+百度搜索+360搜索+搜狗搜索+必应搜索+423down+eslint+微软文档+火狐MDN+tampermonkey文档;
 // @match        *://link.csdn.net/*
 // @match        *://link.juejin.cn/*
 // @match        *://juejin.cn/*
@@ -308,9 +308,10 @@
             if (items2.length) {
                 for (let item of items2) {
                     //常规操作
-                    //url!=null            https://www.baidu.com/s?ie=UTF-8&wd=es6
+                    //url!=null                 https://www.baidu.com/s?ie=UTF-8&wd=es6
+                    //recommend_list.baidu.com  https://www.baidu.com/s?wd=95后女孩失联8年被发现流浪荒山 第一个大家还在搜
                     let url;
-                    if ((url = item.getAttribute("mu")) && !url.includes("nourl.ubs.baidu.com") && url != "null") {
+                    if ((url = item.getAttribute("mu")) && !url.includes("nourl.ubs.baidu.com") && url != "null" && !url.includes("recommend_list.baidu.com")) {
                         item.querySelector("a").setAttribute("href", url);
                     }
                     //xxx的最新相关信息
@@ -351,7 +352,7 @@
                 for (let item of items) {
                     let a = item.querySelector("h2 > a");
                     let cite = item.querySelector("cite");
-                    if(cite){
+                    if (cite) {
                         a.href = cite.innerHTML;
                     }
                 }
@@ -422,25 +423,30 @@
             //https://eslint.org/docs/latest/user-guide/configuring/configuration-files
             //https://zh-hans.eslint.org/docs/latest/user-guide/configuring/configuration-files
             name: "eslint",
-            url: "eslint.org/docs/latest",
-            en_str: "eslint.org",
-            zh_str: "zh-hans.eslint.org",
+            url: "https://eslint.org/docs/latest/",
+            type: "host",
+            zh_str: "zh-hans",
         },
         {
-            //https://learn.microsoft.com/en-us/powershell/scripting/how-to-use-docs
             //https://learn.microsoft.com/zh-cn/powershell/scripting/how-to-use-docs
             name: "microsoft",
-            url: "learn.microsoft.com/en-us/",
-            en_str: "en-us",
+            url: "https://learn.microsoft.com/",
+            type: "pathName",
             zh_str: "zh-cn",
         },
         {
-            //https://developer.mozilla.org/en-US/
             //https://developer.mozilla.org/zh-CN/
             name: "MDN",
-            url: "developer.mozilla.org/en-US/",
-            en_str: "en-US",
+            url: "https://developer.mozilla.org/",
+            type: "pathName",
             zh_str: "zh-CN",
+        },
+        {
+            //https://www.tampermonkey.net/faq.php?locale=zh
+            name: "tampermonkey",
+            url: "https://www.tampermonkey.net",
+            type: "search",
+            zh_str: "locale=zh",
         },
     ];
 
@@ -461,11 +467,56 @@
                     GM_setValue("forward_zh", false);
                     location.reload();
                 });
-                let en_url = location.href;
+                let web_url = location.href;
                 for (let otherSite of otherSites) {
-                    if (en_url.startsWith("https://" + otherSite.url)) {
-                        let zh_url = en_url.replace(otherSite.en_str, otherSite.zh_str);
-                        location.replace(zh_url);
+                    if (web_url.startsWith(otherSite.url)) {
+                        let zh_index = location.href.search(otherSite.zh_str);
+                        // 当前页面不是中文文档
+                        if (zh_index == -1) {
+                            if (otherSite.type == "pathName") {
+                                let pathname = location.pathname;
+                                let str = pathname.split("/")[1];
+                                if (str != otherSite.zh_str) {
+                                    let new_url = web_url.replace(str, otherSite.zh_str);
+                                    location.replace(new_url);
+                                }
+                            } else if (otherSite.type == "host") {
+                                let host = location.host;
+                                let str = host.split(".")[0];
+                                if (str != otherSite.zh_str) {
+                                    let new_host = otherSite.zh_str + "." + host;
+                                    let new_url = web_url.replace(host, new_host);
+                                    location.replace(new_url);
+                                }
+                            } else if (otherSite.type == "search") {
+                                let search = location.search;
+                                if (search) {
+                                    //有参数
+                                    let key = otherSite.zh_str.split("=")[0];
+                                    let start_index = search.search(key);
+                                    let end_index = start_index + otherSite.zh_str.length;
+                                    if (start_index != -1) {
+                                        //有指定参数
+                                        let str = search.substring(start_index, end_index);
+                                        if (str != otherSite.zh_str) {
+                                            //数值不对
+                                            let url = web_url.replace(str, otherSite.zh_str);
+                                            location.replace(url);
+                                        }
+                                    } else {
+                                        //没有指定参数
+                                        let url = web_url + "&" + otherSite.zh_str;
+                                        location.replace(url);
+                                    }
+                                } else {
+                                    //没有参数
+                                    let url = web_url + "?" + otherSite.zh_str;
+                                    location.replace(url);
+                                }
+                            }
+                        } else {
+                            console.log(1);
+                        }
                     }
                 }
             } else {
