@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.49
+// @version      1.3.50
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -84,8 +84,6 @@
 				".weixin-shadowbox",
 				//悬浮按钮:APP内打开+登录/打开注册(主页)
 				".feed-Sign-span",
-				//登录弹窗
-				".passport-login-container",
 				//PC端:弹窗:学生认证
 				"#csdn-highschool-window",
 				//PC端:登录弹窗(固定)
@@ -97,19 +95,20 @@
 				/**
 				 * PC端:屏蔽登录弹窗
 				 * @param      {<list>}  mutationsList  The mutations list
-				 * @param      {<observer>}  observer       The observer
 				 */
-				let removeLoginNotice = function (mutationsList, observer) {
+				let removeLoginNotice = function (mutationsList) {
 					for (let mutation of mutationsList) {
 						for (let node of mutation.addedNodes) {
 							if (document.querySelector(".passport-login-container")) {
-								//有登陆弹窗1时:模拟点击关闭按钮
+								//有登陆弹窗时:模拟点击关闭按钮
 								let button = node.querySelector("span");
 								if (button) {
 									if (LoginFlag == true) {
 										button.click();
-										return (LoginFlag = false);
+									} else {
+										LoginFlag = true;
 									}
+									return;
 								}
 							}
 						}
@@ -121,8 +120,8 @@
 				document.onreadystatechange = function () {
 					if (document.readyState === "interactive") {
 						let loginBtn = document.querySelector(".toolbar-btn-login>.toolbar-btn-loginfun");
+						//未登录:
 						if (loginBtn) {
-							//未登录:
 							//添加事件,不拦截
 							loginBtn.addEventListener("click", function () {
 								LoginFlag = false;
@@ -130,6 +129,12 @@
 							//执行监听
 							let observer = new MutationObserver(removeLoginNotice);
 							observer.observe(document, { childList: true, subtree: true });
+						}
+
+						if (document.querySelector(".toolbarBack")) {
+							let css = document.createElement("style");
+							css.innerText += ".passport-login-container {display: none !important}";
+							document.head.append(css);
 						}
 					}
 				};
@@ -175,9 +180,8 @@
 				/**
 				 * PC端:屏蔽登录弹窗
 				 * @param      {<list>}  mutationsList  The mutations list
-				 * @param      {<observer>}  observer       The observer
 				 */
-				let removeLoginNotice = function (mutationsList, observer) {
+				let removeLoginNotice = function (mutationsList) {
 					for (let mutation of mutationsList) {
 						for (let node of mutation.addedNodes) {
 							if (node.querySelector(".signFlowModal")) {
@@ -186,8 +190,10 @@
 								if (button) {
 									if (LoginFlag == true) {
 										button.click();
-										return (LoginFlag = false);
+									} else {
+										LoginFlag = true;
 									}
+									return;
 								}
 							} else if (getXpath('//button[text()="立即登录/注册"]', node)) {
 								//没有登录弹窗1时会出现弹窗2
@@ -224,20 +230,20 @@
 				/**
 				 * PC端:屏蔽登录弹窗
 				 * @param      {<list>}  mutationsList  The mutations list
-				 * @param      {<observer>}  observer       The observer
 				 */
-				let removeLoginNotice = function (mutationsList, observer) {
+				let removeLoginNotice = function (mutationsList) {
 					for (let mutation of mutationsList) {
 						for (let node of mutation.addedNodes) {
 							if (node.querySelector(".signFlowModal")) {
 								//有登陆弹窗1时:模拟点击关闭按钮
 								let button = node.querySelector(".Button.Modal-closeButton.Button--plain");
-								console.log(button);
 								if (button) {
 									if (LoginFlag == true) {
 										button.click();
-										return (LoginFlag = false);
+									} else {
+										LoginFlag = true;
 									}
+									return;
 								}
 							} else if (getXpath('//button[text()="立即登录/注册"]', node)) {
 								//没有登录弹窗1时会出现弹窗2
@@ -383,6 +389,8 @@
 				"#passport-login-pop",
 				//PC端登录提示:朦胧背板
 				".pop-mask",
+				//PC端登录提示:悬浮提示
+				".page-top-rightinfo-popover",
 			],
 		},
 		{
@@ -415,7 +423,7 @@
 				".lt-row",
 				//PC端:登录提示(右上角)
 				".login-panel-popover:has(.login-tip-content)",
-				//pc端:登录提示(播放器)
+				//PC端:登录提示(播放器)
 				".bpx-player-toast-wrap",
 			],
 			fun: function () {
@@ -425,23 +433,17 @@
 				 */
 				let removeLoginNotice = function (mutationsList) {
 					//添加事件:不拦截
-					let loginBtn;
-					if ((loginBtn = document.querySelector(".header-login-entry"))) {
-						loginBtn.addEventListener("click", function () {
-							LoginFlag = false;
-						});
-						for (let mutation of mutationsList) {
-							for (let node of mutation.addedNodes) {
-								//有登陆弹窗时:模拟点击关闭按钮
-								if (document.querySelector(".bili-mini-mask")) {
-									let button;
-									if ((button = node.querySelector(".bili-mini-close-icon"))) {
-										if (LoginFlag == true) {
-											button.click();
-											return (LoginFlag = false);
-										}
-									}
+					for (let mutation of mutationsList) {
+						for (let node of mutation.addedNodes) {
+							//有登陆弹窗时:模拟点击关闭按钮
+							let button = node.querySelector(".bili-mini-close-icon");
+							if (button) {
+								if (LoginFlag == true) {
+									button.click();
+								} else {
+									LoginFlag = true;
 								}
+								return;
 							}
 						}
 					}
@@ -449,11 +451,18 @@
 
 				//是否拦截:默认拦截
 				let LoginFlag = true;
+				// let as = document.querySelectorAll(':not(#bilibili-player)');
 				document.onreadystatechange = function () {
-					if (document.readyState === "interactive") {
-						//执行监听
-						let observer = new MutationObserver(removeLoginNotice);
-						observer.observe(document, { childList: true, subtree: true });
+					if (document.readyState === "complete") {
+						let loginBtn;
+						if ((loginBtn = document.querySelector(".header-login-entry"))) {
+							loginBtn.addEventListener("click", function () {
+								LoginFlag = false;
+							});
+							//执行监听
+							let observer = new MutationObserver(removeLoginNotice);
+							observer.observe(document, { childList: true, subtree: true });
+						}
 					}
 				};
 			},
@@ -572,8 +581,6 @@
 				".recommend-comment-login",
 				//PC端:登录提示
 				".login-mask-enter-done",
-				//PC端:扫码提示
-				//".related-video-card-login-guide__content",
 			],
 		},
 		{
@@ -807,7 +814,6 @@
 			],
 		},
 		{
-			//https://xueqiu.com/2524803655/240767339
 			name: "雪球",
 			url: "xueqiu.com/",
 			items: [
