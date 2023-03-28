@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         链接管理
-// @version      1.3.9
+// @version      1.3.10
 // @namespace    airbash/LinkManager
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -17,7 +17,7 @@
 // @match        *://m.so.com/s?*
 // @match        *://www.so.com/s?*
 // @match        *://www.sogou.com/web?*
-// @match        *://*.bing.com/search?q=*
+// @match        *://*.bing.com/search*
 // @match        *://www.423down.com/*
 // @match        *://*.eslint.org/docs/latest/*
 // @match        *://learn.microsoft.com/*
@@ -29,7 +29,6 @@
 // @grant        GM_info
 // @license      GPL-3.0
 // @run-at       document-body
-//
 // ==/UserScript==
 (function () {
     "use strict";
@@ -341,7 +340,7 @@
      * 必应单独规则
      * https://www.bing.com/search?q=必应
      */
-    if (location.href.includes("bing.com/search?q=")) {
+    if (location.href.includes("bing.com/search")) {
         let time = 0;
         let interval = setInterval(() => {
             if (++time == 100) {
@@ -351,9 +350,18 @@
             if (items.length) {
                 for (let item of items) {
                     let a = item.querySelector("h2 > a");
-                    let cite = item.querySelector("cite");
-                    if (cite) {
-                        a.href = cite.innerHTML;
+                    let suffix = item.querySelector(".b_suffix > div");
+                    if (suffix) {
+                        let str = suffix.getAttribute("data-sc-metadata");
+                        let json = JSON.parse(str);
+                        a.href = json.url;
+                    } else {
+                        let cite = item.querySelector("cite");
+                        if (cite) {
+                            if (!cite.includes("...")) {
+                                a.href = cite.innerHTML;
+                            }
+                        }
                     }
                 }
             }
