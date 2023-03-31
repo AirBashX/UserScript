@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.50
+// @version      1.3.51
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  手机、电脑全平台通用:自动拦截或删除`下载弹窗`、`悬浮按钮`等影响用户体验的元素;长期维护:CSDN、简书、知乎、百家号、百度贴吧、百度文库、百度新闻、新浪新闻、腾讯视频、优酷视频、爱奇艺、好看视频、百度搜索、哔哩哔哩、丁香园、健康界、微博、新浪财经、东方财富网、抖音、电子发烧友、人民网、新京报、观察者网、澎湃新闻、凤凰新闻、网易新闻、虎嗅、虎扑、豆瓣、太平洋电脑、汽车之家、太平洋汽车网、taptap、it之家、360doc、开源中国、阿里云开发者社区、腾讯云开发者社区、36氪、雪球、天眼查、小红书、中国知网、装备前线、太平洋汽车网
+// @description  手机、电脑全平台通用:自动拦截或删除`下载弹窗`、`悬浮按钮`等影响用户体验的元素;长期维护:CSDN、简书、知乎、知乎专栏、百度搜索、百家号、百度贴吧、百度文库、百度新闻、新浪新闻、腾讯视频、优酷视频、爱奇艺、好看视频、哔哩哔哩、B站专栏、B站笔记、西瓜视频、抖音、丁香园、健康界、微博、新浪财经、东方财富网、电子发烧友、人民网、新京报、观察者网、澎湃新闻、凤凰新闻、网易新闻、虎嗅、虎扑、豆瓣、太平洋电脑、汽车之家、太平洋汽车网、taptap、it之家、360doc、开源中国、阿里云开发者社区、腾讯云开发者社区、36氪、雪球、天眼查、小红书、中国知网、装备前线、太平洋汽车网
 // @match        *://*.csdn.net/*
 // @match      	 *://*.jianshu.com/*
 // @match        *://juejin.cn/*
@@ -413,10 +413,14 @@
 			items: [
 				//悬浮按钮:打开app,看你感兴趣的内容(主页)
 				".m-home-float-openapp",
-				//悬浮按钮:bilibili内打开
+				//悬浮按钮:打开app(UP主页)
+				".m-space-float-openapp",
+				//悬浮按钮:打开app,看高清内容(视频全屏)
+				".mplayer-widescreen-callapp",
+				//悬浮按钮:bilibili内打开(底部)
 				".m-float-openapp",
-				//悬浮弹窗:打开
-				".openapp-dialog",
+				//悬浮弹窗:bilibili内打开
+				//".openapp-dialog",
 				//固定按钮：播放时下载
 				".mplayer-widescreen-callapp",
 				//PC端:登录提示(右下角)
@@ -425,56 +429,105 @@
 				".login-panel-popover:has(.login-tip-content)",
 				//PC端:登录提示(播放器)
 				".bpx-player-toast-wrap",
+				//PC端:登录提示(右上角)
+				"div:has(.unlogin-popover-avatar)",
 			],
 			fun: function () {
-				/**
-				 * PC端:屏蔽登录弹窗
-				 * @param      {<list>}  mutationsList  The mutations list
-				 */
-				let removeLoginNotice = function (mutationsList) {
-					//添加事件:不拦截
-					for (let mutation of mutationsList) {
-						for (let node of mutation.addedNodes) {
-							//有登陆弹窗时:模拟点击关闭按钮
-							let button = node.querySelector(".bili-mini-close-icon");
-							if (button) {
-								if (LoginFlag == true) {
-									button.click();
-								} else {
-									LoginFlag = true;
-								}
-								return;
-							}
-						}
-					}
-				};
-
-				//是否拦截:默认拦截
 				let LoginFlag = true;
-				// let as = document.querySelectorAll(':not(#bilibili-player)');
-				document.onreadystatechange = function () {
-					if (document.readyState === "complete") {
-						let loginBtn;
-						if ((loginBtn = document.querySelector(".header-login-entry"))) {
+				let add;
+				function mutationCallback(record, observer) {
+					//已确定登录:停止监听
+					let login = document.querySelector(".header-entry-mini");
+					if (login) {
+						observer.disconnect();
+					}
+					//已确定未登录:执行函数
+					let loginBtn = document.querySelector(".header-login-entry");
+					if (loginBtn) {
+						if (!add) {
+							console.log("脚本注入成功");
+							//添加事件:不拦截
 							loginBtn.addEventListener("click", function () {
 								LoginFlag = false;
 							});
-							//执行监听
-							let observer = new MutationObserver(removeLoginNotice);
-							observer.observe(document, { childList: true, subtree: true });
+							add = true;
+						}
+						for (let arr of record) {
+							for (let node of arr.addedNodes) {
+								let button;
+								try {
+									button = node.querySelector(".bili-mini-close-icon");
+								} catch (error) {
+									/* empty */
+								}
+								if (button) {
+									//有登陆弹窗时:模拟点击关闭按钮
+									if (LoginFlag == true) {
+										button.click();
+										let video = document.querySelector(".bpx-player-video-wrap video");
+										console.log("恢复播放");
+										video.play();
+										console.log(LoginFlag);
+										console.log("自动拦截");
+									} else {
+										console.log(LoginFlag);
+										console.log("手动拦截");
+										LoginFlag = true;
+									}
+									return;
+								}
+							}
 						}
 					}
-				};
+				}
+				let observer = new MutationObserver(mutationCallback);
+				observer.observe(document, { childList: true, subtree: true });
 			},
 		},
 		{
-			name: "B站文章",
+			name: "B站专栏",
 			url: "bilibili.com/read/",
 			items: [
 				//悬浮按钮:打开App,看更多精彩内容
 				".float-btn",
 				//PC端:登录提示
 				"div:has(.unlogin-popover-avatar)",
+			],
+		},
+		{
+			name: "B站笔记",
+			url: "bilibili.com/opus/",
+			items: [
+				//悬浮按钮:打开App,看更多精彩内容
+				".float-btn",
+				//悬浮弹窗:打开APP
+				".openapp-dialog",
+				//PC端:登录提示
+				"div:has(.unlogin-popover-avatar)",
+			],
+		},
+		{
+			name: "西瓜视频",
+			url: "ixigua.com",
+			items: [
+				//打开弹窗:打开
+				".landing_guide",
+				//PC端:登录提示
+				".loginBenefitNotification",
+				//悬浮按钮:打开西瓜视频,看全网超清视频
+				".xigua-download",
+			],
+		},
+		{
+			name: "抖音电脑版",
+			url: "www.douyin.com",
+			items: [
+				//PC端:右上角登录提示
+				".login-guide-container",
+				//PC端:登陆后查看评论
+				".recommend-comment-login",
+				//PC端:登录提示
+				".login-mask-enter-done",
 			],
 		},
 		{
@@ -557,30 +610,6 @@
 				"#appbox",
 				//悬浮按钮:东方财富APP内打开(底部)
 				"#open_app",
-			],
-		},
-		{
-			name: "西瓜视频",
-			url: "ixigua.com",
-			items: [
-				//打开弹窗:打开
-				".landing_guide",
-				//PC端:登录提示
-				".loginBenefitNotification",
-				//悬浮按钮:打开西瓜视频,看全网超清视频
-				".xigua-download",
-			],
-		},
-		{
-			name: "抖音电脑版",
-			url: "www.douyin.com",
-			items: [
-				//PC端:右上角登录提示
-				".login-guide-container",
-				//PC端:登陆后查看评论
-				".recommend-comment-login",
-				//PC端:登录提示
-				".login-mask-enter-done",
 			],
 		},
 		{
