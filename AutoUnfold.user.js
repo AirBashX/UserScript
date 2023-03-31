@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.40
+// @version      1.3.41
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  自动展开文档	隐藏部分;长期维护、PC+手机全平台支持;全平台支持:CSDN、it1352、编程之家、简书、知乎、百家号、百度资讯、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、澎湃新闻、澎湃新闻、新京报、环球网、人民日报、人民网、丁香园、健康界、36氪、果壳、虎扑、虎嗅、头条、B站、B站专栏、微博文章、豆瓣文章、豆瓣小组、开源中国、阿里云开发者社区、腾讯云开发者社区、360图书馆、太平洋电脑网、中关村在线、汽车之家、游侠网、游民星空、360问答、天眼查、天涯社区、东方财富网
+// @description  自动展开文档	隐藏部分;长期维护、PC+手机全平台支持;全平台支持:CSDN、it1352、编程之家、简书、知乎、百家号、百度资讯、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、澎湃新闻、澎湃新闻、新京报、环球网、人民日报、人民网、丁香园、健康界、36氪、果壳、虎扑、虎嗅、头条、B站、B站专栏、B站笔记、微博文章、豆瓣文章、豆瓣小组、开源中国、阿里云开发者社区、腾讯云开发者社区、360图书馆、太平洋电脑网、中关村在线、汽车之家、游侠网、游民星空、360问答、天眼查、天涯社区、东方财富网
 // @match        *://*.blog.csdn.net/*
 // @match        *://blog.csdn.net/*
 // @match        *://ask.csdn.net/questions/*
@@ -33,10 +33,13 @@
 // @match        *://3w.huanqiu.com/a/*
 // @match        *://3g.dxy.cn/*
 // @match        *://www.cn-healthcare.com/*
-// @match        *://space.bilibili.com/*/dynamic/*
+// @match        *://space.bilibili.com/*/dynamic*
+// @match        *://t.bilibili.com*
 // @match        *://www.bilibili.com/video/*
 // @match        *://www.bilibili.com/read/mobile*
+// @match        *://m.bilibili.com/opus/*
 // @match        *://weibo.com/ttarticle/p/show?id=*
+// @match        *://card.weibo.com/article/m/show/id*
 // @match        *://m.douban.com/movie/subject/*
 // @match        *://m.douban.com/book/review/*
 // @match        *://m.douban.com/group/topic/*
@@ -216,12 +219,16 @@
 					item: "body",
 				},
 				//PC+移动版:展开阅读全文+查看问题描述
+				// {
+				// 	type: "display",
+				// 	item: ".ContentItem-rightButton",
+				// },
+				// {
+				// 	type: "height",
+				// 	item: ".RichContent-inner",
+				// },
 				{
-					type: "display",
-					item: ".ContentItem-rightButton",
-				},
-				{
-					type: "height",
+					type: "click",
 					item: ".RichContent-inner",
 				},
 			],
@@ -648,13 +655,13 @@
 			handles: [],
 			fun: function () {
 				//PC端展开简介
-				let item1s = document.querySelectorAll('.folded');
-				for(let item of item1s){
-					item.className='bili-rich-text__content';
+				let item1s = document.querySelectorAll(".folded");
+				for (let item of item1s) {
+					item.className = "bili-rich-text__content";
 				}
-				let item2s = document.querySelectorAll('.bili-rich-text__action');
+				let item2s = document.querySelectorAll(".bili-rich-text__action");
 				for (let item2 of item2s) {
-					item2.innerText='收起';
+					item2.innerText = "收起";
 				}
 			},
 		},
@@ -676,10 +683,15 @@
 			},
 		},
 		{
-			//https://www.bilibili.com/read/mobile?id=18846196
 			name: "B站专栏",
 			url: "www.bilibili.com/read/mobile",
-			handles: [],
+			handles: [
+				//展开阅读全文
+				{
+					type: "display",
+					item: ".read-more",
+				},
+			],
 			fun: function () {
 				let item = document.querySelector(".read-article-box");
 				item.classList.remove("limit");
@@ -687,7 +699,21 @@
 			},
 		},
 		{
-			//https://weibo.com/ttarticle/p/show?id=2309404770482854428687
+			name: "B站笔记",
+			url: "m.bilibili.com/opus/",
+			handles: [
+				//展开阅读全文
+				{
+					type: "display",
+					item: ".opus-read-more",
+				},
+			],
+			fun: function () {
+				let item = document.querySelector(".opus-module-content");
+				item.classList.remove("limit");
+			},
+		},
+		{
 			name: "微博文章PC版",
 			url: "weibo.com/ttarticle/p/show?id=",
 			handles: [
@@ -702,7 +728,6 @@
 			],
 		},
 		{
-			//https://card.weibo.com/article/m/show/id/2309404770482854428687
 			name: "微博文章移动版",
 			url: "card.weibo.com/article/m/show/id",
 			handles: [
@@ -723,11 +748,18 @@
 			fun: function () {
 				//展开(简介)
 				let item1 = document.querySelector(".subject-intro p");
-				let value = item1.getAttribute("data-content");
-				if (value) {
-					item1.innerText = value;
+				let str1 = item1.getAttribute("data-content");
+				if (str1) {
+					item1.innerText = str1;
 					clearInterval(interval);
 				}
+				//展开(评论)
+				onload = function () {
+					let items2 = document.querySelectorAll(".LinesEllipsis-readmore");
+					for (let item2 of items2) {
+						item2.click();
+					}
+				};
 			},
 		},
 		{
@@ -806,7 +838,7 @@
 				},
 			],
 		},
-		//移动版:http://www.360doc.cn/article/60244337_924865821.html
+		//http://www.360doc.cn/article/60244337_924865821.html
 		{
 			name: "360图书馆手机版",
 			url: "www.360doc.cn/article/",
@@ -822,7 +854,7 @@
 				},
 			],
 		},
-		//PC版:http://www.360doc.com/content/20/0717/15/60244337_924865821.shtml
+		//http://www.360doc.com/content/20/0717/15/60244337_924865821.shtml
 		{
 			name: "360图书馆PC版",
 			url: "www.360doc.com/content/",
