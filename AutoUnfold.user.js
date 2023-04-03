@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.41
+// @version      1.3.42
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  自动展开文档	隐藏部分;长期维护、PC+手机全平台支持;全平台支持:CSDN、it1352、编程之家、简书、知乎、百家号、百度资讯、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、澎湃新闻、澎湃新闻、新京报、环球网、人民日报、人民网、丁香园、健康界、36氪、果壳、虎扑、虎嗅、头条、B站、B站专栏、B站笔记、微博文章、豆瓣文章、豆瓣小组、开源中国、阿里云开发者社区、腾讯云开发者社区、360图书馆、太平洋电脑网、中关村在线、汽车之家、游侠网、游民星空、360问答、天眼查、天涯社区、东方财富网
+// @description  自动展开文档	隐藏部分;长期维护、PC+手机全平台支持;全平台支持:CSDN、it1352、编程之家、简书、知乎、百家号、百度资讯、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、澎湃新闻、澎湃新闻、新京报、环球网、人民日报、人民网、丁香园、健康界、36氪、果壳、虎扑、虎嗅、头条、B站、B站专栏、B站笔记、微博文章、豆瓣文章、豆瓣小组、开源中国、阿里云开发者社区、腾讯云开发者社区、华为云开发者社区、360图书馆、太平洋电脑网、中关村在线、汽车之家、游侠网、游民星空、360问答、天眼查、天涯社区、东方财富网
 // @match        *://*.blog.csdn.net/*
 // @match        *://blog.csdn.net/*
 // @match        *://ask.csdn.net/questions/*
@@ -46,6 +46,7 @@
 // @match        *://www.oschina.net/p/*
 // @match        *://developer.aliyun.com/article/*
 // @match        *://cloud.tencent.com/developer/article/*
+// @match        *://huaweicloud.csdn.net/*
 // @match        *://www.360doc.cn/article/*
 // @match        *://www.360doc.com/content/*
 // @match        *://g.pconline.com.cn/x/*
@@ -838,6 +839,21 @@
 				},
 			],
 		},
+		{
+			name: "华为云开发者社区",
+			url: "huaweicloud.csdn.net/",
+			handles: [
+				//展开阅读全文
+				{
+					type: "height",
+					item: ".user-article",
+				},
+				{
+					type: "display",
+					item: ".article-show-more",
+				},
+			],
+		},
 		//http://www.360doc.cn/article/60244337_924865821.html
 		{
 			name: "360图书馆手机版",
@@ -1227,7 +1243,7 @@
 								item.style.setProperty("overflow", "unset", "important");
 							}
 						} else {
-							//模拟点击,后续可能取消
+							//模拟点击
 							for (let item of items) {
 								if (item != null && item.getAttribute("opened") != "yes") {
 									item.click();
