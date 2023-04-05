@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         链接管理
-// @version      1.3.11
+// @version      1.3.12
 // @namespace    airbash/LinkManager
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  绕过搜索引擎(百度、搜狗、360、必应、谷歌)搜索结果中的重定向链接,直链访问原始网站,删除网站重定向到安全页面,自动跳转中文文档,减少操作步骤和响应时间;长期维护、PC+手机全平台支持:CSDN+掘金+简书+知乎+知乎专栏+百度贴吧+开源中国+gitee+51CTO+百度搜索+360搜索+搜狗搜索+必应搜索+423down+eslint+微软文档+火狐MDN+tampermonkey文档;
+// @description  绕过搜索引擎(百度、搜狗、360、必应、谷歌)搜索结果中的重定向链接,直链访问原始网站,删除网站重定向到安全页面,自动跳转中文文档,减少操作步骤和响应时间;长期维护、PC+手机全平台支持:CSDN+掘金+简书+知乎+知乎专栏+百度贴吧+开源中国+gitee+51CTO+百度搜索+360搜索+搜狗搜索+必应搜索+423down+酷安+eslint+微软文档+火狐MDN+tampermonkey文档;
 // @match        *://link.csdn.net/*
 // @match        *://link.juejin.cn/*
 // @match        *://juejin.cn/*
@@ -19,6 +19,7 @@
 // @match        *://www.sogou.com/web?*
 // @match        *://*.bing.com/search*
 // @match        *://www.423down.com/*
+// @match        *://www.coolapk.com/link*
 // @match        *://*.eslint.org/docs/latest/*
 // @match        *://learn.microsoft.com/*
 // @match        *://developer.mozilla.org/*
@@ -115,6 +116,17 @@
                 {
                     type: "forward",
                     start: "transfer?",
+                },
+            ],
+        },
+        {
+            //https://www.coolapk.com/link?url=https%3A%2F%2Flanzoux.com
+            name: "酷安",
+            url: "www.coolapk.com/link?url=",
+            handlers: [
+                {
+                    type: "forward",
+                    start: "link?url=",
                 },
             ],
         },
