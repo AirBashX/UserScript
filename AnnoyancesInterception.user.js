@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.52
+// @version      1.3.53
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  手机、电脑全平台通用:自动拦截或删除`下载弹窗`、`悬浮按钮`等影响用户体验的元素;长期维护:CSDN、简书、知乎、知乎专栏、百度搜索、百家号、百度贴吧、百度文库、百度新闻、新浪新闻、腾讯视频、优酷视频、爱奇艺、好看视频、哔哩哔哩、B站专栏、B站笔记、西瓜视频、抖音、丁香园、健康界、微博、新浪财经、东方财富网、电子发烧友、人民网、新京报、观察者网、澎湃新闻、凤凰新闻、网易新闻、虎嗅、虎扑、豆瓣、太平洋电脑、汽车之家、太平洋汽车网、taptap、it之家、360doc、开源中国、阿里云开发者社区、腾讯云开发者社区、华为云开发者社区、36氪、雪球、天眼查、小红书、中国知网、装备前线、太平洋汽车网
+// @description  手机、电脑全平台通用:自动拦截或删除`下载弹窗`、`悬浮按钮`等影响用户体验的元素;长期维护:CSDN、简书、知乎、知乎专栏、百度搜索、百家号、百度贴吧、百度文库、百度新闻、新浪新闻、腾讯视频、优酷视频、爱奇艺、好看视频、哔哩哔哩、B站专栏、B站笔记、西瓜视频、抖音、丁香园、健康界、微博、新浪财经、东方财富网、电子发烧友、人民网、新京报、观察者网、澎湃新闻、凤凰新闻、网易新闻、今日头条、虎嗅、虎扑、豆瓣、太平洋电脑、汽车之家、太平洋汽车网、taptap、it之家、360doc、开源中国、阿里云开发者社区、腾讯云开发者社区、华为云开发者社区、36氪、雪球、天眼查、小红书、中国知网、装备前线、太平洋汽车网
 // @match        *://*.csdn.net/*
 // @match      	 *://*.jianshu.com/*
 // @match        *://juejin.cn/*
@@ -40,6 +40,8 @@
 // @match        *://m.163.com/v/video/*
 // @match        *://3g.163.com/*/article/*
 // @match        *://3g.163.com/v/video/*
+// @match        *://m.toutiao.com/article/*
+// @match        *://www.toutiao.com/article/*
 // @match        *://m.huxiu.com/*
 // @match        *://m.hupu.com/*
 // @match        *://m.douban.com/movie/subject/*
@@ -690,6 +692,23 @@
 			items: [
 				//固定按钮：App内打开(底部)
 				".backflow-floating",
+			],
+		},
+		{
+			name: "今日头条移动端",
+			url: "m.toutiao.com/article/",
+			items: [
+				//悬浮按钮：App内打开(底部)
+				".float-activate-button-container",
+				".download-bar__container"
+			],
+		},
+		{
+			name: "今日头条PC端",
+			url: "www.toutiao.com/article/",
+			items: [
+				//PC端:悬浮弹窗:添加今日头条到电脑桌面
+				".ttp-portal-wrapper",
 			],
 		},
 		{
