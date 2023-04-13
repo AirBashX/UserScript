@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         豆瓣助手
-// @version      0.0.6
+// @version      0.0.7
 // @homepageURL  airbash/DoubanAssistant
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  恢复IMDB的链接,以及增加快捷搜索SubHD、字幕库、射手网、WebHD、rargb、6V电影网、腾讯视频、优酷视频、爱奇艺、哔哩哔哩、西瓜视频、欢喜首映中资源的功能
+// @description  恢复IMDB的链接,展示IMDB评分,以及增加快捷搜索SubHD、字幕库、射手网、WebHD、rargb、6V电影网、腾讯视频、优酷视频、爱奇艺、哔哩哔哩、西瓜视频、欢喜首映中资源的功能
 // @match        *://movie.douban.com/subject/*
 // @connect      www.hao6v.tv
 // @grant        GM_registerMenuCommand
@@ -50,17 +50,35 @@
 		douban_en_name = douban_cn_name;
 	}
 
-	imdb();
 	/**
 	 * 恢复IMDB链接
 	 */
-	function imdb() {
+	function imdb_link() {
 		let div = document.createElement("div");
 		div.innerHTML = "<span class='pl'>IMDb:</span><a target='_blank' href='https://www.imdb.com/title/" + imdb_id + "'>&nbsp" + imdb_id + "</a><br>";
 		imdb_id_item.after(div);
 		//删除原本的idmb链接
 		imdb_item.remove();
 		imdb_id_item.remove();
+	}
+
+	/**
+	 * 获取IMDB评分
+	 */
+	function imdb_score() {
+		GM_xmlhttpRequest({
+			url: "https://www.imdb.com/title/" + imdb_id,
+			onload: function () {
+				let text = this.responseText;
+				let dp = new DOMParser();
+				let html = dp.parseFromString(text, "text/html");
+				let items = html.querySelectorAll("[data-testid=hero-rating-bar__aggregate-rating__score] span");
+				let score = items[0].innerText;
+				let div = document.createElement("div");
+				div.innerHTML = "<span class='pl'>IMDb评分:</span>" + score + "<br>";
+				document.querySelector(".rating_betterthan").after(div);
+			},
+		});
 	}
 
 	/**
@@ -160,10 +178,34 @@
 		},
 	];
 
+	/**
+	 * 功能列表
+	 */
+	const GMValues = [
+		{
+			id: "imdb_link",
+			name: "IMDB链接",
+			fun: imdb_link,
+		},
+		{
+			id: "imdb_score",
+			name: "IMDB评分",
+			fun: imdb_score,
+		},
+	];
+
+	if (imdb_id) {
+		for (let GMValue of GMValues) {
+			if (GM_getValue(GMValue.id, true)) {
+				GMValue.fun();
+			}
+		}
+	}
+
 	aside();
 
 	/**
-	 * 配置
+	 * 脚本工具菜单
 	 */
 	GM_registerMenuCommand("配置", () => {
 		configuration();
@@ -195,7 +237,12 @@
 							anonymous: true,
 							data: "show=title%2Csmalltext&tempid=1&tbname=Article&keyboard=" + link.id + "&Submit22=%E6%90%9C%E7%B4%A2",
 							onload: function () {
-								let str = '<a href="' + this.finalUrl + '" target="_blank">' + link.name + "</a>";
+								let str;
+								if (this.finalUrl == "https://www.hao6v.tv/e/search/index.php") {
+									str = '<a href="' + this.finalUrl + '" target="_blank" style="color:pink" title="没有资源">' + link.name + "</a>";
+								} else {
+									str = '<a href="' + this.finalUrl + '" target="_blank">' + link.name + "</a>";
+								}
 								let a = document.createRange().createContextualFragment(str);
 								ul.appendChild(a);
 							},
@@ -221,13 +268,25 @@
 	function configuration() {
 		Swal.fire({
 			title: "豆瓣助手 配置",
-			html: html,
+			html: swal_html,
 			showCloseButton: true,
 			didRender: () => {
-				GM_addStyle('.swal2-html-container{text-align:left !important;line-height:unset !important;}.smail_div{width:33%;float:left;}.switch{float:left;position:relative;top:3px;width:40px;height:20px;display:flex;}.checkbox{z-index:3;position:relative;width:100%;height:100%;cursor:pointer;opacity:0;}.bt{z-index:2;position:absolute;top:0;bottom:0;}.bt:before{position:absolute;top:2.5px;left:2.5px;content:"";width:15px;height:15px;background-color:red;border-radius:50%;transition:0.3s cubic-bezier(0.18,0.89,0.35,1.15) all;}.checkbox:checked + .bt:before{left:20px;background-color:#03a9f4;}.bg{z-index:1;position:absolute;top:0;right:0;bottom:0;left:0;border-radius:100px;background-color:#fcebeb;}.checkbox:checked ~ .bg{background-color:#ebf7fc;}')
+				GM_addStyle(
+					'.swal2-html-container{text-align:left !important;line-height:unset !important;}.smail_div{width:33%;float:left;}.switch{float:left;position:relative;top:3px;width:40px;height:20px;display:flex;}.checkbox{z-index:3;position:relative;width:100%;height:100%;cursor:pointer;opacity:0;}.bt{z-index:2;position:absolute;top:0;bottom:0;}.bt:before{position:absolute;top:2.5px;left:2.5px;content:"";width:15px;height:15px;background-color:red;border-radius:50%;transition:0.3s cubic-bezier(0.18,0.89,0.35,1.15) all;}.checkbox:checked + .bt:before{left:20px;background-color:#03a9f4;}.bg{z-index:1;position:absolute;top:0;right:0;bottom:0;left:0;border-radius:100px;background-color:#fcebeb;}.checkbox:checked ~ .bg{background-color:#ebf7fc;}'
+				);
+				/**
+				 * 侧边栏开关
+				 */
 				for (let webSite of webSites) {
 					if (GM_getValue(webSite.id, true)) {
 						document.querySelector("#DA_div #" + webSite.id).checked = true;
+					}
+				}
+				if (imdb_id) {
+					for (let GMValue of GMValues) {
+						if (GM_getValue(GMValue.id, true)) {
+							document.querySelector("#DA_div #" + GMValue.id).checked = true;
+						}
 					}
 				}
 			},
@@ -237,18 +296,31 @@
 				for (let webSite of webSites) {
 					if (document.querySelector("#DA_div #" + webSite.id).checked != GM_getValue(webSite.id, true)) {
 						GM_setValue(webSite.id, document.querySelector("#DA_div #" + webSite.id).checked);
-						change=true;
+						change = true;
 					}
 				}
-				if(change){
+				if (imdb_id) {
+					for (let GMValue of GMValues) {
+						if (document.querySelector("#DA_div #" + GMValue.id).checked != GM_getValue(GMValue.id, true)) {
+							GM_setValue(GMValue.id, document.querySelector("#DA_div #" + GMValue.id).checked);
+							change = true;
+						}
+					}
+				}
+
+				if (change) {
 					location.reload();
 				}
 			}
 		});
 	}
-	let html = "<div id='DA_div'>";
+
+	let swal_html = "<div id='DA_div'>";
 	for (let webSite of webSites) {
-		html += '<div class="smail_div"><div class="switch"><input type="checkbox" class="checkbox" id="' + webSite.id + '"/><div class="bt"></div><div class="bg"></div></div>'+ webSite.name+'</div>'
+		swal_html += '<div class="smail_div"><div class="switch"><input type="checkbox" class="checkbox" id="' + webSite.id + '"/><div class="bt"></div><div class="bg"></div></div>' + webSite.name + "</div>";
 	}
-	html += "</div>";
+	for (let GMValue of GMValues) {
+		swal_html += '<div class="smail_div"><div class="switch"><input type="checkbox" class="checkbox" id="' + GMValue.id + '"/><div class="bt"></div><div class="bg"></div></div>' + GMValue.name + "</div>";
+	}
+	swal_html += "</div>";
 })();
