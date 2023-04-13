@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name         豆瓣助手
-// @version      0.0.7
+// @version      0.0.8
 // @homepageURL  airbash/DoubanAssistant
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
 // @description  恢复IMDB的链接,展示IMDB评分,以及增加快捷搜索SubHD、字幕库、射手网、WebHD、rargb、6V电影网、腾讯视频、优酷视频、爱奇艺、哔哩哔哩、西瓜视频、欢喜首映中资源的功能
 // @match        *://movie.douban.com/subject/*
 // @connect      www.hao6v.tv
+// @connect      www.imdb.com
 // @grant        GM_registerMenuCommand
 // @grant        GM_unregisterMenuCommand
 // @grant        GM_setValue
