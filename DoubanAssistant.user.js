@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         豆瓣助手
-// @version      0.0.8
-// @homepageURL  airbash/DoubanAssistant
-// @homepage     https://github.com/AirBashX/UserScript
+// @version      0.0.9
+// @namespace    airbash/DoubanAssistant
+// @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
 // @description  恢复IMDB的链接,展示IMDB评分,以及增加快捷搜索SubHD、字幕库、射手网、WebHD、rargb、6V电影网、腾讯视频、优酷视频、爱奇艺、哔哩哔哩、西瓜视频、欢喜首映中资源的功能
 // @match        *://movie.douban.com/subject/*
@@ -24,7 +24,7 @@
 ///<reference path="./tampermonkey-reference.d.ts" />
 ///<reference path="./sweetalert2.d.ts" />
 (function () {
-	("use strict");
+	// "use strict";
 	const url = location.href;
 	const head = document.head;
 
@@ -77,7 +77,7 @@
 				let score = items[0].innerText;
 				let div = document.createElement("div");
 				div.innerHTML = "<span class='pl'>IMDb评分:</span>" + score + "<br>";
-				document.querySelector(".rating_betterthan").after(div);
+				document.querySelector(".rating_wrap").after(div);
 			},
 		});
 	}
