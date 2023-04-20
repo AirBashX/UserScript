@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.53
+// @version      1.3.54
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -20,7 +20,7 @@
 // @match        *://*.youku.com/*
 // @match        *://*.iqiyi.com/*
 // @match        *://haokan.baidu.com/*
-// @match        *://m.baidu.com/*
+// @match        *://*.baidu.com/*
 // @match        *://*.bilibili.com/*
 // @match        *://3g.dxy.cn/*
 // @match        *://www.cn-healthcare.com/*
@@ -317,8 +317,8 @@
 			name: "百度资讯",
 			url: "m.baidu.com/sf_baijiahao",
 			items: [
-				//悬浮按钮:xxx独家语音
-				".undefined",
+				//悬浮按钮:百度APP内打开
+				".bdrainrwDragButton",
 			],
 		},
 		{
