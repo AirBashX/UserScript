@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         链接管理
-// @version      1.3.13
+// @version      1.3.14
 // @namespace    airbash/LinkManager
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  绕过搜索引擎(百度、搜狗、360、必应、谷歌)搜索结果中的重定向链接,直链访问原始网站,删除网站重定向到安全页面,自动跳转中文文档,减少操作步骤和响应时间;长期维护、PC+手机全平台支持:CSDN+掘金+简书+知乎+知乎专栏+百度贴吧+开源中国+gitee+51CTO+百度搜索+360搜索+搜狗搜索+必应搜索+423down+酷安+eslint+QQ邮箱+微软文档+火狐MDN+tampermonkey文档;
+// @description  绕过搜索引擎(百度、搜狗、360、必应、谷歌)搜索结果中的重定向链接,直链访问原始网站,删除网站重定向到安全页面,自动跳转中文文档,减少操作步骤和响应时间;长期维护、PC+手机全平台支持:CSDN+掘金+简书+知乎+知乎专栏+百度贴吧+开源中国+码云gitee+扣丁leetcode+51CTO+百度搜索+360搜索+搜狗搜索+必应搜索+423down+酷安+eslint+QQ邮箱+微软文档+火狐MDN+tampermonkey文档;
 // @match        *://link.csdn.net/*
 // @match        *://link.juejin.cn/*
 // @match        *://juejin.cn/*
@@ -12,6 +12,7 @@
 // @match        *://tieba.baidu.com/*
 // @match        *://*.oschina.net/*
 // @match        *://gitee.com/*
+// @match        *://leetcode.cn/link/*
 // @match        *://blog.51cto.com/*
 // @match        *://*.baidu.com/*
 // @match        *://m.so.com/s?*
@@ -105,6 +106,18 @@
                 {
                     type: "forward",
                     start: "?target=",
+                },
+            ],
+        },
+        {
+            //https://leetcode.cn/link/?target=https://www.baidu.com
+            name: "扣丁",
+            url: "leetcode.cn",
+            handlers: [
+                {
+                    selector: "a[href]",
+                    start: "link/?target=",
+                    type: "sub",
                 },
             ],
         },
