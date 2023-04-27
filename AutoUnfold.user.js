@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.44
+// @version      1.3.45
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -11,7 +11,7 @@
 // @match        *://*.it1352.com/*
 // @match        *://*.jb51.cc/*
 // @match        *://*.jianshu.com/*
-// @match        *://www.zhihu.com/question/*
+// @match        *://*.zhihu.com/*
 // @match        *://jingyan.baidu.com/article*
 // @match        *://zhidao.baidu.com/question*
 // @match        *://baike.baidu.com/item/*
@@ -209,34 +209,26 @@
 		},
 		{
 			name: "知乎",
-			url: "www.zhihu.com/question",
+			url: "zhihu.com",
 			handles: [
 				//PC端:显示全部(问题描述)
 				{
 					type: "click",
 					item: ".QuestionRichText-more",
 				},
-				//允许滑动
+				//PC+移动版:展开全文
 				{
-					type: "overflow",
-					item: "body",
+					type: "height",
+					item: ".RichContent-inner--collapsed",
 				},
-				//PC+移动版:展开阅读全文+查看问题描述
-				// {
-				// 	type: "display",
-				// 	item: ".ContentItem-rightButton",
-				// },
-				// {
-				// 	type: "height",
-				// 	item: ".RichContent-inner",
-				// },
 				{
-					type: "click",
-					item: ".RichContent-inner",
-				},
+					type: "display",
+					item: ".ContentItem-rightButton"
+				}
 			],
-			//删除透明遮挡
 			fun: function () {
+				console.log("应用成功");
+				//移动版2:遮挡
 				let items = document.querySelectorAll(".RichContent-inner");
 				for (let item of items) {
 					item.style.setProperty("-webkit-mask-image", "none", "important");
