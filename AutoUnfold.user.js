@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.45
+// @version      1.3.46
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -216,18 +216,22 @@
 					type: "click",
 					item: ".QuestionRichText-more",
 				},
-				//PC+移动版:展开全文
-				{
-					type: "height",
-					item: ".RichContent-inner--collapsed",
-				},
+				// PC+移动版:展开阅读全文+查看问题描述
 				{
 					type: "display",
-					item: ".ContentItem-rightButton"
-				}
+					item: ".ContentItem-rightButton",
+				},
+				{
+					type: "height",
+					item: ".RichContent-inner",
+				},
+				//修复个别失效网站:
+				{
+					type: "click",
+					item: ".RichContent-inner",
+				},
 			],
 			fun: function () {
-				console.log("应用成功");
 				//移动版2:遮挡
 				let items = document.querySelectorAll(".RichContent-inner");
 				for (let item of items) {

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.55
+// @version      1.3.56
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -179,10 +179,58 @@
 			],
 		},
 		{
+			name: "知乎PC版发现页",
+			url: "zhihu.com",
+			items: [
+				//固定按钮:登录一下
+				".ExploreHomePage-specialsLogin",
+			],
+			fun: function () {
+				onload=function () {
+					//热点和问题高度保持一致
+					let items = document.querySelectorAll('.ExploreHomePage-square > div');
+					items[2].style.margin="0px"
+
+					//拦截登录弹窗
+					let loginBtn = document.querySelector(".AppHeader-profile button");
+						if (loginBtn) {
+							//未登录:执行监听
+							let observer = new MutationObserver(removeLoginNotice);
+							observer.observe(document, { childList: true, subtree: true });
+						}
+				}
+				/**
+				 * Removes a login notice.
+				 *
+				 * @param      {MutationRecord[]}  mutationsList  The mutations list
+				 * @param      {MutationObserver}  observer       The observer
+				 */
+				let removeLoginNotice = function (mutationsList) {
+					for (let mutation of mutationsList) {
+						for (let node of mutation.addedNodes) {
+							if (getXpath('//button[text()="立即登录/注册"]', node)) {
+								getXpath('//button[text()="立即登录/注册"]', node).parentElement.parentElement.remove();
+							}
+						}
+					}
+				};
+
+				// document.onreadystatechange = function () {
+				// 	if (document.readyState === "complete") {
+				// 		let loginBtn = document.querySelector(".AppHeader-profile button");
+				// 		if (loginBtn) {
+				// 			//未登录:执行监听
+				// 			let observer = new MutationObserver(removeLoginNotice);
+				// 			observer.observe(document, { childList: true, subtree: true });
+				// 		}
+				// 	}
+				// };
+			}
+		},
+		{
 			name: "知乎PC版",
 			url: "www.zhihu.com/question",
-			items: [
-			],
+			items: [],
 			fun: function () {
 				/**
 				 * PC端:屏蔽登录弹窗
@@ -202,7 +250,8 @@
 									}
 									return;
 								}
-							} else if (getXpath('//button[text()="立即登录/注册"]', node)) {
+							}
+							if (getXpath('//button[text()="立即登录/注册"]', node)) {
 								//没有登录弹窗1时会出现弹窗2
 								getXpath('//button[text()="立即登录/注册"]', node).parentElement.parentElement.remove();
 							}
@@ -213,15 +262,17 @@
 				//是否拦截:默认拦截
 				let LoginFlag = true;
 				document.onreadystatechange = function () {
+					onload = function () {
+						let loginBtn = document.querySelector(".AppHeader-profile button");
+						//未登录:添加事件,不拦截
+						loginBtn.addEventListener("click", function () {
+							LoginFlag = false;
+						});
+					};
 					if (document.readyState === "interactive") {
 						let loginBtn = document.querySelector(".AppHeader-profile button");
-						let loginCls = loginBtn.getAttribute("class").includes("Button");
 
-						if (loginCls) {
-							//未登录:添加事件,不拦截
-							loginBtn.addEventListener("click", function () {
-								LoginFlag = false;
-							});
+						if (loginBtn) {
 							//未登录:执行监听
 							let observer = new MutationObserver(removeLoginNotice);
 							observer.observe(document, { childList: true, subtree: true });
@@ -267,7 +318,7 @@
 						let loginBtn = document.querySelector(".ColumnPageHeader-profile button");
 						let loginCls;
 						try {
-						loginCls = loginBtn.getAttribute("class").includes("Button");
+							loginCls = loginBtn.getAttribute("class").includes("Button");
 						} catch (error) {
 							/* empty */
 						}
@@ -285,6 +336,7 @@
 				};
 			},
 		},
+
 		{
 			name: "百度贴吧",
 			url: "tieba.baidu.com",
@@ -943,7 +995,6 @@
 					let mo = new MutationObserver(function name(mutations) {
 						for (let mutation of mutations) {
 							for (let node of mutation.addedNodes) {
-								console.log(node.nodeName);
 								if (node.nodeName == "DIV" && node.className == "") {
 									node.style.display = "none";
 								}
