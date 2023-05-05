@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         链接管理
-// @version      1.3.14
+// @version      1.3.15
 // @namespace    airbash/LinkManager
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -26,14 +26,19 @@
 // @match        *://developer.mozilla.org/*
 // @match        *://www.tampermonkey.net/*
 // @match        *://mail.qq.com/cgi-bin/readtemplate?*
+// @connect      baidu.com
 // @icon         data:image/png;base64,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
 // @grant        GM_registerMenuCommand
 // @grant        GM_setValue
 // @grant        GM_getValue
+// @grant        GM_xmlhttpRequest
 // @grant        GM_info
 // @license      GPL-3.0
 // @run-at       document-body
+// @connect      *
 // ==/UserScript==
+///<reference path="./tampermonkey-reference.d.ts" />
+
 (function () {
     "use strict";
 
@@ -275,25 +280,6 @@
             ],
         },
         {
-            //https://www.sogou.com/web?ie=UTF-8&query=123
-            name: "搜狗搜索",
-            url: "www.sogou.com/web",
-            handlers: [
-                // {
-                //     selector: "a",
-                //     start: "//search.sogoucdn.com",
-                //     type: "attribute",
-                //     attribute: "linkurl",
-                // },
-                {
-                    selector: "a",
-                    start: "/link?url=",
-                    type: "attribute",
-                    attribute: "linkurl",
-                },
-            ],
-        },
-        {
             //https://www.423down.com/10579.html
             name: "423down",
             url: "www.423down.com",
@@ -310,68 +296,124 @@
     /**
      * 百度单独规则
      */
-    if (location.href.includes("baidu.com")) {
-        let time = 0;
-        let interval = setInterval(() => {
-            if (++time == 100) {
-                clearInterval(interval);
+    if (location.href.includes("m.baidu.com") || location.href.includes("www.baidu.com")) {
+        document.addEventListener("DOMContentLoaded", function () {
+            let interval;
+            let button = document.querySelector(".s_btn");
+            button.addEventListener("click", function () {
+                let time = 0;
+                interval = setInterval(() => {
+                    if (++time == 100) {
+                        clearInterval(interval);
+                    }
+                    let flag = baidu_static();
+                    if (flag == false) {
+                        baidu_dynamic();
+                    }
+                }, 100);
+            });
+            let flag = baidu_static();
+            if (flag == false) {
+                baidu_dynamic();
             }
-            //百度手机版
-            let items1 = document.querySelectorAll("#results>div");
-            if (items1.length) {
-                for (let item of items1) {
-                    let str = item.getAttribute("data-log");
-                    let json = JSON.parse(str);
-                    if (json) {
-                        let url = json.mu;
-                        //https://m.baidu.com/sf        https://m.baidu.com/s?ie=UTF-8&wd=暗区 死了以后为什么没有武器
-                        //https://nourl.ubs.baidu.com   https://m.baidu.com/s?ie=UTF-8&wd=石药市值  第二个div
-                        if (url && !url.includes("nourl.ubs.baidu.com") && !url.startsWith("https://m.baidu.com/sf")) {
-                            let rl_link_href;
-                            if ((rl_link_href = item.querySelector("[rl-link-href]"))) {
-                                rl_link_href.setAttribute("rl-link-href", url);
-                                let as = item.querySelectorAll("a");
-                                for (let a of as) {
-                                    a.setAttribute("href", url);
-                                }
-                            }
-                        }
+        });
+    }
+    /**
+     * 百度静态规则
+     */
+    function baidu_static() {
+        //pc端
+        let item1s = document.querySelectorAll("#content_left>div");
+        for (let item of item1s) {
+            //废弃的mu值校验
+            //url!=null                 https://www.baidu.com/s?wd=es6
+            //recommend_list.baidu.com  https://www.baidu.com/s?wd=95后女孩失联8年被发现流浪荒山 第一个大家还在搜
+            let a = item.querySelector("a");
+            if (a.href.includes("www.baidu.com/link?url=")) {
+                let url = item.getAttribute("mu");
+                if (url && url != null) {
+                    a.href = url;
+                }
+            }
+            //single-card-wrapper: https://www.baidu.com/s?ie=UTF-8&wd=es6                          xxx的最新相关信息
+            //group-wrapper:       https://www.baidu.com/s?ie=UTF-8&wd=五一消费成绩单折射市场活力     资讯
+            let item_news = item.querySelectorAll("[class^=single-card-wrapper] div,[class^=group-wrapper] div");
+            for (let item_new of item_news) {
+                let data_url;
+                let divs = item_new.querySelectorAll("div");
+                for (let div of divs) {
+                    if ((data_url = div.getAttribute("data-url"))) {
+                        let a = item_new.querySelector("a");
+                        a.setAttribute("href", data_url);
                     }
                 }
             }
+        }
 
-            //百度电脑版
-            let items2 = document.querySelectorAll("#content_left>div");
-            if (items2.length) {
-                for (let item of items2) {
-                    //常规操作
-                    //url!=null                 https://www.baidu.com/s?ie=UTF-8&wd=es6
-                    //recommend_list.baidu.com  https://www.baidu.com/s?wd=95后女孩失联8年被发现流浪荒山 第一个大家还在搜
-                    let url;
-                    if ((url = item.getAttribute("mu")) && !url.includes("nourl.ubs.baidu.com") && url != "null" && !url.includes("recommend_list.baidu.com")) {
-                        item.querySelector("a").setAttribute("href", url);
-                    }
-                    //xxx的最新相关信息
-                    //single-card-wrapper: https://www.baidu.com/s?wd=es6
-                    //group-wrapper:       https://www.baidu.com/s?wd=中国阳后出现肺炎人群约为8%
-                    let items3 = item.querySelectorAll("[class^=single-card-wrapper] div,[class^=group-wrapper] div");
-                    if (items3.length) {
-                        for (let item3 of items3) {
-                            let data_url;
-                            let divs = item3.querySelectorAll("div");
-                            for (let div of divs) {
-                                if ((data_url = div.getAttribute("data-url"))) {
-                                    let as = item3.querySelectorAll("a");
-                                    for (let a of as) {
-                                        a.setAttribute("href", data_url);
-                                    }
-                                }
-                            }
-                        }
+        //移动端
+        let item2s = document.querySelectorAll("#results>div");
+        for (let item of item2s) {
+            //废弃的mu值校验
+            //https://m.baidu.com/sf        https://m.baidu.com/s?wd=暗区 死了以后为什么没有武器
+            //https://nourl.ubs.baidu.com   https://m.baidu.com/s?wd=石药市值  第二个div
+            //ks.baidu.com                  https://www.baidu.com/s?word=赵匡胤
+            let rl_link_href = item.querySelector("[rl-link-href]");
+            if (rl_link_href && rl_link_href != null) {
+                let str = item.getAttribute("data-log");
+                let json = JSON.parse(str);
+                let url = json.mu;
+                if (!url.startsWith("https://ks.baidu.com")) {
+                    rl_link_href.setAttribute("rl-link-href", url);
+                    let as = item.querySelectorAll("a");
+                    for (let a of as) {
+                        a.href = url;
                     }
                 }
             }
-        }, 100);
+        }
+        return false;
+    }
+    /**
+     * 百度动态规则
+     */
+    function baidu_dynamic() {
+        let as = document.querySelectorAll("#content_left>div a,#results>div a");
+        for (let a of as) {
+            let href = a.href;
+            if (href.includes("www.baidu.com/link?url=") || href.includes("m.baidu.com/from=")) {
+                GM_xmlhttpRequest({
+                    url: href,
+                    method: "GET",
+                    anonymous: true,
+                    onload: function (response) {
+                        if (response.status == 200) {
+                            if (response.finalUrl) {
+                                a.href = response.finalUrl;
+                            } else {
+                                let text = response.responseText;
+                                let domparser = new DOMParser();
+                                console.log(response.finalUrl);
+                                let html = domparser.parseFromString(text, "text/html");
+                                let meta = html.querySelector("meta");
+                                let str;
+                                try {
+                                    str = meta.content;
+                                    let url = str.substring(str.indexOf("http"));
+                                    if (url.startsWith("http")) {
+                                        a.href = url;
+                                    }
+                                } catch (error) {
+                                    /* empty */
+                                }
+                            }
+                        } else {
+                            a.href = response.finalUrl;
+                            console.log(response.finalUrl);
+                        }
+                    },
+                });
+            }
+        }
     }
 
     /**
