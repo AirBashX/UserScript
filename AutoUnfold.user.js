@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.46
+// @version      1.3.47
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -8,10 +8,11 @@
 // @match        *://*.blog.csdn.net/*
 // @match        *://blog.csdn.net/*
 // @match        *://ask.csdn.net/questions/*
-// @match        *://*.it1352.com/*
-// @match        *://*.jb51.cc/*
+// @match        *://download.csdn.net/download/*
+// @match        *://*.it1352.com/*// @match        *://*.jb51.cc/*
 // @match        *://*.jianshu.com/*
-// @match        *://*.zhihu.com/*
+// @match        *://www.zhihu.com/question/*
+// @match        *://zhuanlan.zhihu.com/p/*
 // @match        *://jingyan.baidu.com/article*
 // @match        *://zhidao.baidu.com/question*
 // @match        *://baike.baidu.com/item/*
@@ -42,9 +43,7 @@
 // @match        *://m.bilibili.com/opus/*
 // @match        *://weibo.com/ttarticle/p/show?id=*
 // @match        *://card.weibo.com/article/m/show/id*
-// @match        *://m.douban.com/movie/subject/*
-// @match        *://m.douban.com/book/review/*
-// @match        *://m.douban.com/group/topic/*
+// @match        *://*.douban.com/*
 // @match        *://www.oschina.net/p/*
 // @match        *://developer.aliyun.com/article/*
 // @match        *://cloud.tencent.com/developer/article/*
@@ -142,6 +141,26 @@
 			],
 		},
 		{
+			name: "CSDN下载",
+			url: "download.csdn.net/download",
+			handles: [
+				{
+					type: "click",
+					item: ".fl",
+				},
+				//展开全部
+				{
+					type: "click",
+					item: ".unfold-font",
+				},
+				//查看更多
+				{
+					type: "click",
+					item: ".el-button--text",
+				},
+			],
+		},
+		{
 			name: "it1352",
 			url: "it1352.com",
 			handles: [
@@ -209,7 +228,39 @@
 		},
 		{
 			name: "知乎",
-			url: "zhihu.com",
+			url: "www.zhihu.com/question",
+			handles: [
+				//PC端:显示全部(问题描述)
+				{
+					type: "click",
+					item: ".QuestionRichText-more",
+				},
+				// PC+移动版:展开阅读全文+查看问题描述
+				{
+					type: "display",
+					item: ".ContentItem-rightButton",
+				},
+				{
+					type: "height",
+					item: ".RichContent-inner",
+				},
+				//修复个别失效网站:
+				{
+					type: "click",
+					item: ".RichContent-inner",
+				},
+			],
+			fun: function () {
+				//移动版2:遮挡
+				let items = document.querySelectorAll(".RichContent-inner");
+				for (let item of items) {
+					item.style.setProperty("-webkit-mask-image", "none", "important");
+				}
+			},
+		},
+		{
+			name: "知乎专栏",
+			url: "zhuanlan.zhihu.com/p/",
 			handles: [
 				//PC端:显示全部(问题描述)
 				{
@@ -260,8 +311,6 @@
 			],
 		},
 		{
-			//https://zhidao.baidu.com/question/646382577725897205.html
-			//https://zhidao.baidu.com/question/422818846
 			name: "百度知道",
 			url: "zhidao.baidu.com/question",
 			handles: [
@@ -297,21 +346,22 @@
 					type: "display",
 					item: "#show-hide-container",
 				},
+				{
+					type: "classList",
+					item: ".answer",
+					remove: "answer-hide",
+				},
 				//PC端:更多回答2
 				{
 					type: "display",
 					item: ".show-answer-dispute",
 				},
+				{
+					type: "classList",
+					item: ".answer",
+					remove: "answer-dispute-hide",
+				},
 			],
-			fun: function () {
-				let items = document.querySelectorAll(".answer");
-				if (items) {
-					for (let item of items) {
-						item.classList.remove("answer-hide");
-						item.classList.remove("answer-dispute-hide");
-					}
-				}
-			},
 		},
 		{
 			name: "百度百科",
@@ -345,7 +395,6 @@
 			],
 		},
 		{
-			//https://wk.baidu.com/view/a87844da7f1922791688e862
 			name: "百度文库手机版1",
 			url: "wk.baidu.com/view",
 			handles: [
@@ -369,7 +418,6 @@
 			},
 		},
 		{
-			//https://tanbi.baidu.com/h5apptopic/browse/wkjumpdownload?fromKey=1028200x&docId=0e07a7f1ba0d4a7302763aea
 			name: "百度文库手机版2",
 			url: "tanbi.baidu.com/h5apptopic/browse/",
 			handles: [
@@ -499,14 +547,18 @@
 					type: "display",
 					item: ".lookall-box",
 				},
+				//移动+PC版
+				{
+					type: "classList",
+					item: ".hidden-content",
+					remove: "hide",
+				},
+				{
+					type: "classList",
+					item: ".hidden-content",
+					remove: "control-hide",
+				},
 			],
-			fun: function () {
-				let item = document.querySelector(".hidden-content");
-				//移动版
-				item.classList.remove("hide");
-				//pc版
-				item.classList.remove("control-hide");
-			},
 		},
 		{
 			name: "腾讯新闻",
@@ -613,36 +665,36 @@
 				},
 			],
 		},
-        {
-            name: "今日头条",
-            url: "www.toutiao.com/article/",
-            handles: [
-                //PC端:点击展开剩余内容
-                {
-                    type: "display",
-                    item: ".expand-button-wrapper",
-                },
-                {
-                    type: "height",
-                    item: ".expand-container",
-                },
-            ],
-        },
-        {
-            name: "今日头条问答",
-            url: "www.toutiao.com/answer/",
-            handles: [
-                //PC端:点击展开剩余内容
-                {
-                    type: "display",
-                    item: ".expand-button-wrapper",
-                },
-                {
-                    type: "height",
-                    item: ".expand-container",
-                },
-            ],
-        },
+		{
+			name: "今日头条",
+			url: "www.toutiao.com/article/",
+			handles: [
+				//PC端:点击展开剩余内容
+				{
+					type: "display",
+					item: ".expand-button-wrapper",
+				},
+				{
+					type: "height",
+					item: ".expand-container",
+				},
+			],
+		},
+		{
+			name: "今日头条问答",
+			url: "www.toutiao.com/answer/",
+			handles: [
+				//PC端:点击展开剩余内容
+				{
+					type: "display",
+					item: ".expand-button-wrapper",
+				},
+				{
+					type: "height",
+					item: ".expand-container",
+				},
+			],
+		},
 		{
 			name: "丁香园",
 			url: "3g.dxy.cn",
@@ -720,12 +772,17 @@
 					type: "display",
 					item: ".read-more",
 				},
+				{
+					type: "classList",
+					item: ".read-article-box",
+					remove: "limit",
+				},
+				{
+					type: "classList",
+					item: ".read-article-box",
+					remove: "show-later",
+				},
 			],
-			fun: function () {
-				let item = document.querySelector(".read-article-box");
-				item.classList.remove("limit");
-				item.classList.remove("show-later");
-			},
 		},
 		{
 			name: "B站笔记",
@@ -736,11 +793,12 @@
 					type: "display",
 					item: ".opus-read-more",
 				},
+				{
+					type: "classList",
+					item: ".opus-module-content",
+					remove: "limit",
+				},
 			],
-			fun: function () {
-				let item = document.querySelector(".opus-module-content");
-				item.classList.remove("limit");
-			},
 		},
 		{
 			name: "微博文章PC版",
@@ -771,17 +829,28 @@
 			],
 		},
 		{
-			name: "豆瓣电影",
-			url: "m.douban.com/movie/subject/",
-			handles: [],
+			name: "豆瓣",
+			url: "douban.com",
+			handles: [
+				//点击展开全文
+				{
+					type: "display",
+					item: ".oia-readall",
+				},
+				{
+					type: "height",
+					item: ".note-content",
+				},
+			],
 			fun: function () {
 				//展开(简介)
 				let item1 = document.querySelector(".subject-intro p");
-				let str1 = item1.getAttribute("data-content");
-				if (str1) {
-					item1.innerText = str1;
-					clearInterval(interval);
-				}
+				try {
+					let str1 = item1.getAttribute("data-content");
+					if (str1) {
+						item1.innerText = str1;
+					}
+				} catch (error) { /* empty */ }
 				//展开(评论)
 				onload = function () {
 					let items2 = document.querySelectorAll(".LinesEllipsis-readmore");
@@ -792,37 +861,6 @@
 			},
 		},
 		{
-			name: "豆瓣文章",
-			url: "m.douban.com/book/review/",
-			handles: [
-				//点击展开全文
-				{
-					type: "display",
-					item: ".oia-readall",
-				},
-				{
-					type: "height",
-					item: ".note-content",
-				},
-			],
-		},
-		{
-			name: "豆瓣小组",
-			url: "m.douban.com/group/topic/",
-			handles: [
-				//点击展开全文
-				{
-					type: "display",
-					item: ".oia-readall",
-				},
-				{
-					type: "height",
-					item: ".note-content",
-				},
-			],
-		},
-		{
-			//https://www.oschina.net/p/xmind
 			name: "开源中国",
 			url: "www.oschina.net/p/",
 			handles: [
@@ -882,7 +920,6 @@
 				},
 			],
 		},
-		//http://www.360doc.cn/article/60244337_924865821.html
 		{
 			name: "360图书馆手机版",
 			url: "www.360doc.cn/article/",
@@ -898,24 +935,18 @@
 				},
 			],
 		},
-		//http://www.360doc.com/content/20/0717/15/60244337_924865821.shtml
 		{
 			name: "360图书馆PC版",
 			url: "www.360doc.com/content/",
 			handles: [
-				//展开
-				// {
-				// 	type: "display",
-				// 	item: ".article_showall",
-				// },
+				{
+					type: "classList",
+					item: "body",
+					remove: "articleMaxH",
+				},
 			],
-			fun: function () {
-				let item = document.querySelector("body");
-				item.classList.remove("articleMaxH");
-			},
 		},
 		{
-			//https://g.pconline.com.cn/x/1504/15043167.html
 			name: "太平洋电脑网",
 			url: "g.pconline.com.cn/x/",
 			handles: [
@@ -931,7 +962,6 @@
 			],
 		},
 		{
-			//https://m.zol.com.cn/article/7934726.html
 			name: "中关村在线",
 			url: "m.zol.com.cn/article/",
 			handles: [
@@ -955,14 +985,12 @@
 					type: "display",
 					item: "#continue_reading",
 				},
+				{
+					type: "classList",
+					item: "#content .fn-hide",
+					remove: "fn-hide",
+				},
 			],
-			fun: function () {
-				//删除class
-				let items = document.querySelectorAll("#content .fn-hide");
-				for (let item of items) {
-					item.classList.remove("fn-hide");
-				}
-			},
 		},
 		{
 			name: "汽车之家:车家号",
@@ -973,14 +1001,12 @@
 					type: "display",
 					item: "#continue_reading_new",
 				},
+				{
+					type: "classList",
+					item: ".pgc-details .fn-hide",
+					remove: "fn-hide",
+				},
 			],
-			fun: function () {
-				//删除class
-				let items = document.querySelectorAll(".pgc-details .fn-hide");
-				for (let item of items) {
-					item.classList.remove("fn-hide");
-				}
-			},
 		},
 		{
 			name: "汽车之家:论坛",
@@ -995,14 +1021,12 @@
 					type: "height",
 					item: "#topicContentSection",
 				},
+				{
+					type: "classList",
+					item: "#topicContentSection .fn-hide",
+					remove: "fn-hide",
+				},
 			],
-			fun: function () {
-				//删除class
-				let items = document.querySelectorAll("#topicContentSection .fn-hide");
-				for (let item of items) {
-					item.classList.remove("fn-hide");
-				}
-			},
 		},
 		{
 			name: "游侠网",
@@ -1056,6 +1080,11 @@
 					type: "display",
 					item: ".js-unfold-page",
 				},
+				{
+					type: "classList",
+					item: ".hide.js-unfold-answer.answer-fold-box",
+					remove: "hide",
+				},
 				//展开完整答案
 				{
 					type: "display",
@@ -1070,19 +1099,12 @@
 					type: "display",
 					item: ".js-rest-icon",
 				},
+				{
+					type: "classList",
+					item: ".ans-box.hide",
+					remove: "hide",
+				},
 			],
-			fun: function () {
-				//PC端:更多回答
-				let item1s = document.querySelectorAll(".hide.js-unfold-answer.answer-fold-box");
-				for (let item of item1s) {
-					item.classList.remove("hide");
-				}
-				//更多回答
-				let item2s = document.querySelectorAll(".ans-box.hide");
-				for (let item of item2s) {
-					item.classList.remove("hide");
-				}
-			},
 		},
 		{
 			name: "天眼查",
@@ -1269,6 +1291,11 @@
 							//防止无法滑动
 							for (let item of items) {
 								item.style.setProperty("overflow", "unset", "important");
+							}
+						} else if (handle.type == "classList") {
+							//删除className
+							for (let item of items) {
+								item.classList.remove(handle.remove);
 							}
 						} else {
 							//模拟点击
