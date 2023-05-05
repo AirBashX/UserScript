@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.56
+// @version      1.3.57
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -85,6 +85,8 @@
 			items: [
 				//下载弹窗
 				".weixin-shadowbox",
+				//炫富按钮:打开
+				".feed-Sign-weixin",
 				//悬浮按钮:APP内打开+登录/打开注册(主页)
 				".feed-Sign-span",
 				//PC端:弹窗:学生认证
@@ -186,19 +188,19 @@
 				".ExploreHomePage-specialsLogin",
 			],
 			fun: function () {
-				onload=function () {
+				onload = function () {
 					//热点和问题高度保持一致
-					let items = document.querySelectorAll('.ExploreHomePage-square > div');
-					items[2].style.margin="0px"
+					let items = document.querySelectorAll(".ExploreHomePage-square > div");
+					items[2].style.margin = "0px";
 
 					//拦截登录弹窗
 					let loginBtn = document.querySelector(".AppHeader-profile button");
-						if (loginBtn) {
-							//未登录:执行监听
-							let observer = new MutationObserver(removeLoginNotice);
-							observer.observe(document, { childList: true, subtree: true });
-						}
-				}
+					if (loginBtn) {
+						//未登录:执行监听
+						let observer = new MutationObserver(removeLoginNotice);
+						observer.observe(document, { childList: true, subtree: true });
+					}
+				};
 				/**
 				 * Removes a login notice.
 				 *
@@ -214,18 +216,7 @@
 						}
 					}
 				};
-
-				// document.onreadystatechange = function () {
-				// 	if (document.readyState === "complete") {
-				// 		let loginBtn = document.querySelector(".AppHeader-profile button");
-				// 		if (loginBtn) {
-				// 			//未登录:执行监听
-				// 			let observer = new MutationObserver(removeLoginNotice);
-				// 			observer.observe(document, { childList: true, subtree: true });
-				// 		}
-				// 	}
-				// };
-			}
+			},
 		},
 		{
 			name: "知乎PC版",
@@ -780,6 +771,8 @@
 				".guide-wrap",
 				//悬浮按钮:打开(顶部)
 				".js-top-fixed",
+				//悬浮按钮:打开(底部)
+				".bottom-open-app-btn",
 			],
 		},
 		{
