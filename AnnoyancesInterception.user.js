@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.57
+// @version      1.3.58
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -60,6 +60,7 @@
 // @match        *://huaweicloud.csdn.net/*
 // @match        *://m.36kr.com/p/*
 // @match        *://xueqiu.com/*
+// @match        *://segmentfault.com/q/*
 // @match        *://www.w3cschool.cn/*
 // @match        *://m.tianyancha.com/*
 // @match        *://www.xiaohongshu.com/*
@@ -897,6 +898,14 @@
 			items: [
 				//悬浮按钮(底部):立即打开
 				".app-download-banner-box",
+			],
+		},
+		{
+			name: "segmentfault思否",
+			url: "segmentfault.com/q",
+			items: [
+				//登录弹窗
+				".modal-dialog-centered",
 			],
 		},
 		{
