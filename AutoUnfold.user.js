@@ -1,15 +1,16 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.47
+// @version      1.3.48
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  自动展开文档	隐藏部分;长期维护、PC+手机全平台支持;全平台支持:CSDN、it1352、编程之家、简书、知乎、百家号、百度资讯、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、澎湃新闻、新京报、环球网、人民日报、人民网、今日头条、丁香园、健康界、36氪、果壳、虎扑、虎嗅、头条、B站、B站专栏、B站笔记、微博文章、豆瓣文章、豆瓣小组、开源中国、阿里云开发者社区、腾讯云开发者社区、华为云开发者社区、360图书馆、太平洋电脑网、中关村在线、汽车之家、游侠网、游民星空、360问答、天眼查、天涯社区、东方财富网
+// @description  自动展开文档	隐藏部分;长期维护、PC+手机全平台支持;全平台支持:CSDN、it1352、编程之家、简书、知乎、百家号、百度资讯、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、澎湃新闻、新京报、央广网、环球网、人民日报、人民网、今日头条、丁香园、健康界、36氪、果壳、虎扑、虎嗅、头条、B站、B站专栏、B站笔记、微博文章、豆瓣文章、豆瓣小组、开源中国、阿里云开发者社区、腾讯云开发者社区、华为云开发者社区、360图书馆、太平洋电脑网、中关村在线、汽车之家、游侠网、游民星空、360问答、天眼查、天涯社区、东方财富网
 // @match        *://*.blog.csdn.net/*
 // @match        *://blog.csdn.net/*
 // @match        *://ask.csdn.net/questions/*
 // @match        *://download.csdn.net/download/*
-// @match        *://*.it1352.com/*// @match        *://*.jb51.cc/*
+// @match        *://*.it1352.com/*
+// @match        *://*.jb51.cc/*
 // @match        *://*.jianshu.com/*
 // @match        *://www.zhihu.com/question/*
 // @match        *://zhuanlan.zhihu.com/p/*
@@ -47,6 +48,7 @@
 // @match        *://www.oschina.net/p/*
 // @match        *://developer.aliyun.com/article/*
 // @match        *://cloud.tencent.com/developer/article/*
+// @match        *://cloud.tencent.com/developer/beta/article/*
 // @match        *://huaweicloud.csdn.net/*
 // @match        *://www.360doc.cn/article/*
 // @match        *://www.360doc.com/content/*
@@ -54,6 +56,7 @@
 // @match        *://m.zol.com.cn/article/*
 // @match        *://m.autohome.com.cn/news/*
 // @match        *://chejiahao.m.autohome.com.cn/info/*
+// @match        *://*.cnr.cn/*
 // @match        *://club.m.autohome.com.cn/bbs/*
 // @match        *://3g.ali213.net/*
 // @match        *://wap.gamersky.com/*
@@ -644,6 +647,21 @@
 			],
 		},
 		{
+			name: "央广网",
+			url: "cnr.cn",
+			handles: [
+				//展开全文
+				{
+					type: "display",
+					item: "#readmore",
+				},
+				{
+					type: "height",
+					item: "#perny-main",
+				},
+			],
+		},
+		{
 			name: "环球网1",
 			url: "huanqiu.com/article/",
 			handles: [
@@ -902,6 +920,21 @@
 				{
 					type: "display",
 					item: ".com-markdown-collpase-toggle",
+				},
+			],
+		},
+		{
+			name: "腾讯云开发者社区:新版",
+			url: "cloud.tencent.com/developer/beta/article/",
+			handles: [
+				//展开阅读全文
+				{
+					type: "height",
+					item: ".cdc-expand-area__main",
+				},
+				{
+					type: "display",
+					item: ".cdc-expand-area__toggle",
 				},
 			],
 		},
