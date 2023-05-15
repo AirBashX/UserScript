@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.58
+// @version      1.3.59
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  手机、电脑全平台通用:自动拦截或删除`下载弹窗`、`悬浮按钮`等影响用户体验的元素;长期维护:CSDN、简书、知乎、知乎专栏、百度搜索、百家号、百度贴吧、百度文库、百度新闻、新浪新闻、腾讯视频、优酷视频、爱奇艺、好看视频、哔哩哔哩、B站专栏、B站笔记、西瓜视频、抖音、丁香园、健康界、微博、新浪财经、东方财富网、电子发烧友、人民网、新京报、观察者网、澎湃新闻、凤凰新闻、网易新闻、今日头条、虎嗅、虎扑、豆瓣、太平洋电脑、汽车之家、太平洋汽车网、taptap、it之家、360doc、开源中国、阿里云开发者社区、腾讯云开发者社区、华为云开发者社区、36氪、雪球、天眼查、小红书、中国知网、装备前线、太平洋汽车网
+// @description  手机、电脑全平台通用:自动拦截或删除`下载弹窗`、`悬浮按钮`等影响用户体验的元素;长期维护:CSDN、简书、知乎、知乎专栏、百度搜索、百家号、百度贴吧、百度文库、百度新闻、新浪新闻、腾讯视频、优酷视频、爱奇艺、好看视频、哔哩哔哩、B站专栏、B站笔记、西瓜视频、抖音、丁香园、健康界、微博、新浪财经、东方财富网、电子发烧友、人民网、新京报、观察者网、澎湃新闻、凤凰新闻、网易新闻、今日头条、虎嗅、虎扑、豆瓣、中关村在线、太平洋电脑、太平洋汽车网、汽车之家、太平洋汽车网、taptap、it之家、360doc、开源中国、segmentfault、W3CSchool、阿里云开发者社区、腾讯云开发者社区、华为云开发者社区、36氪、雪球、天眼查、站酷、小红书、中国知网、装备前线
 // @match        *://*.csdn.net/*
 // @match      	 *://*.jianshu.com/*
 // @match        *://juejin.cn/*
@@ -63,6 +63,8 @@
 // @match        *://segmentfault.com/q/*
 // @match        *://www.w3cschool.cn/*
 // @match        *://m.tianyancha.com/*
+// @match        *://*.zcool.com.cn/*
+// @match        *://m.ximalaya.com/*
 // @match        *://www.xiaohongshu.com/*
 // @match        *://wap.cnki.net/*
 // @match        *://www.zfrontier.com/*
@@ -960,12 +962,61 @@
 			],
 		},
 		{
+			name: "站酷移动版",
+			url: "m.zcool.com.cn/",
+			items: [
+				//悬浮按钮:打开app(主页)
+				".bottom-App",
+				//悬浮按钮:打开app
+				"[class^=wapHeader_footer-button]",
+			],
+		},
+		{
+			name: "站酷PC版",
+			url: "www.zcool.com.cn/",
+			items: [
+				//登录按钮
+				".sideUnlogin",
+			],
+			fun: function () {
+				let mo = new MutationObserver(function (mutations) {
+					for (let mutation of mutations) {
+						for (let node of mutation.addedNodes) {
+							let button;
+							try {
+								button = node.querySelector(".modal__close ");
+							} catch (error) {
+								/* empty */
+							}
+							if (button) {
+								button.click();
+								console.log("关闭成功");
+							}
+						}
+					}
+				});
+				mo.observe(document, { childList: true, subtree: true });
+			},
+		},
+		{
 			//https://www.xiaohongshu.com/discovery/item/636cbbc1000000001c03c332
 			name: "小红书",
 			url: "www.xiaohongshu.com",
 			items: [
 				//App内打开
 				".bottom-button-box",
+			],
+		},
+		{
+			name: "喜马拉雅",
+			url: "m.ximalaya.com/",
+			items: [
+				//悬浮按钮:打开APP,完整收听1
+				".album-btn-container",
+				//悬浮按钮:打开APP,完整收听2
+				".btn-open",
+				//打开APP2
+				".downloadButton",
 			],
 		},
 		{
@@ -994,7 +1045,7 @@
 			fun: function () {
 				//复制文件时的弹窗
 				onload = function () {
-					let mo = new MutationObserver(function name(mutations) {
+					let mo = new MutationObserver(function (mutations) {
 						for (let mutation of mutations) {
 							for (let node of mutation.addedNodes) {
 								if (node.nodeName == "DIV" && node.className == "") {
