@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.59
+// @version      1.3.60
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -763,7 +763,7 @@
 			url: "www.toutiao.com/article/",
 			items: [
 				//PC端:悬浮弹窗:添加今日头条到电脑桌面
-				".ttp-portal-wrapper",
+				".ttp-message-wrapper",
 			],
 		},
 		{
