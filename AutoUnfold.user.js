@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.50
+// @version      1.3.51
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -924,7 +924,7 @@
 			name: "腾讯云开发者社区",
 			url: "cloud.tencent.com/developer/article/",
 			handles: [
-				//展开阅读全文
+				//旧版:展开阅读全文
 				{
 					type: "height",
 					item: ".com-markdown-collpase-main",
@@ -933,13 +933,7 @@
 					type: "display",
 					item: ".com-markdown-collpase-toggle",
 				},
-			],
-		},
-		{
-			name: "腾讯云开发者社区:新版",
-			url: "cloud.tencent.com/developer/beta/article/",
-			handles: [
-				//展开阅读全文
+				//新版:展开阅读全文
 				{
 					type: "height",
 					item: ".cdc-expand-area__main",
