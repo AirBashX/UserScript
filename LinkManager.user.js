@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         链接管理
-// @version      1.3.17
+// @version      1.3.18
 // @namespace    airbash/LinkManager
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -295,19 +295,6 @@
      */
     if (location.href.includes("m.baidu.com") || location.href.includes("www.baidu.com")) {
         let interval;
-        let button = document.querySelector(".s_btn");
-        button.addEventListener("click", function () {
-            let time = 0;
-            interval = setInterval(() => {
-                if (++time == 100) {
-                    clearInterval(interval);
-                }
-                let flag = baidu_static();
-                // if (flag == false) {
-                //     baidu_dynamic();
-                // }
-            }, 100);
-        });
         interval = setInterval(() => {
             console.log(1);
             let flag = baidu_static();
