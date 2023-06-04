@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.51
+// @version      1.3.52
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -68,11 +68,12 @@
 // @match        *://mguba.eastmoney.com/*
 // @match        *://emcreative.eastmoney.com/*
 // @match        *://*.ximalaya.com/*
+// @match        *://www.taodudu.cc/news/*
 // @match        *://blog.didispace.com/*
 // @match        *://*.wang1314.com/doc/*
 // @match        *://*.k4china.com/*
 // @match        *://www.tofacebook.com/*
-// @run-at       document-body
+// @run-at       document-start
 // @icon         data:image/png;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAAA29JREFUeF7tmMvrT08Yx1/fnViwVcq/gqKQa8gtd0Kyk8Vv81tZKWGByC233JWIwp9iYcPORkT56fl1po5pnjNn5syc6dOZz/Iz1/dr3s9z5pk5Jv6bm7h+KoDqgIkTqCEwcQPUJFhDoIbAxAnUEJi4AepXoIZADYGJE4gJgSPAF+BFYXYngU/AsyH7CAUg4s8B84GNBSGI+DPAAmDzEAghANriDfS9wO0hJxAx9iBwvhFvhu8HbkbM1fsz6BJfAoJL/CAIfRzQJX5MCF3ioyH4AOwGrjQxbxb5Cixy2G0fcCvGhj3GuMS79vEfIH1v9Jjz/y5dADTx/wCfgScjQdDE/wt8dCTiIAgaAE38MeBBI1yyrw3hN3AgoRO2A9eshCcnfwK42+xjvQJBxj70OcEFQMRftGz+C5BcYGfanBD6iDf6DgFXLbHihG3A4y4ILgBbgEeOQWuA147/VwFvrP/FCbK4K0x8hyLtmnj53D13TCD9LwMLW23fAclLnS7QQmCDspAGYRdwJxEEifmzlgN/AiL+npJ35HLWTsy9xPuS4A5lwVAI0t92iOaCUcX7AEh7qBPEivcdTlgHvPJ435Xtu07+aHMtnxdq+/Y+fPcA6RuaEzQIq4G3CoQi4vs4wOx3GfAhIDEuB947nOCCECpeEtslYNDJm731cYDp6xIlbVpOWAG880AoKj7EAUbHWuClwwlble+tC4IMl1J6aaukNVNKzMsJ23lE2pPEvL33EAfEQlipxP4364Y3uvgYB/ggHG6urjZoDYLpJ9fb4wEnL/1PKWt5PjZ/N8c4IDWELvGuhJdM/BAHxELYBDxtnUFR8SkAyBxaYtypWNpAKC4+FQCZZ49SAmsQpIpcAlxwBKzY3nW3P91UqUEx7us8JAfYc2sQQl6PNfHyDpHltSklgC4n9IEgoXHdUdVlE58yBNpukEuRqwbXbowyVuoHud5GlbQ+m3e1p3aAWSukitRs733MGCLcjM0FQObv855QVHyuEGgfTJcTpBaQbJ+kqot1Q04HmD1p7wk/SosfwwEGgvaeYNp7v+HFnrQ2bgwHmLW194Ri4sd0gFY7FBVfAkC7diguvhQAA2Fxinp+aE4YMwcM3WuW8RVAFqwzNGl1wAwdVpatVgdkwTpDk1YHzNBhZdlqdUAWrDM06eQd8Acza/FB2qWb3AAAAABJRU5ErkJggg==
 // @grant        none
 // @license      GPL-3.0
@@ -248,16 +249,16 @@
 					type: "height",
 					item: ".RichContent-inner",
 				},
-				//修复个别失效网站:
+				// 修复个别失效网站:
 				{
 					type: "click",
 					item: ".RichContent-inner",
 				},
 			],
 			fun: function () {
-				//移动版2:遮挡
 				let items = document.querySelectorAll(".RichContent-inner");
 				for (let item of items) {
+					//移动版2:遮挡
 					item.style.setProperty("-webkit-mask-image", "none", "important");
 				}
 			},
@@ -458,6 +459,19 @@
 					type: "height",
 					item: ".mainContent",
 				},
+				//点击展开全文:狐猴浏览器特有bug
+				{
+					type: "display",
+					item: ".foldBtn"
+				},
+				{
+					type: "display",
+					item: ".foldMaskGradient"
+				},
+				{
+					type: "height",
+					item: ".mainContentContainer"
+				}
 			],
 		},
 		{
@@ -1269,6 +1283,21 @@
 			},
 		},
 		{
+			name: "淘嘟嘟",
+			url: "www.taodudu.cc/news/",
+			handles: [
+				//阅读全文,人机检测
+				{
+					type: "display",
+					item: "#vip",
+				},
+				{
+					type: "height",
+					item: "#article_content",
+				},
+			],
+		},
+		{
 			name: "程序猿DD",
 			url: "blog.didispace.com",
 			handles: [
@@ -1346,6 +1375,7 @@
 				}
 				for (let handle of website.handles) {
 					let items = document.querySelectorAll(handle.item);
+					console.log(items);
 					if (items.length != 0) {
 						if (handle.type == "display") {
 							//隐藏遮挡部分
