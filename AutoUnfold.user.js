@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.52
+// @version      1.3.54
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -461,16 +461,12 @@
 				},
 				//点击展开全文:狐猴浏览器特有bug
 				{
-					type: "display",
-					item: ".foldBtn"
-				},
-				{
-					type: "display",
-					item: ".foldMaskGradient"
-				},
-				{
 					type: "height",
-					item: ".mainContentContainer"
+					item: "#mainContentContainer"
+				},
+				{
+					type: "display",
+					item: ".foldMaskWrapper"
 				}
 			],
 		},
@@ -1375,7 +1371,6 @@
 				}
 				for (let handle of website.handles) {
 					let items = document.querySelectorAll(handle.item);
-					console.log(items);
 					if (items.length != 0) {
 						if (handle.type == "display") {
 							//隐藏遮挡部分
