@@ -24,6 +24,7 @@
 // @match        *://mbd.baidu.com/newspage/data/*
 // @match        *://news.baidu.com/news*
 // @match        *://m.baidu.com/sf_baijiahao/*
+// @match        *://easylearn.baidu.com/edu-page/tiangong/*
 // @match        *://*.sina.cn/*
 // @match        *://3g.163.com/*
 // @match        *://*.sohu.com/a/*
@@ -294,6 +295,26 @@
 					item.style.setProperty("-webkit-mask-image", "none", "important");
 				}
 			},
+		},
+		{
+			name: "百度题库",
+			url: "easylearn.baidu.com",
+			handles: [
+				// PC: 展开题目
+				{
+					type: "click",
+					item: ".toogle-btn",
+				},
+				// 通用: 答案展开
+				{
+					type: "click",
+					item: ".see-more",
+				},
+				{
+					type: "click",
+					item: ".exercise-btn-4",
+				},
+			],
 		},
 		{
 			name: "百度经验",
