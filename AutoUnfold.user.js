@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.54
+// @version      1.3.55
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -21,6 +21,7 @@
 // @match        *://wk.baidu.com/view/*
 // @match        *://tanbi.baidu.com/h5apptopic/browse/*
 // @match        *://baijiahao.baidu.com/s*
+// @match        *://easylearn.baidu.com/edu-page/tiangong/questiondetail?id*
 // @match        *://mbd.baidu.com/newspage/data/*
 // @match        *://news.baidu.com/news*
 // @match        *://m.baidu.com/sf_baijiahao/*
@@ -445,6 +446,21 @@
 				let item = document.querySelector("#read-view");
 				item.setAttribute("scrolling", "yes");
 			},
+		},
+		{
+			name: "百家题库",
+			url: "easylearn.baidu.com/edu-page/tiangong/questiondetail?id",
+			handles: [
+				//阅读全文
+				{
+					type: "display",
+					item: ".shiti-answer .mask",
+				},
+				{
+					type: "height",
+					item: ".shiti-answer .analysis-text",
+				},
+			],
 		},
 		{
 			name: "百家号",
