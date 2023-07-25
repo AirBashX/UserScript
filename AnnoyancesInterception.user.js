@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.60
+// @version      1.3.61
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -15,6 +15,7 @@
 // @match        *://news.baidu.com/news*
 // @match        *://m.baidu.com/sf_baijiahao/*
 // @match        *://view.inews.qq.com/*
+// @match        *://m.sohu.com/a/*
 // @match        *://m.v.qq.com/*
 // @match        *://*.youku.com/*
 // @match        *://*.iqiyi.com/*
@@ -88,7 +89,7 @@
 			items: [
 				//下载弹窗
 				".weixin-shadowbox",
-				//炫富按钮:打开
+				//悬浮按钮:打开:狐猴浏览器中的bug
 				".feed-Sign-weixin",
 				//悬浮按钮:APP内打开+登录/打开注册(主页)
 				".feed-Sign-span",
@@ -362,24 +363,20 @@
 			name: "百家号",
 			url: "baijiahao.baidu.com/s",
 			items: [
+				//悬浮按钮:百度APP内打开
+				"#bdrainrwDragButton"
 				//下载弹窗
-				".layer-wrap",
+				//".layer-wrap",
 				//悬浮按钮:xxx独家语音
-				".undefined",
+				//".undefined",
 			],
 		},
 		{
 			name: "百度资讯",
-			url: "m.baidu.com/sf_baijiahao",
-			items: [
-				//悬浮按钮:百度APP内打开
-				".bdrainrwDragButton",
-			],
-		},
-		{
-			name: "百度资讯2",
 			url: "mbd.baidu.com/newspage/data",
 			items: [
+				//悬浮按钮:百度APP内打开
+				"#bdrainrwDragButton",
 				//悬浮按钮:百度APP内播放
 				".drag-bottom",
 			],
@@ -750,6 +747,14 @@
 			],
 		},
 		{
+			name: "搜狐",
+			url: "m.sohu.com/a/",
+			items: [
+				//悬浮按钮:打开APP
+				".CallAppContainer",
+			],
+		},
+		{
 			name: "今日头条移动端",
 			url: "m.toutiao.com/article/",
 			items: [
@@ -1003,8 +1008,10 @@
 			name: "小红书",
 			url: "www.xiaohongshu.com",
 			items: [
-				//App内打开
+				//App内打开(视频)
 				".bottom-button-box",
+				//App内打开(笔记)
+				".bottom-bar",
 			],
 		},
 		{
