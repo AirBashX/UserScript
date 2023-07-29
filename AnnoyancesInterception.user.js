@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.61
+// @version      1.3.62
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  手机、电脑全平台通用:自动拦截或删除`下载弹窗`、`悬浮按钮`等影响用户体验的元素;长期维护:CSDN、简书、知乎、知乎专栏、百度搜索、百家号、百度贴吧、百度文库、百度新闻、新浪新闻、腾讯视频、优酷视频、爱奇艺、好看视频、哔哩哔哩、B站专栏、B站笔记、西瓜视频、抖音、丁香园、健康界、微博、新浪财经、东方财富网、电子发烧友、人民网、新京报、观察者网、澎湃新闻、凤凰新闻、网易新闻、今日头条、虎嗅、虎扑、豆瓣、中关村在线、太平洋电脑、太平洋汽车网、汽车之家、太平洋汽车网、taptap、it之家、360doc、开源中国、segmentfault、W3CSchool、阿里云开发者社区、腾讯云开发者社区、华为云开发者社区、36氪、雪球、天眼查、站酷、小红书、中国知网、装备前线
+// @description  手机、电脑全平台通用:自动拦截或删除`下载弹窗`、`悬浮按钮`等影响用户体验的元素;长期维护:CSDN、简书、知乎、知乎专栏、百度搜索、百家号、百度贴吧、百度文库、百度新闻、新浪新闻、腾讯视频、优酷视频、爱奇艺、好看视频、哔哩哔哩、B站专栏、B站笔记、西瓜视频、抖音、丁香园、健康界、微博、新浪财经、东方财富网、电子发烧友、人民网、新京报、观察者网、澎湃新闻、凤凰新闻、网易新闻、今日头条、虎嗅、虎扑、豆瓣、中关村在线、太平洋电脑、太平洋汽车网、汽车之家、太平洋汽车网、taptap、it之家、360doc、开源中国、segmentfault、W3CSchool、阿里云开发者社区、腾讯云开发者社区、华为云开发者社区、36氪、雪球、天眼查、站酷、小红书、中国知网、装备前线、必应搜索
 // @match        *://*.csdn.net/*
 // @match      	 *://*.jianshu.com/*
 // @match        *://juejin.cn/*
@@ -364,7 +364,7 @@
 			url: "baijiahao.baidu.com/s",
 			items: [
 				//悬浮按钮:百度APP内打开
-				"#bdrainrwDragButton"
+				"#bdrainrwDragButton",
 				//下载弹窗
 				//".layer-wrap",
 				//悬浮按钮:xxx独家语音
@@ -475,7 +475,7 @@
 				//悬浮按钮:bilibili内打开(底部)
 				".m-float-openapp",
 				//悬浮弹窗:bilibili内打开
-				//".openapp-dialog",
+				".openapp-dialog",
 				//固定按钮：播放时下载
 				".mplayer-widescreen-callapp",
 				//PC端:登录提示(右下角)
@@ -518,12 +518,13 @@
 								if (button) {
 									//有登陆弹窗时:模拟点击关闭按钮
 									if (LoginFlag == true) {
-										button.click();
-										let video = document.querySelector(".bpx-player-video-wrap video");
-										console.log("恢复播放");
-										video.play();
 										console.log(LoginFlag);
 										console.log("自动拦截");
+										button.click();
+
+										console.log("恢复播放");
+										let video = document.querySelector(".bpx-player-video-wrap video");
+										video.play();
 									} else {
 										console.log(LoginFlag);
 										console.log("手动拦截");
@@ -627,21 +628,40 @@
 			name: "新浪财经",
 			url: "sina.cn/",
 			items: [
-				//悬浮按钮:打开APP(主页)
-				".m-sentiment-blk",
-				//悬浮按钮:打开APP(讯部底部:有bug)
-				//".m-sentiment-blk",
-				//悬浮按钮:打开APP(讯部底部)
-				".m-guss-caijing",
-				//悬浮按钮:去APP听语音播报(讯部底部)
+				//悬浮弹窗:立即更新(主页:首次访问)
+				"#SFA_newVersion_pop",
+				//悬浮按钮:打开App中查看(主页:底部)
+				".m-client-call2",
+				//固定按钮:立即登录(主页:资讯)
+				".login-box",
+				//悬浮按钮:立即查看(资讯:底部,首次访问)
+				".wap-msg-bar-wap",
+				//悬浮按钮:去APP听语音播报(资讯:中间)
 				".broadcast",
-				//固定按钮:立即体验(讯部底部)
+				//悬浮按钮:打开APP(资讯:顶部,有bug)
+				".m-sentiment-blk",
+				//悬浮按钮:打开APP(资讯:底部)
+				".m-guss-caijing",
+				//固定按钮:立即体验(资讯:底部)
 				"#norm_qrcode_link_auto",
-				//悬浮按钮:打开APP(子栏1底部)
+				//悬浮按钮:打开APP(子栏1:底部)
 				"#subPage_bottom_callup_btn",
-				//悬浮按钮:打开APP(子栏2底部)
-				"#__callup_bottom",
+				//悬浮按钮:打开APP(子栏2:底部)
+				"#__callup_bottom_new",
+				//悬浮按钮:打开APP(子栏2:顶部,有bug)
+				".js-app-header",
 			],
+			fun: function () {
+				//修复上述规则产生的bug
+				let inter = setInterval(() => {
+					let item = document.querySelector(".compatibility-mode");
+					if(item.style.marginTop=="0px"){
+						clearInterval(inter);
+					}else{
+						item.style.marginTop = "0px";
+					}
+				}, 1000);
+			},
 		},
 		{
 			name: "东方财富网",
@@ -1043,6 +1063,14 @@
 			items: [
 				//App内打开
 				".app-opener",
+			],
+		},
+		{
+			name: "必应搜索",
+			url: "bing.com",
+			items: [
+				//必应中打开(Chrome中专属)
+				".bnp_rich_div_visible",
 			],
 		},
 		{
