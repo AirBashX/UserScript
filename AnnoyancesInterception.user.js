@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.62
+// @version      1.3.63
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -486,6 +486,8 @@
 				".bpx-player-toast-wrap",
 				//PC端:登录提示(右上角)
 				"div:has(.unlogin-popover-avatar)",
+				//PC端:滑动提示(正下方:首次)
+				".trial-feed-wrap"
 			],
 			fun: function () {
 				let LoginFlag = true;

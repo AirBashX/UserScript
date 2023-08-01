@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.57
+// @version      1.3.58
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -811,23 +811,21 @@
 				}
 			},
 		},
-		// {
-		// 	name: "B站视频",
-		// 	url: "www.bilibili.com/video/",
-		// 	handles: [],
-		// 	fun: function () {
-		// 		//PC端展开简介
-		// 		if (document.body.style.overflow == "auto") {
-		// 			let item1 = document.querySelector(".desc-info");
-		// 			item1.style.height = "unset";
-		// 			let item2 = document.querySelector(".toggle-btn");
-		// 			item2.setAttribute("report-id", "abstract_unspread");
-		// 			let item3 = item2.querySelector("span");
-		// 			item3.innerText = "收起";
-		// 			clearInterval(interval);
-		// 		}
-		// 	},
-		// },
+		{
+			name: "B站视频",
+			url: "www.bilibili.com/video/",
+			handles: [
+				//PC端:展开内容
+				{
+					type: "display",
+					item: ".toggle-btn",
+				},
+				{
+					type: "height",
+					item: ".basic-desc-info",
+				},
+			],
+		},
 		{
 			name: "B站专栏",
 			url: "www.bilibili.com/read/mobile",
