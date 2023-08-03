@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.63
+// @version      1.3.65
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -169,10 +169,13 @@
 				".open-button",
 				//下载弹窗
 				".byte-drawer",
-				//PC端:下方拓展弹窗
+				//PC端:登录弹窗(右下角)
+				".login-guide-wrap",
+				//PC端:下方拓展弹窗(未知)
 				".recommend-box",
-				//PC端:登录弹窗
+				//PC端:登录弹窗(未知)
 				".login-popover",
+
 			],
 			overflow: true,
 		},
@@ -773,6 +776,7 @@
 			url: "m.sohu.com/a/",
 			items: [
 				//悬浮按钮:打开APP
+				"#CallAppContainer",
 				".CallAppContainer",
 			],
 		},
