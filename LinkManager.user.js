@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         链接管理
-// @version      1.3.18
+// @version      1.3.19
 // @namespace    airbash/LinkManager
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -8,6 +8,8 @@
 // @match        *://link.csdn.net/*
 // @match        *://link.juejin.cn/*
 // @match        *://juejin.cn/*
+// @match        *://www.jianshu.com/p/*
+// @match        *://www.jianshu.com/go-wild?*
 // @match        *://*.zhihu.com/*
 // @match        *://tieba.baidu.com/*
 // @match        *://*.oschina.net/*
@@ -192,7 +194,7 @@
         {
             //https://www.jianshu.com/p/cf7dc734dd6d
             name: "简书",
-            url: "www.jianshu.com/p",
+            url: "www.jianshu.com/p/",
             handlers: [
                 {
                     selector: "a[href]",
