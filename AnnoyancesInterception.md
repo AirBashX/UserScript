@@ -12,6 +12,14 @@
 
 本脚本不拦截广告,广告拦截的话请订阅[easylist-china](https://easylist-downloads.adblockplus.org/easylistchina.txt)广告过滤规则
 
+# 相关脚本:
+| 名称         | 功能                                                         |
+| :----------- | :----------------------------------------------------------- |
+| **[自动展开](https://greasyfork.org/zh-CN/scripts/438656)** | 自动展开文章或新闻等`隐藏`、`折叠`部分                       |
+| **[骚扰拦截](https://greasyfork.org/zh-CN/scripts/440871)** | 自动拦截`下载弹窗`、`悬浮按钮`、`登录弹窗`等影响用户体验的骚扰元素 |
+| **[链接管理](https://greasyfork.org/zh-CN/scripts/443670)** | 取消点击链接后跳转到安全页面                                 |
+| **[移除复制后缀](https://greasyfork.org/zh-CN/scripts/472307)** | 移除复制后附带的`后缀`、`网站声明` |
+
 # 适配网站:
 |网站名|PC|Phone|app弹窗|悬浮按钮|其他功能|
 |-|-|-|-|-|-|
