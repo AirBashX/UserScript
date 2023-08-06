@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         豆瓣助手
-// @version      0.0.9
+// @version      0.0.10
 // @namespace    airbash/DoubanAssistant
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -73,11 +73,33 @@
 				let text = this.responseText;
 				let dp = new DOMParser();
 				let html = dp.parseFromString(text, "text/html");
-				let items = html.querySelectorAll("[data-testid=hero-rating-bar__aggregate-rating__score] span");
-				let score = items[0].innerText;
-				let div = document.createElement("div");
-				div.innerHTML = "<span class='pl'>IMDb评分:</span>" + score + "<br>";
-				document.querySelector(".rating_wrap").after(div);
+				let item = html.querySelector("[data-testid=hero-rating-bar__aggregate-rating__score] span");
+				let imdb_score = item.innerText;
+
+				let str = html.querySelector("#__NEXT_DATA__").textContent;
+				let json = JSON.parse(str);
+				let imdb_vote = json.props.pageProps.aboveTheFoldData.ratingsSummary.voteCount;
+
+				let self = document.querySelector(".rating_self").cloneNode(true);
+				let logo = document.querySelector(".rating_logo").cloneNode(true);
+				let sectl = document.querySelector("#interest_sectl");
+				sectl.append(logo);
+				sectl.append(self);
+
+				//增加IMDB名
+				logo.innerText = "IMDB评分";
+				//修改文字评分
+				self.querySelector(".rating_num").innerText = imdb_score;
+				//修改图形评分
+				let classList = self.querySelector(".bigstar").classList;
+				classList.replace(classList.item(2), "bigstar" + (Math.floor(imdb_score) / 2) * 10);
+				//修改IMDB人数
+				self.querySelector(".rating_people span").innerText = imdb_vote;
+				self.querySelector(".rating_people").href = "https://www.imdb.com/title/"+imdb_id+"/ratings";
+
+				// let div = document.createElement("div");
+				// div.innerHTML = "<span class='pl'>IMDb评分:</span>" + score + "<br>";
+				// document.querySelector(".rating_wrap").after(div);
 			},
 		});
 	}
@@ -273,7 +295,7 @@
 			showCloseButton: true,
 			didRender: () => {
 				GM_addStyle(
-					'.swal2-html-container{text-align:left !important;line-height:unset !important;}.smail_div{width:33%;float:left;}.switch{float:left;position:relative;top:3px;width:40px;height:20px;display:flex;}.checkbox{z-index:3;position:relative;width:100%;height:100%;cursor:pointer;opacity:0;}.bt{z-index:2;position:absolute;top:0;bottom:0;}.bt:before{position:absolute;top:2.5px;left:2.5px;content:"";width:15px;height:15px;background-color:red;border-radius:50%;transition:0.3s cubic-bezier(0.18,0.89,0.35,1.15) all;}.checkbox:checked + .bt:before{left:20px;background-color:#03a9f4;}.bg{z-index:1;position:absolute;top:0;right:0;bottom:0;left:0;border-radius:100px;background-color:#fcebeb;}.checkbox:checked ~ .bg{background-color:#ebf7fc;}'
+					'.swal2-html-container{text-align:left !important;line-height:unset !important;}.smail_div{width:33%;float:left;}.switch{float:left;position:relative;top:3px;width:40px;height:20px;display:flex;}.checkbox{z-index:3;position:relative;width:100%;height:100%;cursor:pointer;opacity:0;}.bt{z-index:2;position:absolute;top:0;bottom:0;}.bt:before{position:absolute;top:2.5px;left:2.5px;content:"";width:15px;height:15px;background-color:red;border-radius:50%;transition:0.3s cubic-bezier(0.18,0.89,0.35,1.15) all;}.checkbox:checked + .bt:before{left:20px;background-color:#03a9f4;}.bg{z-index:1;position:absolute;top:0;right:0;bottom:0;left:0;border-radius:100px;background-color:#fcebeb;}.checkbox:checked ~ .bg{background-color:#ebf7fc;}',
 				);
 				/**
 				 * 侧边栏开关
