@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         链接管理
-// @version      1.3.19
+// @version      1.3.20
 // @namespace    airbash/LinkManager
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -298,7 +298,6 @@
     if (location.href.includes("m.baidu.com") || location.href.includes("www.baidu.com")) {
         let interval;
         interval = setInterval(() => {
-            console.log(1);
             let flag = baidu_static();
             // if (flag == false) {
             //     baidu_dynamic();
@@ -343,7 +342,7 @@
                 let str = item.getAttribute("data-log");
                 let json = JSON.parse(str);
                 let url = json.mu;
-                if (!url.startsWith("https://ks.baidu.com")) {
+                if (!url.startsWith("https://ks.baidu.com") && url) {
                     //ks.baidu.com                  https://www.baidu.com/s?word=赵匡胤
                     rl_link_href.setAttribute("rl-link-href", url);
                     let as = item.querySelectorAll("a");
