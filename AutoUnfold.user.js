@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.58
+// @version      1.3.59
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -909,19 +909,25 @@
 				//展开(简介)
 				let item1 = document.querySelector(".subject-intro p");
 				try {
-					let str1 = item1.getAttribute("data-content");
-					if (str1) {
-						item1.innerText = str1;
+					let str = item1.getAttribute("data-content");
+					if (str) {
+						item1.innerText = str;
 					}
 				} catch (error) {
 					/* empty */
 				}
-				//展开(评论)
 				onload = function () {
+					//展开(评论)
 					let items2 = document.querySelectorAll(".LinesEllipsis-readmore");
-					for (let item2 of items2) {
-						item2.click();
+					for (let item of items2) {
+						item.click();
 					}
+					//展开全部(PC端:简介)
+					let items3 = document.querySelectorAll(".a_show_full");
+					for (let item of items3) {
+						item.click();
+					}
+
 				};
 			},
 		},
