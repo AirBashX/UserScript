@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.65
+// @version      1.3.66
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -20,6 +20,7 @@
 // @match        *://*.youku.com/*
 // @match        *://*.iqiyi.com/*
 // @match        *://haokan.baidu.com/*
+// @match        *://*.1905.com/*
 // @match        *://*.baidu.com/*
 // @match        *://*.bilibili.com/*
 // @match        *://3g.dxy.cn/*
@@ -452,8 +453,18 @@
 			],
 		},
 		{
+			name: "m1905电影网",
+			url: "1905.com/",
+			items: [
+				//悬浮弹窗:打开app
+				"#popupModule",
+				//悬浮按钮:
+				".open-link"
+			],
+		},
+		{
 			name: "百度搜索",
-			url: "m.baidu.com",
+			url: "baidu.com",
 			items: [
 				//搜索结果:小程序
 				"[srcid=xcx_multi]",
