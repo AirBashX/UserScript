@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.59
+// @version      1.3.60
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  自动展开文档	隐藏部分;长期维护、PC+手机全平台支持;全平台支持:CSDN、编程之家、简书、知乎、百家号、百度资讯、百度百科、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、澎湃新闻、新京报、央广网、环球网、人民日报、人民网、今日头条、丁香园、健康界、36氪、果壳、虎扑、虎嗅、头条、B站、B站专栏、B站笔记、微博文章、豆瓣文章、豆瓣小组、开源中国、阿里云开发者社区、腾讯云开发者社区、华为云开发者社区、360图书馆、太平洋电脑网、中关村在线、汽车之家、游侠网、游民星空、360问答、天眼查、天涯社区、东方财富网、喜马拉雅、it1352、代码随想录
+// @description  自动展开文档	隐藏部分;长期维护、PC+手机全平台支持;全平台支持:CSDN、编程之家、简书、知乎、百家号、百度资讯、百度百科、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、澎湃新闻、新京报、央广网、环球网、人民日报、人民网、今日头条、丁香园、健康界、36氪、果壳、虎扑、虎嗅、头条、B站专栏、B站笔记、微博文章、豆瓣文章、豆瓣小组、开源中国、阿里云开发者社区、腾讯云开发者社区、华为云开发者社区、360图书馆、太平洋电脑网、中关村在线、汽车之家、游侠网、游民星空、360问答、天眼查、天涯社区、东方财富网、喜马拉雅、it1352、代码随想录
 // @match        *://*.blog.csdn.net/*
 // @match        *://blog.csdn.net/*
 // @match        *://ask.csdn.net/questions/*
@@ -39,7 +39,6 @@
 // @match        *://www.cn-healthcare.com/*
 // @match        *://space.bilibili.com/*/dynamic*
 // @match        *://t.bilibili.com*
-// @match        *://www.bilibili.com/video/*
 // @match        *://www.bilibili.com/read/mobile*
 // @match        *://m.bilibili.com/opus/*
 // @match        *://weibo.com/ttarticle/p/show?id=*
@@ -795,6 +794,21 @@
 				},
 			],
 		},
+		// {
+		// 	name: "B站视频",
+		// 	url: "www.bilibili.com/video/",
+		// 	handles: [
+		// 		//PC端:展开内容
+		// 		{
+		// 			type: "display",
+		// 			item: ".toggle-btn",
+		// 		},
+		// 		{
+		// 			type: "height",
+		// 			item: ".basic-desc-info",
+		// 		},
+		// 	],
+		// },
 		{
 			name: "B站动态",
 			url: "space.bilibili.com/",
@@ -810,21 +824,6 @@
 					item2.innerText = "收起";
 				}
 			},
-		},
-		{
-			name: "B站视频",
-			url: "www.bilibili.com/video/",
-			handles: [
-				//PC端:展开内容
-				{
-					type: "display",
-					item: ".toggle-btn",
-				},
-				{
-					type: "height",
-					item: ".basic-desc-info",
-				},
-			],
 		},
 		{
 			name: "B站专栏",
@@ -922,12 +921,24 @@
 					for (let item of items2) {
 						item.click();
 					}
-					//展开全部(PC端:简介)
-					let items3 = document.querySelectorAll(".a_show_full");
+
+					//展开(PC端:评论)
+					let items3 = document.querySelectorAll(".expand");
 					for (let item of items3) {
 						item.click();
 					}
 
+					//展开全部(PC端:简介)
+					let items4 = document.querySelectorAll(".a_show_full");
+					for (let item of items4) {
+						item.click();
+					}
+
+					//展开(PC端:人物简介)
+					let items5 = document.querySelectorAll(".fold-switch");
+					for (let item of items5) {
+						item.click();
+					}
 				};
 			},
 		},
