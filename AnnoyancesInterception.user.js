@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.66
+// @version      1.3.67
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -176,7 +176,6 @@
 				".recommend-box",
 				//PC端:登录弹窗(未知)
 				".login-popover",
-
 			],
 			overflow: true,
 		},
@@ -459,7 +458,7 @@
 				//悬浮弹窗:打开app
 				"#popupModule",
 				//悬浮按钮:
-				".open-link"
+				".open-link",
 			],
 		},
 		{
@@ -501,7 +500,7 @@
 				//PC端:登录提示(右上角)
 				"div:has(.unlogin-popover-avatar)",
 				//PC端:滑动提示(正下方:首次)
-				".trial-feed-wrap"
+				".trial-feed-wrap",
 			],
 			fun: function () {
 				let LoginFlag = true;
@@ -671,9 +670,9 @@
 				//修复上述规则产生的bug
 				let inter = setInterval(() => {
 					let item = document.querySelector(".compatibility-mode");
-					if(item.style.marginTop=="0px"){
+					if (item.style.marginTop == "0px") {
 						clearInterval(inter);
-					}else{
+					} else {
 						item.style.marginTop = "0px";
 					}
 				}, 1000);
@@ -1024,15 +1023,14 @@
 				let mo = new MutationObserver(function (mutations) {
 					for (let mutation of mutations) {
 						for (let node of mutation.addedNodes) {
-							let button;
 							try {
-								button = node.querySelector(".modal__close ");
+								let button = node.querySelector(".modal__close ");
+								if (button) {
+									button.click();
+									console.log("关闭成功");
+								}
 							} catch (error) {
 								/* empty */
-							}
-							if (button) {
-								button.click();
-								console.log("关闭成功");
 							}
 						}
 					}
@@ -1041,7 +1039,6 @@
 			},
 		},
 		{
-			//https://www.xiaohongshu.com/discovery/item/636cbbc1000000001c03c332
 			name: "小红书",
 			url: "www.xiaohongshu.com",
 			items: [
@@ -1050,6 +1047,24 @@
 				//App内打开(笔记)
 				".bottom-bar",
 			],
+			fun: function () {
+				let mo = new MutationObserver(function (mutations) {
+					for (let mutation of mutations) {
+						for (let node of mutation.addedNodes) {
+							try {
+								let button = node.querySelector(".icon-btn-wrapper");
+								if (button) {
+									button.click();
+									console.log("关闭成功");
+								}
+							} catch (error) {
+								/* empty */
+							}
+						}
+					}
+				});
+				mo.observe(document, { childList: true, subtree: true });
+			},
 		},
 		{
 			name: "喜马拉雅",
