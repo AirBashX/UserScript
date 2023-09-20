@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.60
+// @version      1.3.61
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -38,7 +38,7 @@
 // @match        *://3g.dxy.cn/*
 // @match        *://www.cn-healthcare.com/*
 // @match        *://space.bilibili.com/*/dynamic*
-// @match        *://t.bilibili.com*
+// @match        *://t.bilibili.com/*
 // @match        *://www.bilibili.com/read/mobile*
 // @match        *://m.bilibili.com/opus/*
 // @match        *://weibo.com/ttarticle/p/show?id=*
@@ -922,21 +922,9 @@
 						item.click();
 					}
 
-					//展开(PC端:评论)
-					let items3 = document.querySelectorAll(".expand");
+					//展开(PC端:评论;简介;人物简介)
+					let items3 = document.querySelectorAll(".expand,.a_show_full,.fold-switch");
 					for (let item of items3) {
-						item.click();
-					}
-
-					//展开全部(PC端:简介)
-					let items4 = document.querySelectorAll(".a_show_full");
-					for (let item of items4) {
-						item.click();
-					}
-
-					//展开(PC端:人物简介)
-					let items5 = document.querySelectorAll(".fold-switch");
-					for (let item of items5) {
 						item.click();
 					}
 				};
