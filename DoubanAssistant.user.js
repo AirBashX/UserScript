@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         豆瓣助手
-// @version      0.0.10
+// @version      0.0.11
 // @namespace    airbash/DoubanAssistant
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -138,8 +138,8 @@
 			links: [
 				{
 					name: "WebHD",
-					url: "webhd.cc",
-					search: "https://webhd.cc/search/",
+					url: "webhd.top",
+					search: "https://webhd.top/search/",
 					id: douban_cn_name,
 				},
 				{
