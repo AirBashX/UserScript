@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.67
+// @version      1.3.68
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -434,13 +434,15 @@
 			url: "haokan.baidu.com/",
 			items: [
 				//悬浮按钮:打开好看app(中间)
-				".open-app-button",
+				".open-app-top",
 				//固定文字:打开APP(多)
 				".top-video-card-img-app",
 				//固定按钮:下载APP(视频播放时)
 				".video-player-download-tips",
 				//固定按钮:打开(底部)
 				".open-app-bottom",
+				//固定按钮:打开(底部:个别)
+				".NewOpenApp",
 				//PC端固定按钮:下载APP(视频暂停时)
 				".player-lefttip-inner",
 				//PC端登录提示:登录提示
@@ -791,7 +793,16 @@
 			],
 		},
 		{
-			name: "今日头条移动端",
+			name: "今日头条移动端:文章",
+			url: "m.toutiao.com/article/",
+			items: [
+				//悬浮按钮：App内打开(底部)
+				".float-activate-button-container",
+				".download-bar__container",
+			],
+		},
+		{
+			name: "今日头条移动端:视频",
 			url: "m.toutiao.com/article/",
 			items: [
 				//悬浮按钮：App内打开(底部)
