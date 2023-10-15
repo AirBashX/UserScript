@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.61
+// @version      1.3.62
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -376,7 +376,7 @@
 				//展开全部
 				{
 					type: "click",
-					item: ".table-show-all",
+					item: ".layout-icons_down-arrow",
 				},
 				//点击加载更多
 				{
@@ -385,6 +385,7 @@
 				},
 			],
 			fun: function () {
+				//点击加载更多
 				let button = document.querySelector('.yx-load-more-inner');
 				button.dispatchEvent(new Event("tap"));
 			},
