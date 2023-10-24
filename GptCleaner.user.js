@@ -3,9 +3,9 @@
 // @namespace    airbash/GptCleaner
 // @author       airbash
 // @homepageURL  https://github.com/AirBashX/UserScript
-// @version      0.0.1
+// @version      0.0.2
 // @description  每次进入gpt页面,删除之前的聊天记录
-// @match        *://c.binjie.fun/*
+// @match        *://*.aichatos.xyz/*
 // @license      GPL-3.0
 // @run-at       document-start
 // ==/UserScript==
