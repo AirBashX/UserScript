@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.69
+// @version      1.3.70
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -104,7 +104,7 @@
 			fun: function () {
 				/**
 				 * PC端:屏蔽登录弹窗
-				 * @param      {<list>}  mutationsList  The mutations list
+				 * @param      {list}  mutationsList  The mutations list
 				 */
 				let removeLoginNotice = function (mutationsList) {
 					for (let mutation of mutationsList) {
@@ -125,8 +125,6 @@
 					}
 				};
 
-				//是否拦截:默认拦截
-				let LoginFlag = true;
 				document.onreadystatechange = function () {
 					if (document.readyState === "interactive") {
 						let loginBtn = document.querySelector(".toolbar-btn-login>.toolbar-btn-loginfun");
@@ -232,7 +230,7 @@
 			fun: function () {
 				/**
 				 * PC端:屏蔽登录弹窗
-				 * @param      {<list>}  mutationsList  The mutations list
+				 * @param      {list}  mutationsList  The mutations list
 				 */
 				let removeLoginNotice = function (mutationsList) {
 					for (let mutation of mutationsList) {
@@ -257,8 +255,6 @@
 					}
 				};
 
-				//是否拦截:默认拦截
-				let LoginFlag = true;
 				document.onreadystatechange = function () {
 					onload = function () {
 						let loginBtn = document.querySelector(".AppHeader-profile button");
@@ -285,7 +281,7 @@
 			fun: function () {
 				/**
 				 * PC端:屏蔽登录弹窗
-				 * @param      {<list>}  mutationsList  The mutations list
+				 * @param      {list}  mutationsList  The mutations list
 				 */
 				let removeLoginNotice = function (mutationsList) {
 					for (let mutation of mutationsList) {
@@ -309,8 +305,6 @@
 					}
 				};
 
-				//是否拦截:默认拦截
-				let LoginFlag = true;
 				document.onreadystatechange = function () {
 					if (document.readyState === "interactive") {
 						let loginBtn = document.querySelector(".ColumnPageHeader-profile button");
@@ -505,7 +499,6 @@
 				".trial-feed-wrap",
 			],
 			fun: function () {
-				let LoginFlag = true;
 				let add;
 				function mutationCallback(record, observer) {
 					//已确定登录:停止监听
@@ -595,13 +588,57 @@
 			name: "抖音电脑版",
 			url: "www.douyin.com",
 			items: [
-				//PC端:右上角登录提示
-				".login-guide-container",
+				//PC端:右下角登录提示(画质)
+				".login-clarity-new",
+				//PC端:下方滑动引导
+				"[data-e2e=recommend-guide-mask]",
 				//PC端:登陆后查看评论
-				".recommend-comment-login",
-				//PC端:登录提示
-				".login-mask-enter-done",
+				"#related-video-card-login-guide",
 			],
+			fun: function () {
+				//拦截登录弹窗
+				onload = function () {
+					//执行监听
+					let observer = new MutationObserver(removeLoginNotice);
+					observer.observe(document, { childList: true, subtree: true });
+				};
+
+				/**
+				 * Removes a login notice.
+				 *
+				 * @param      {MutationRecord[]}  mutationsList  The mutations list
+				 * @param      {MutationObserver}  observer       The observer
+				 */
+				let removeLoginNotice = function (mutationsList) {
+					for (let mutation of mutationsList) {
+						for (let node of mutation.addedNodes) {
+							let closeBtn, loginBtn;
+							try {
+								closeBtn = node.querySelector(".dy-account-close");
+								loginBtn = getXpath('//div[text()="登录"] | //p[text()="登录"]', document);
+							} catch (error) {
+								/* empty */
+							}
+							//关闭登录弹窗
+							if (closeBtn) {
+								if (LoginFlag == true) {
+									closeBtn.click();
+								} else {
+									LoginFlag = true;
+								}
+							}
+							//增加点击事件
+							if (ClickFlag == true) {
+								loginBtn.addEventListener("click", function () {
+									LoginFlag = false;
+									ClickFlag = false;
+								});
+							}
+							return;
+						}
+					}
+				};
+			},
 		},
 		{
 			name: "丁香园",
@@ -1164,12 +1201,17 @@
 		}
 	}
 
+	//默认监听
+	let LoginFlag = true;
+	//默认添加
+	let ClickFlag = true;
+
 	/**
 	 * 通过内容(xpath)获取节点
 	 *
-	 * @param      {<string>}  xpath   内容
-	 * @param      {<Node>}  parent  父元素
-	 * @return     {<Node>}  元素
+	 * @param      {string}  xpath   内容
+	 * @param      {Node}  parent  父元素
+	 * @return     {Node}  元素
 	 */
 	function getXpath(xpath, parent) {
 		let xpathResult = document.evaluate(xpath, parent || document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
