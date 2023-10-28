@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.70
+// @version      1.3.71
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -598,6 +598,16 @@
 			fun: function () {
 				//拦截登录弹窗
 				onload = function () {
+					//增加点击事件
+					let inter = setInterval(() => {
+						let loginBtn = getXpath('//div[text()="登录"] | //p[text()="登录"]', document).parentElement;
+						if (loginBtn) {
+							loginBtn.addEventListener("click", function () {
+								LoginFlag = false;
+								clearInterval(inter);
+							});
+						}
+					}, 1000);
 					//执行监听
 					let observer = new MutationObserver(removeLoginNotice);
 					observer.observe(document, { childList: true, subtree: true });
@@ -612,10 +622,9 @@
 				let removeLoginNotice = function (mutationsList) {
 					for (let mutation of mutationsList) {
 						for (let node of mutation.addedNodes) {
-							let closeBtn, loginBtn;
+							let closeBtn;
 							try {
 								closeBtn = node.querySelector(".dy-account-close");
-								loginBtn = getXpath('//div[text()="登录"] | //p[text()="登录"]', document);
 							} catch (error) {
 								/* empty */
 							}
@@ -626,13 +635,6 @@
 								} else {
 									LoginFlag = true;
 								}
-							}
-							//增加点击事件
-							if (ClickFlag == true) {
-								loginBtn.addEventListener("click", function () {
-									LoginFlag = false;
-									ClickFlag = false;
-								});
 							}
 							return;
 						}
