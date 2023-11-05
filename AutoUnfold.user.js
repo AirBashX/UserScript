@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.62
+// @version      1.3.63
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -633,7 +633,21 @@
 			name: "凤凰新闻",
 			url: "ifeng.com/",
 			handles: [
-				//点击查看完整内容(房子)
+				//点击展开全文(新闻)
+				{
+					type: "display",
+					item: "[class^=index_more_]",
+				},
+				{
+					type: "display",
+					item: "[class^=index_tip_",
+				},
+				{
+					type: "height",
+					item: "[class^=index_main_content_]",
+				},
+
+				//点击查看完整内容(房产)
 				{
 					type: "display",
 					item: ".showall",
@@ -641,11 +655,6 @@
 				{
 					type: "height",
 					item: ".article",
-				},
-				//点击展开全文(资讯)
-				{
-					type: "display",
-					item: "[class^=tip]",
 				},
 				//展开全文(汽车)
 				{
@@ -656,10 +665,10 @@
 					type: "height",
 					item: "[class^=main_content]",
 				},
-				//展开(财经视频介绍)
+				//展开(视频简介)
 				{
 					type: "click",
-					item: "[class^=videoBrefTextBtn-]",
+					item: "[class^=index_videoBrefTextBtn_]",
 				},
 			],
 		},

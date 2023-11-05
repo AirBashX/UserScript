@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.71
+// @version      1.3.72
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -795,15 +795,13 @@
 			url: "ifeng.com",
 			items: [
 				//悬浮按钮:立即打开(主页)
-				"[class^=fixSlide-]",
-				//悬浮按钮:滚动新闻(底部)
-				"[class^=bottom_box-]",
-				//固定按钮:立即打开(财经顶部)
-				"[class^=header-]",
-				//固定按钮:过去24小时...(财经顶部)
-				"[class^=headerIn-]",
-				//悬浮按钮:滚动新闻(财经底部)
-				"[class^=fixBottom-]",
+				"[class^=index_fixSlide_]",
+				//悬浮按钮:滚动新闻(新闻底部)
+				"[class^=index_bottom_box_]",
+				//悬浮按钮:立即打开(财经底部)
+				"[class^=index_bottomSlide_]",
+				//悬浮按钮:滚动新闻(卫视底部)
+				"[class^=index_fixBottom_]",
 			],
 		},
 		{
