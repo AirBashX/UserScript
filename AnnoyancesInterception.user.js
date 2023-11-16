@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.72
+// @version      1.3.73
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -96,10 +96,10 @@
 				".feed-Sign-span",
 				//PC端:弹窗:学生认证
 				"#csdn-highschool-window",
-				//PC端:登录弹窗(固定)
+				//PC端:登录弹窗(顶部)
 				"#csdn-toolbar-profile-nologin",
-				//PC端:登录弹窗(悬浮)
-				//".passport-login-container",
+				//PC端:登录弹窗(底部)
+				".passport-login-tip-container",
 			],
 			fun: function () {
 				/**
@@ -111,7 +111,7 @@
 						for (let node of mutation.addedNodes) {
 							if (document.querySelector(".passport-login-container")) {
 								//有登陆弹窗时:模拟点击关闭按钮
-								let button = node.querySelector("span");
+								let button = node.querySelector("img");
 								if (button) {
 									if (LoginFlag == true) {
 										button.click();
@@ -138,7 +138,7 @@
 							let observer = new MutationObserver(removeLoginNotice);
 							observer.observe(document, { childList: true, subtree: true });
 						}
-
+						//移动版登录弹窗
 						if (document.querySelector(".toolbarBack")) {
 							let css = document.createElement("style");
 							css.innerText += ".passport-login-container {display: none !important}";
