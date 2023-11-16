@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.63
+// @version      1.3.64
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -592,21 +592,10 @@
 			name: "搜狐新闻",
 			url: "sohu.com/a",
 			handles: [
-				//展开
+				//展开剩余n%
 				{
-					type: "display",
-					item: ".lookall-box",
-				},
-				//移动+PC版
-				{
-					type: "classList",
-					item: ".hidden-content",
-					remove: "hide",
-				},
-				{
-					type: "classList",
-					item: ".hidden-content",
-					remove: "control-hide",
+					type: "clickN",
+					item: "#artLookAll",
 				},
 			],
 		},
@@ -1449,12 +1438,19 @@
 							for (let item of items) {
 								item.classList.remove(handle.remove);
 							}
-						} else {
-							//模拟点击
+						} else if (handle.type == "click")  {
+							//模拟一次点击
 							for (let item of items) {
 								if (item != null && item.getAttribute("opened") != "yes") {
 									item.click();
 									item.setAttribute("opened", "yes");
+								}
+							}
+						}else {
+							//模拟多次点击
+							for (let item of items) {
+								if (item) {
+									item.click();
 								}
 							}
 						}
