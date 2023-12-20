@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.73
+// @version      1.3.74
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -1099,19 +1099,29 @@
 				let mo = new MutationObserver(function (mutations) {
 					for (let mutation of mutations) {
 						for (let node of mutation.addedNodes) {
-							try {
-								let button = node.querySelector(".icon-btn-wrapper");
-								if (button) {
+							let button = node.querySelector(".icon-btn-wrapper");
+							if (button) {
+								if (LoginFlag) {
 									button.click();
-									console.log("关闭成功");
+								} else {
+									LoginFlag = true;
 								}
-							} catch (error) {
-								/* empty */
+								return;
 							}
 						}
 					}
 				});
-				mo.observe(document, { childList: true, subtree: true });
+				let loginBtn = document.querySelector(".login-btn");
+				if (loginBtn) {
+					loginBtn.addEventListener(
+						"click",
+						function () {
+							LoginFlag = false;
+						},
+						true,
+					);
+					mo.observe(document, { childList: true, subtree: true });
+				}
 			},
 		},
 		{
