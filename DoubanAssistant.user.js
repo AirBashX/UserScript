@@ -1,13 +1,14 @@
 // ==UserScript==
 // @name         豆瓣助手
-// @version      0.0.11
+// @version      0.0.12
 // @namespace    airbash/DoubanAssistant
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  恢复IMDB的链接,展示IMDB评分,以及增加快捷搜索SubHD、字幕库、射手网、WebHD、rargb、6V电影网、腾讯视频、优酷视频、爱奇艺、哔哩哔哩、西瓜视频、欢喜首映中资源的功能
+// @description  恢复IMDB的链接,展示IMDB评分,以及增加快捷搜索SubHD、字幕库、射手网、WebHD、rargb、tgx、6V电影网、电影天堂、腾讯视频、优酷视频、爱奇艺、哔哩哔哩、西瓜视频、欢喜首映中资源的功能
 // @match        *://movie.douban.com/subject/*
 // @connect      www.hao6v.tv
 // @connect      www.imdb.com
+// @connect      www.dy2018.com
 // @grant        GM_registerMenuCommand
 // @grant        GM_unregisterMenuCommand
 // @grant        GM_setValue
@@ -95,7 +96,7 @@
 				classList.replace(classList.item(2), "bigstar" + (Math.floor(imdb_score) / 2) * 10);
 				//修改IMDB人数
 				self.querySelector(".rating_people span").innerText = imdb_vote;
-				self.querySelector(".rating_people").href = "https://www.imdb.com/title/"+imdb_id+"/ratings";
+				self.querySelector(".rating_people").href = "https://www.imdb.com/title/" + imdb_id + "/ratings";
 
 				// let div = document.createElement("div");
 				// div.innerHTML = "<span class='pl'>IMDb评分:</span>" + score + "<br>";
@@ -153,7 +154,22 @@
 					url: "www.hao6v.tv",
 					search: "https://www.hao6v.tv/e/search/index.php",
 					id: douban_cn_name_gbk,
+					data: "show=title%2Csmalltext&tempid=1&tbname=Article&keyboard=" + douban_cn_name_gbk + "&Submit22=%E6%90%9C%E7%B4%A2",
 					type: "xhr",
+				},
+				{
+					name: "电影天堂",
+					url: "https://www.dy2018.com/",
+					search: "https://www.dy2018.com/e/search/index.php",
+					id: douban_cn_name_gbk,
+					data: "show=title&tempid=1&keyboard=" + douban_cn_name_gbk + "&Submit=%C1%A2%BC%B4%CB%D1%CB%F7",
+					type: "xhr",
+				},
+				{
+					name: "tgx",
+					url: "tgx.rs",
+					search: "https://tgx.rs/torrents.php?search=",
+					id: douban_en_name,
 				},
 			],
 		},
@@ -258,10 +274,10 @@
 							},
 							timeout: 5000,
 							anonymous: true,
-							data: "show=title%2Csmalltext&tempid=1&tbname=Article&keyboard=" + link.id + "&Submit22=%E6%90%9C%E7%B4%A2",
+							data: link.data,
 							onload: function () {
 								let str;
-								if (this.finalUrl == "https://www.hao6v.tv/e/search/index.php") {
+								if (this.finalUrl == link.search) {
 									str = '<a href="' + this.finalUrl + '" target="_blank" style="color:pink" title="没有资源">' + link.name + "</a>";
 								} else {
 									str = '<a href="' + this.finalUrl + '" target="_blank">' + link.name + "</a>";
