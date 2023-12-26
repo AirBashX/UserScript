@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.74
+// @version      1.3.75
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -369,7 +369,7 @@
 			],
 		},
 		{
-			name: "百度资讯",
+			name: "百度资讯+百度首页",
 			url: "mbd.baidu.com/newspage/data",
 			items: [
 				//悬浮按钮:百度APP内打开
@@ -947,7 +947,7 @@
 			url: "www.taptap.cn",
 			items: [
 				//悬浮按钮:打开taptap
-				".open-app-button",
+				".open-app-global-float",
 			],
 		},
 		{
