@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         豆瓣助手
-// @version      0.0.12
+// @version      0.0.13
 // @namespace    airbash/DoubanAssistant
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -8,7 +8,7 @@
 // @match        *://movie.douban.com/subject/*
 // @connect      www.hao6v.tv
 // @connect      www.imdb.com
-// @connect      www.dy2018.com
+// @connect      dy2018.com
 // @grant        GM_registerMenuCommand
 // @grant        GM_unregisterMenuCommand
 // @grant        GM_setValue
