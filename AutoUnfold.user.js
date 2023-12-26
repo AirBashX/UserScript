@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.64
+// @version      1.3.65
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -498,63 +498,26 @@
 			],
 		},
 		{
-			name: "百度app新闻",
+			name: "百度新闻",
 			url: "mbd.baidu.com/newspage/data",
 			handles: [
-				//类似于百家
-				//阅读全文
+				//打开百度app:普通新闻
 				{
 					type: "display",
-					item: ".height-fold",
+					item: "[class^=foldMaskWrapper-]",
 				},
 				{
 					type: "height",
-					item: ".dynamic-item",
+					item: "#dynamicItem",
 				},
-
-				//类似于百度
-				//阅读全文
+				//打开百度app:百度首页
 				{
 					type: "display",
-					item: ".packupButton",
+					item: ".foldMaskWrapper",
 				},
 				{
 					type: "height",
-					item: ".mainContent",
-				},
-			],
-		},
-		{
-			name: "百度资讯",
-			url: "m.baidu.com/sf_baijiahao",
-			handles: [
-				//展开全文
-				{
-					type: "display",
-					item: ".oPadding",
-				},
-				{
-					type: "height",
-					item: ".mainContent",
-				},
-			],
-		},
-		{
-			name: "百度新闻",
-			url: "news.baidu.com/news#/detail",
-			handles: [
-				//阅读全文
-				{
-					type: "display",
-					item: ".show-more-btn-container",
-				},
-				{
-					type: "display",
-					item: ".show-more-end",
-				},
-				{
-					type: "height",
-					item: ".detail-content-main",
+					item: "#mainContentContainer",
 				},
 			],
 		},
