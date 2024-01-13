@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         移除复制后缀
-// @version      1.0.2
+// @version      1.0.3
 // @namespace    airbash/RemoveSuffix
 // @homepage     https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -9,7 +9,7 @@
 // @match        *://*.juejin.cn/*
 // @match      	 *://*.jianshu.com/*
 // @match        *://www.zhihu.com/*
-// @match        *://www.bilibili.com/read/mobile*
+// @match        *://www.bilibili.com/read/*
 // @match        *://leetcode.cn/*
 // @run-at       document-start
 // @grant        none
@@ -21,12 +21,12 @@
 
 	function copy() {
 		document.addEventListener(
-		"copy",
-		function (event) {
-			event.stopPropagation();
-		},
-		true
-	);
+			"copy",
+			function (event) {
+				event.stopPropagation();
+			},
+			true
+		);
 	}
 
 	function userSelect() {
@@ -34,6 +34,7 @@
 		style.append("*{user-select:auto !important}");
 		document.head.append(style);
 	}
+
 	copy();
 	userSelect();
 })();
