@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         链接管理
-// @version      1.3.21
+// @version      1.3.22
 // @namespace    airbash/LinkManager
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -314,8 +314,9 @@
             if (a.href.includes("www.baidu.com/link?url=")) {
                 let url = item.getAttribute("mu");
                 //https://www.baidu.com/s?wd=一夜醒来欠地铁600多万?官方回应
-                if (url && url != null && !url.includes("nourl.ubs.baidu.com")) {
+                if (url && url != "null" && !url.includes("nourl.ubs.baidu.com")) {
                     a.href = url;
+                    console.log(url);
                 }
             }
             //single-card-wrapper: https://www.baidu.com/s?ie=UTF-8&wd=es6                          xxx的最新相关信息
