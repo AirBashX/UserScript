@@ -101,11 +101,6 @@
 					type: "display",
 					item: ".hide-article-box",
 				},
-				//下载弹窗
-				{
-					type: "display",
-					item: ".weixin-shadowbox",
-				},
 				//阅读全文
 				{
 					type: "display",
@@ -205,11 +200,6 @@
 			name: "简书",
 			url: "jianshu.com/p",
 			handles: [
-				//下载弹窗
-				{
-					type: "display",
-					item: ".download-app-guidance",
-				},
 				//阅读全文
 				{
 					type: "display",
@@ -681,7 +671,7 @@
 			handles: [
 				//展开全文
 				{
-					type: "display",
+					type: "click",
 					item: ".unfold-btn",
 				},
 			],
