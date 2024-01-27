@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.65
+// @version      1.3.66
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -556,11 +556,17 @@
 			url: "sohu.com/a",
 			handles: [
 				//展开剩余n%
-				{
-					type: "clickN",
-					item: "#artLookAll",
-				},
+				// {
+				// 	type: "clickN",
+				// 	item: "#artLookAll",
+				// },
 			],
+			fun:function () {
+				onload=function () {
+					let item = document.querySelector("#artLookAll");
+					item.click();
+				}
+			}
 		},
 		{
 			name: "腾讯新闻",
@@ -675,7 +681,7 @@
 			handles: [
 				//展开全文
 				{
-					type: "click",
+					type: "display",
 					item: ".unfold-btn",
 				},
 			],
