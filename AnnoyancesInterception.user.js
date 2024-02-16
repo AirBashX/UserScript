@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.75
+// @version      1.3.76
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -594,8 +594,14 @@
 				"[data-e2e=recommend-guide-mask]",
 				//PC端:登陆后查看评论
 				"#related-video-card-login-guide",
+				//PC端:底部登录
+				".wwNZW6za"
 			],
 			fun: function () {
+				//关闭模糊
+				let css = document.createElement("style");
+				css.innerText += ".sIGPZD5n{filter: none !important}";
+				document.head.append(css);
 				//拦截登录弹窗
 				onload = function () {
 					//增加点击事件
