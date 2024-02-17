@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.3.76
+// @version      1.4.0
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -140,9 +140,7 @@
 						}
 						//移动版登录弹窗
 						if (document.querySelector(".toolbarBack")) {
-							let css = document.createElement("style");
-							css.innerText += ".passport-login-container {display: none !important}";
-							document.head.append(css);
+							addStyle(".passport-login-container {display: none !important}");
 						}
 					}
 				};
@@ -178,157 +176,57 @@
 			overflow: true,
 		},
 		{
-			name: "知乎手机版",
+			name: "知乎",
 			url: "zhihu.com",
 			items: [
 				//悬浮按钮:打开知乎(主页),打开
 				".OpenInAppButton",
-			],
-		},
-		{
-			name: "知乎PC版发现页",
-			url: "zhihu.com",
-			items: [
-				//固定按钮:登录一下
+				//PC端:登录按钮(发现页)
 				".ExploreHomePage-specialsLogin",
 			],
 			fun: function () {
-				onload = function () {
-					//热点和问题高度保持一致
-					let items = document.querySelectorAll(".ExploreHomePage-square > div");
-					items[2].style.margin = "0px";
+				//当前设备是移动设备
+				if (!/Mobile|Android|iPhone/i.test(navigator.userAgent)) {
+					//发现页:热点和问题高度保持一致;
+					if (location.href.includes("www.zhihu.com/explore")) {
+						addStyle(".ExploreHomePage-square > div:nth-child(3){margin: 0px}");
+					}
 
-					//拦截登录弹窗
-					let loginBtn = document.querySelector(".AppHeader-profile button");
-					if (loginBtn) {
-						//未登录:执行监听
-						let observer = new MutationObserver(removeLoginNotice);
-						observer.observe(document, { childList: true, subtree: true });
-					}
-				};
-				/**
-				 * Removes a login notice.
-				 *
-				 * @param      {MutationRecord[]}  mutationsList  The mutations list
-				 * @param      {MutationObserver}  observer       The observer
-				 */
-				let removeLoginNotice = function (mutationsList) {
-					for (let mutation of mutationsList) {
-						for (let node of mutation.addedNodes) {
-							if (getXpath('//button[text()="立即登录/注册"]', node)) {
-								getXpath('//button[text()="立即登录/注册"]', node).parentElement.parentElement.remove();
-							}
-						}
-					}
-				};
-			},
-		},
-		{
-			name: "知乎PC版",
-			url: "www.zhihu.com/question",
-			items: [],
-			fun: function () {
-				/**
-				 * PC端:屏蔽登录弹窗
-				 * @param      {list}  mutationsList  The mutations list
-				 */
-				let removeLoginNotice = function (mutationsList) {
-					for (let mutation of mutationsList) {
-						for (let node of mutation.addedNodes) {
-							if (node.querySelector(".signFlowModal")) {
+					//执行监听
+					let observer = new MutationObserver(removeLoginNotice);
+					observer.observe(document, { childList: true, subtree: true });
+
+					/**
+					 * 删除登录弹窗
+					 *
+					 * @param      {MutationRecord[]}  mutationsList  The mutations list
+					 * @param      {MutationObserver}  observer       The observer
+					 */
+					function removeLoginNotice(mutationsList) {
+						for (let mutation of mutationsList) {
+							for (let node of mutation.addedNodes) {
 								//有登陆弹窗1时:模拟点击关闭按钮
-								let button = node.querySelector(".Button.Modal-closeButton.Button--plain");
-								if (button) {
-									if (LoginFlag == true) {
-										button.click();
-									} else {
-										LoginFlag = true;
+								if (node.querySelector(".signFlowModal")) {
+									let button = node.querySelector(".Button.Modal-closeButton.Button--plain");
+									if (button) {
+										if (LoginFlag == true) {
+											button.click();
+										} else {
+											LoginFlag = true;
+										}
+										return;
 									}
-									return;
+								}
+								//拦截登录弹窗2
+								if (getXpath('//button[text()="立即登录/注册"]', node)) {
+									getXpath('//button[text()="立即登录/注册"]', node).parentElement.parentElement.remove();
 								}
 							}
-							if (getXpath('//button[text()="立即登录/注册"]', node)) {
-								//没有登录弹窗1时会出现弹窗2
-								getXpath('//button[text()="立即登录/注册"]', node).parentElement.parentElement.remove();
-							}
 						}
 					}
-				};
-
-				document.onreadystatechange = function () {
-					onload = function () {
-						let loginBtn = document.querySelector(".AppHeader-profile button");
-						//未登录:添加事件,不拦截
-						loginBtn.addEventListener("click", function () {
-							LoginFlag = false;
-						});
-					};
-					if (document.readyState === "interactive") {
-						let loginBtn = document.querySelector(".AppHeader-profile button");
-
-						if (loginBtn) {
-							//未登录:执行监听
-							let observer = new MutationObserver(removeLoginNotice);
-							observer.observe(document, { childList: true, subtree: true });
-						}
-					}
-				};
+				}
 			},
 		},
-		{
-			name: "知乎专栏",
-			url: "zhuanlan.zhihu.com/p/",
-			fun: function () {
-				/**
-				 * PC端:屏蔽登录弹窗
-				 * @param      {list}  mutationsList  The mutations list
-				 */
-				let removeLoginNotice = function (mutationsList) {
-					for (let mutation of mutationsList) {
-						for (let node of mutation.addedNodes) {
-							if (node.querySelector(".signFlowModal")) {
-								//有登陆弹窗1时:模拟点击关闭按钮
-								let button = node.querySelector(".Button.Modal-closeButton.Button--plain");
-								if (button) {
-									if (LoginFlag == true) {
-										button.click();
-									} else {
-										LoginFlag = true;
-									}
-									return;
-								}
-							} else if (getXpath('//button[text()="立即登录/注册"]', node)) {
-								//没有登录弹窗1时会出现弹窗2
-								getXpath('//button[text()="立即登录/注册"]', node).parentElement.parentElement.remove();
-							}
-						}
-					}
-				};
-
-				document.onreadystatechange = function () {
-					if (document.readyState === "interactive") {
-						let loginBtn = document.querySelector(".ColumnPageHeader-profile button");
-						let loginCls;
-						try {
-							loginCls = loginBtn.getAttribute("class").includes("Button");
-						} catch (error) {
-							/* empty */
-						}
-
-						if (loginCls) {
-							//未登录:添加事件,不拦截
-							loginBtn.addEventListener("click", function () {
-								LoginFlag = false;
-							});
-							//未登录:执行监听
-							let observer = new MutationObserver(removeLoginNotice);
-							observer.observe(document, { childList: true, subtree: true });
-						}
-					}
-				};
-			},
-		},
-
 		{
 			name: "百度贴吧",
 			url: "tieba.baidu.com",
@@ -595,13 +493,11 @@
 				//PC端:登陆后查看评论
 				"#related-video-card-login-guide",
 				//PC端:底部登录
-				".wwNZW6za"
+				".wwNZW6za",
 			],
 			fun: function () {
-				//关闭模糊
-				let css = document.createElement("style");
-				css.innerText += ".sIGPZD5n{filter: none !important}";
-				document.head.append(css);
+				//`登陆后查看评论`模糊
+				addStyle(".sIGPZD5n{filter: none !important}");
 				//拦截登录弹窗
 				onload = function () {
 					//增加点击事件
@@ -610,13 +506,10 @@
 						if (loginBtn) {
 							loginBtn.addEventListener("click", function () {
 								LoginFlag = false;
-								clearInterval(inter);
 							});
+							clearInterval(inter);
 						}
 					}, 1000);
-					//执行监听
-					let observer = new MutationObserver(removeLoginNotice);
-					observer.observe(document, { childList: true, subtree: true });
 				};
 
 				/**
@@ -628,24 +521,24 @@
 				let removeLoginNotice = function (mutationsList) {
 					for (let mutation of mutationsList) {
 						for (let node of mutation.addedNodes) {
-							let closeBtn;
-							try {
-								closeBtn = node.querySelector(".dy-account-close");
-							} catch (error) {
-								/* empty */
-							}
-							//关闭登录弹窗
-							if (closeBtn) {
-								if (LoginFlag == true) {
-									closeBtn.click();
-								} else {
-									LoginFlag = true;
+							if (node.nodeType == Node.ELEMENT_NODE) {
+								let closeBtn = node.querySelector(".dy-account-close");
+								//关闭登录弹窗
+								if (closeBtn) {
+									if (LoginFlag == true) {
+										closeBtn.click();
+									} else {
+										LoginFlag = true;
+									}
 								}
+								return;
 							}
-							return;
 						}
 					}
 				};
+				//执行监听
+				let observer = new MutationObserver(removeLoginNotice);
+				observer.observe(document, { childList: true, subtree: true });
 			},
 		},
 		{
@@ -979,7 +872,6 @@
 			],
 		},
 		{
-			//PC版:http://www.360doc.com/content/20/0717/15/60244337_924865821.shtml
 			name: "360docPC版",
 			url: "www.360doc.com/content/",
 			items: [
@@ -1072,24 +964,12 @@
 			items: [
 				//登录按钮
 				".sideUnlogin",
+				//登录弹窗
+				".ReactModal__Overlay--after-open:not(.ReactModal__Overlay_content-page)",
 			],
 			fun: function () {
-				let mo = new MutationObserver(function (mutations) {
-					for (let mutation of mutations) {
-						for (let node of mutation.addedNodes) {
-							try {
-								let button = node.querySelector(".modal__close ");
-								if (button) {
-									button.click();
-									console.log("关闭成功");
-								}
-							} catch (error) {
-								/* empty */
-							}
-						}
-					}
-				});
-				mo.observe(document, { childList: true, subtree: true });
+				//登录弹窗导致的页面无法滑动
+				addStyle("html,body {overscroll-behavior: unset !important;overflow: unset !important;}");
 			},
 		},
 		{
@@ -1199,16 +1079,12 @@
 			//隐藏/拦截骚扰元素
 			if (website.items) {
 				for (let item of website.items) {
-					let css = document.createElement("style");
-					css.innerText += item + "{display: none !important}";
-					document.head.append(css);
+					addStyle(item + "{display: none !important}");
 				}
 			}
 			//修复移动版页面不允许滑动
 			if (website.overflow) {
-				let cssVlaue = document.createElement("style");
-				cssVlaue.innerText = "body{overflow: unset !important}";
-				document.head.appendChild(cssVlaue);
+				addStyle("body{overflow: auto !important}");
 			}
 			//执行额外方案
 			if (website.fun) {
@@ -1232,5 +1108,16 @@
 	function getXpath(xpath, parent) {
 		let xpathResult = document.evaluate(xpath, parent || document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
 		return xpathResult.singleNodeValue;
+	}
+
+	/**
+	 * 向head标签内添加样式
+	 *
+	 * @param      {string}  text    CSS样式
+	 */
+	function addStyle(text) {
+		let css = document.createElement("style");
+		css.innerText += text;
+		document.head.append(css);
 	}
 })();
