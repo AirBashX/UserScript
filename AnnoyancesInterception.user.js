@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.4.0
+// @version      1.4.1
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -176,26 +176,45 @@
 			overflow: true,
 		},
 		{
+			name: "知乎发现页",
+			url: "www.zhihu.com/explore",
+			items: [
+				//PC端:登录按钮(发现页)
+				".ExploreHomePage-specialsLogin",
+			],
+			fun: function () {
+				//发现页:热点和问题高度保持一致;
+				if (location.href.includes("www.zhihu.com/explore")) {
+					addStyle(".ExploreHomePage-square > div:nth-child(3){margin: 0px}");
+				}
+			},
+		},
+		{
 			name: "知乎",
 			url: "zhihu.com",
 			items: [
 				//悬浮按钮:打开知乎(主页),打开
 				".OpenInAppButton",
-				//PC端:登录按钮(发现页)
-				".ExploreHomePage-specialsLogin",
 			],
 			fun: function () {
-				//当前设备是移动设备
+				//PC端拦截登录弹窗
 				if (!/Mobile|Android|iPhone/i.test(navigator.userAgent)) {
-					//发现页:热点和问题高度保持一致;
-					if (location.href.includes("www.zhihu.com/explore")) {
-						addStyle(".ExploreHomePage-square > div:nth-child(3){margin: 0px}");
-					}
+					window.addEventListener("DOMContentLoaded", function () {
+						let loginBtn = document.querySelector(".css-1rwz7is");
+						//检验是否登录
+						if (loginBtn) {
+							//执行监听
+							let observer = new MutationObserver(removeLoginNotice);
+							observer.observe(document, { childList: true, subtree: true });
 
-					//执行监听
-					let observer = new MutationObserver(removeLoginNotice);
-					observer.observe(document, { childList: true, subtree: true });
-
+							onload = function () {
+								loginBtn.addEventListener("click", function () {
+									console.log(1);
+									LoginFlag = false;
+								});
+							};
+						}
+					});
 					/**
 					 * 删除登录弹窗
 					 *
