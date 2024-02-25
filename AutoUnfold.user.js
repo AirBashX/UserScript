@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.70
+// @version      1.3.71
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  自动展开文档	隐藏部分;长期维护、PC+手机全平台支持;全平台支持:CSDN、编程之家、简书、知乎、百家号、百度资讯、百度百科、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、澎湃新闻、新京报、央广网、环球网、人民日报、人民网、今日头条、丁香园、健康界、36氪、果壳、虎扑、虎嗅、头条、B站专栏、B站笔记、微博文章、豆瓣文章、豆瓣小组、开源中国、阿里云开发者社区、腾讯云开发者社区、华为云开发者社区、360图书馆、太平洋电脑网、中关村在线、汽车之家、游侠网、游民星空、网易大神、360问答、天眼查、天涯社区、东方财富网、喜马拉雅、it1352、代码随想录
+// @description  自动展开文档	隐藏部分;长期维护、PC+手机全平台支持;全平台支持:CSDN、编程之家、简书、知乎、百家号、百度资讯、百度百科、百度经验、百度知道、百度贴吧、百度新闻、新浪新闻、腾讯新闻、搜狐新闻、网易新闻、凤凰新闻、澎湃新闻、新京报、央广网、环球网、人民日报、人民网、中华网、今日头条、丁香园、健康界、36氪、果壳、虎扑、虎嗅、头条、B站专栏、B站笔记、微博文章、豆瓣文章、豆瓣小组、开源中国、阿里云开发者社区、腾讯云开发者社区、华为云开发者社区、360图书馆、太平洋电脑网、中关村在线、汽车之家、游侠网、游民星空、网易大神、360问答、天眼查、天涯社区、东方财富网、喜马拉雅、it1352、代码随想录
 // @match        *://*.blog.csdn.net/*
 // @match        *://blog.csdn.net/*
 // @match        *://ask.csdn.net/questions/*
@@ -33,6 +33,7 @@
 // @match        *://m.bjnews.com.cn/detail/*
 // @match        *://*.huanqiu.com/article/*
 // @match        *://3w.huanqiu.com/a/*
+// @match        *://3g.china.com/act/*
 // @match        *://www.toutiao.com/article/*
 // @match        *://www.toutiao.com/answer/*
 // @match        *://3g.dxy.cn/*
@@ -681,6 +682,21 @@
 				{
 					type: "click",
 					item: "#more",
+				},
+			],
+		},
+		{
+			name: "中华网",
+			url: "3g.china.com/act/",
+			handles: [
+				//点击查看全文(剩余n%)
+				{
+					type: "display",
+					item: "#js-continue-reading",
+				},
+				{
+					type: "height",
+					item: "#artiCon",
 				},
 			],
 		},
