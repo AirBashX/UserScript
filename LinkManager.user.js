@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         链接管理
-// @version      1.3.23
+// @version      1.3.24
 // @namespace    airbash/LinkManager
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -420,7 +420,7 @@
                     } else {
                         let cite = item.querySelector("cite");
                         if (cite) {
-                            if (!cite.includes("...")) {
+                            if (!cite.innerHTML.includes("...")) {
                                 a.href = cite.innerHTML;
                             }
                         }
