@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.4.2
+// @version      1.4.3
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -518,6 +518,7 @@
 			fun: function () {
 				//`登陆后查看评论`模糊
 				addStyle(".sIGPZD5n{filter: none !important}");
+				addStyle(".uKuFKJ0b{filter: none !important}");
 				//拦截登录弹窗
 				onload = function () {
 					//增加点击事件
