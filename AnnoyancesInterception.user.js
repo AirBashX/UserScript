@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.4.3
+// @version      1.4.4
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -157,6 +157,10 @@
 				".call-app-btn",
 				//悬浮按钮:打开App,看更多好文(首页)
 				".index_call-app-btn",
+				//PC端:透明遮挡
+				"._23ISFX-mask",
+				//PC端:登录弹窗
+				"._23ISFX-wrap"
 			],
 		},
 		{
