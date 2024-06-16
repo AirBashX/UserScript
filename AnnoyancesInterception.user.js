@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.4.4
+// @version      1.4.5
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -15,6 +15,7 @@
 // @match        *://news.baidu.com/news*
 // @match        *://m.baidu.com/sf_baijiahao/*
 // @match        *://view.inews.qq.com/*
+// @match        *://xw.qq.com/*
 // @match        *://m.sohu.com/a/*
 // @match        *://m.v.qq.com/*
 // @match        *://*.youku.com/*
@@ -37,16 +38,14 @@
 // @match        *://*.guancha.cn/*
 // @match        *://m.thepaper.cn/newsDetail_forward*
 // @match        *://*.ifeng.com/*
-// @match        *://m.163.com/*/article/*
-// @match        *://m.163.com/v/video/*
-// @match        *://3g.163.com/*/article/*
-// @match        *://3g.163.com/v/video/*
+// @match        *://m.163.com/*
+// @match        *://3g.163.com/*
 // @match        *://m.toutiao.com/article/*
 // @match        *://www.toutiao.com/article/*
 // @match        *://mini.eastday.com/nsa/*
 // @match        *://m.huxiu.com/*
 // @match        *://m.hupu.com/*
-// @match        *://m.douban.com/movie/subject/*
+// @match        *://m.douban.com/*
 // @match        *://g.pconline.com.cn/*
 // @match        *://m.zol.com.cn/*
 // @match        *://wap.zol.com.cn/*
@@ -301,12 +300,21 @@
 			],
 		},
 		{
-			name: "腾讯新闻",
+			name: "腾讯新闻1",
 			url: "view.inews.qq.com/",
 			items: [
-				//悬浮按钮:返回首页
-				"[class^=downloader-floating-bar_floatingRight__]",
-				"[class^=video-bottom-bar_newsOpen__]",
+				//固定按钮:打开
+				".slider-top-bar_sliderWrapper__1Nize",
+				//悬浮按钮:打开腾讯新闻,看更多热点资讯
+				".bottom-bar_buttonWrap__NXBe-"
+			],
+		},
+		{
+			name: "腾讯新闻2",
+			url: "xw.qq.com/",
+			items: [
+				//固定按钮:打开(首页)
+				"#opeApp",
 			],
 		},
 		{
@@ -476,8 +484,8 @@
 			name: "B站专栏",
 			url: "bilibili.com/read/",
 			items: [
-				//悬浮按钮:打开App,看更多精彩内容
-				".float-btn",
+				//悬浮按钮:打开app
+				"#app>div>bili-open-app.float-btn",
 				//PC端:登录提示
 				"div:has(.unlogin-popover-avatar)",
 			],
@@ -809,10 +817,12 @@
 		},
 		{
 			name: "豆瓣",
-			url: "m.douban.com/movie/subject",
+			url: "m.douban.com",
 			items: [
 				//固定按钮:用App打开(电影详情页)
 				".subject-banner",
+				//悬浮按钮:豆瓣APP内打开
+				".talion-nav-footer"
 			],
 		},
 		{
