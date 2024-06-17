@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.4.5
+// @version      1.4.6
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -159,7 +159,7 @@
 				//PC端:透明遮挡
 				"._23ISFX-mask",
 				//PC端:登录弹窗
-				"._23ISFX-wrap"
+				"._23ISFX-wrap",
 			],
 		},
 		{
@@ -213,7 +213,6 @@
 
 							onload = function () {
 								loginBtn.addEventListener("click", function () {
-									console.log(1);
 									LoginFlag = false;
 								});
 							};
@@ -306,7 +305,7 @@
 				//固定按钮:打开
 				".slider-top-bar_sliderWrapper__1Nize",
 				//悬浮按钮:打开腾讯新闻,看更多热点资讯
-				".bottom-bar_buttonWrap__NXBe-"
+				".bottom-bar_buttonWrap__NXBe-",
 			],
 		},
 		{
@@ -822,7 +821,7 @@
 				//固定按钮:用App打开(电影详情页)
 				".subject-banner",
 				//悬浮按钮:豆瓣APP内打开
-				".talion-nav-footer"
+				".talion-nav-footer",
 			],
 		},
 		{
@@ -969,16 +968,55 @@
 			name: "雪球",
 			url: "xueqiu.com/",
 			items: [
-				//悬浮按钮:打开app(文章)
-				"#openapp__fix",
+				//悬浮按钮:加群学习(主页)
+				".FloatDownloadButton_mobile_xiaoxue-button_1jZ",
+				//悬浮按钮:加群学习(文章)
+				".index_xiaoxue-button_1Av",
 			],
 			fun: function () {
-				//悬浮按钮:打开app(主页)
+				//悬浮按钮:打开app(话题)
 				document.onreadystatechange = function () {
 					if (document.readyState === "complete") {
 						document.querySelector("[class^=FloatDownloadButton_mobile_openapp__fix_]").remove();
 					}
 				};
+				
+				/**
+				 * Removes a login notice.
+				 *
+				 * @param      {MutationRecord[]}  mutationsList  The mutations list
+				 * @param      {MutationObserver}  observer       The observer
+				 */
+				let removeLoginNotice = function (mutationsList) {
+					for (let mutation of mutationsList) {
+						for (let node of mutation.addedNodes) {
+							let closeBtn = document.querySelector(".modal__login .close");
+							//关闭登录弹窗
+							if (LoginFlag == true) {
+								closeBtn.click();
+							} else {
+								LoginFlag == true;
+							}
+							return;
+						}
+					}
+				};
+				//拦截登录弹窗
+				document.addEventListener("DOMContentLoaded", function () {
+					let loginBtn = document.querySelector(".loginBtn");
+					//检验是否登录
+					if (loginBtn.textContent === "登录") {
+						//增加点击事件
+						loginBtn.addEventListener("click", function () {
+							LoginFlag = false;
+							//未知bug:导致第一次点击无法生效,所以这里再点击一次
+							loginBtn.click();
+						});
+					}
+					//执行监听
+					let observer = new MutationObserver(removeLoginNotice);
+					observer.observe(document, { childList: true, subtree: true });
+				});
 			},
 		},
 		{
