@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.4.6
+// @version      1.4.7
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -161,6 +161,7 @@
 				//PC端:登录弹窗
 				"._23ISFX-wrap",
 			],
+			overflow: true,
 		},
 		{
 			name: "掘金",
