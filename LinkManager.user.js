@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         链接管理
-// @version      1.3.24
+// @version      1.3.25
 // @namespace    airbash/LinkManager
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -315,7 +315,7 @@
                 let url = item.getAttribute("mu");
                 //https://www.baidu.com/s?wd=一夜醒来欠地铁600多万?官方回应
                 //智能精选
-                if (url && url != "null" && !url.includes("nourl.ubs.baidu.com") && !url.includes("nourl.baidu.com") ) {
+                if (url && url != "null" && !url.includes("nourl.ubs.baidu.com") && !url.includes("nourl.baidu.com")) {
                     a.href = url;
                     console.log(url);
                 }
@@ -355,48 +355,6 @@
         }
         return false;
     }
-    /**
-     * 百度动态规则
-     */
-    // function baidu_dynamic() {
-    //     let as = document.querySelectorAll("#content_left>div a,#results>div a");
-    //     for (let a of as) {
-    //         let href = a.href;
-    //         if (href.includes("www.baidu.com/link?url=") || href.includes("m.baidu.com/from=")) {
-    //             GM_xmlhttpRequest({
-    //                 url: href,
-    //                 method: "GET",
-    //                 anonymous: true,
-    //                 onload: function (response) {
-    //                     if (response.status == 200) {
-    //                         if (response.finalUrl) {
-    //                             a.href = response.finalUrl;
-    //                         } else {
-    //                             let text = response.responseText;
-    //                             let domparser = new DOMParser();
-    //                             console.log(response.finalUrl);
-    //                             let html = domparser.parseFromString(text, "text/html");
-    //                             let meta = html.querySelector("meta");
-    //                             let str;
-    //                             try {
-    //                                 str = meta.content;
-    //                                 let url = str.substring(str.indexOf("http"));
-    //                                 if (url.startsWith("http")) {
-    //                                     a.href = url;
-    //                                 }
-    //                             } catch (error) {
-    //                                 /* empty */
-    //                             }
-    //                         }
-    //                     } else {
-    //                         a.href = response.finalUrl;
-    //                         console.log(response.finalUrl);
-    //                     }
-    //                 },
-    //             });
-    //         }
-    //     }
-    // }
 
     /**
      * 必应单独规则
@@ -420,8 +378,16 @@
                     } else {
                         let cite = item.querySelector("cite");
                         if (cite) {
-                            if (!cite.innerHTML.includes("...")) {
-                                a.href = cite.innerHTML;
+                            if (cite.innerHTML.includes("span")) {
+                                let spans = cite.querySelectorAll("span");
+                                let new_href = "";
+                                for (let span of spans) {
+                                    new_href += span.textContent;
+                                }
+                                if (!new_href.includes("...") & !new_href.includes("…") ) {
+                                    console.log(new_href);
+                                    a.href = new_href;
+                                }
                             }
                         }
                     }
