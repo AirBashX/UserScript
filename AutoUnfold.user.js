@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.72
+// @version      1.3.73
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -242,11 +242,6 @@
 				},
 				{
 					type: "height",
-					item: ".RichContent-inner",
-				},
-				// 修复个别失效网站:
-				{
-					type: "click",
 					item: ".RichContent-inner",
 				},
 			],
@@ -863,19 +858,10 @@
 				},
 			],
 		},
+		//允许滑动
 		{
-			name: "微博文章移动版",
-			url: "card.weibo.com/article/m/show/id",
-			handles: [
-				{
-					type: "height",
-					item: ".f-art",
-				},
-				{
-					type: "display",
-					item: ".f-art-opt",
-				},
-			],
+			type: "overflow",
+			item: "body",
 		},
 		{
 			name: "豆瓣",
