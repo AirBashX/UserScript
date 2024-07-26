@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.4.8
+// @version      1.4.9
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -838,6 +838,8 @@
 				".btnForAppOpenA",
 				//固定按钮:立即打开(底部)
 				".WakeUptop",
+				//悬浮按钮:打开(底部)
+				".page-float-box"
 			],
 		},
 		{
