@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.4.7
+// @version      1.4.8
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -198,9 +198,12 @@
 			name: "知乎",
 			url: "zhihu.com",
 			items: [
+				//悬浮按钮:是否在知乎app内阅读全文
+				".MobileModal-wrapper",
 				//悬浮按钮:打开知乎(主页),打开
 				".OpenInAppButton",
 			],
+			overflow: true,
 			fun: function () {
 				//PC端拦截登录弹窗
 				if (!/Mobile|Android|iPhone/i.test(navigator.userAgent)) {
