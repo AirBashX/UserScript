@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         豆瓣助手
-// @version      0.0.13
+// @version      0.0.14
 // @namespace    airbash/DoubanAssistant
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -150,12 +150,19 @@
 					id: douban_en_name,
 				},
 				{
+					name: "tgx",
+					url: "tgx.rs",
+					search: "https://tgx.rs/torrents.php?search=",
+					id: douban_en_name,
+				},
+				{
 					name: "6v电影网",
 					url: "www.hao6v.tv",
 					search: "https://www.hao6v.tv/e/search/index.php",
 					id: douban_cn_name_gbk,
 					data: "show=title%2Csmalltext&tempid=1&tbname=Article&keyboard=" + douban_cn_name_gbk + "&Submit22=%E6%90%9C%E7%B4%A2",
 					type: "xhr",
+					anonymous: true
 				},
 				{
 					name: "电影天堂",
@@ -164,12 +171,6 @@
 					id: douban_cn_name_gbk,
 					data: "show=title&tempid=1&keyboard=" + douban_cn_name_gbk + "&Submit=%C1%A2%BC%B4%CB%D1%CB%F7",
 					type: "xhr",
-				},
-				{
-					name: "tgx",
-					url: "tgx.rs",
-					search: "https://tgx.rs/torrents.php?search=",
-					id: douban_en_name,
 				},
 			],
 		},
@@ -273,7 +274,7 @@
 								"Content-Type": "application/x-www-form-urlencoded",
 							},
 							timeout: 5000,
-							anonymous: true,
+							anonymous: link.anonymous,
 							data: link.data,
 							onload: function () {
 								let str;
