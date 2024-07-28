@@ -70,8 +70,8 @@
 	function imdb_score() {
 		GM_xmlhttpRequest({
 			url: "https://www.imdb.com/title/" + imdb_id,
-			onload: function () {
-				let text = this.responseText;
+			onload: function (response) {
+				let text = response.responseText;
 				let dp = new DOMParser();
 				let html = dp.parseFromString(text, "text/html");
 				let item = html.querySelector("[data-testid=hero-rating-bar__aggregate-rating__score] span");
@@ -162,7 +162,7 @@
 					id: douban_cn_name_gbk,
 					data: "show=title%2Csmalltext&tempid=1&tbname=Article&keyboard=" + douban_cn_name_gbk + "&Submit22=%E6%90%9C%E7%B4%A2",
 					type: "xhr",
-					anonymous: true
+					anonymous: true,
 				},
 				{
 					name: "电影天堂",
@@ -269,19 +269,19 @@
 					if (link.type == "xhr") {
 						GM_xmlhttpRequest({
 							url: link.search,
-							method: "post",
+							method: "POST",
 							headers: {
 								"Content-Type": "application/x-www-form-urlencoded",
 							},
 							timeout: 5000,
 							anonymous: link.anonymous,
 							data: link.data,
-							onload: function () {
+							onload: function (response) {
 								let str;
-								if (this.finalUrl == link.search) {
-									str = '<a href="' + this.finalUrl + '" target="_blank" style="color:pink" title="没有资源">' + link.name + "</a>";
+								if (response.finalUrl == link.search) {
+									str = '<a href="' + response.finalUrl + '" target="_blank" style="color:pink" title="没有资源">' + link.name + "</a>";
 								} else {
-									str = '<a href="' + this.finalUrl + '" target="_blank">' + link.name + "</a>";
+									str = '<a href="' + response.finalUrl + '" target="_blank">' + link.name + "</a>";
 								}
 								let a = document.createRange().createContextualFragment(str);
 								ul.appendChild(a);
