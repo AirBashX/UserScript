@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.4.9
+// @version      1.4.10
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -125,25 +125,21 @@
 					}
 				};
 
-				document.onreadystatechange = function () {
-					if (document.readyState === "interactive") {
-						let loginBtn = document.querySelector(".toolbar-btn-login>.toolbar-btn-loginfun");
-						//未登录:
-						if (loginBtn) {
-							//添加事件,不拦截
-							loginBtn.addEventListener("click", function () {
-								LoginFlag = false;
-							});
-							//执行监听
-							let observer = new MutationObserver(removeLoginNotice);
-							observer.observe(document, { childList: true, subtree: true });
-						}
-						//移动版登录弹窗
-						if (document.querySelector(".toolbarBack")) {
-							addStyle(".passport-login-container {display: none !important}");
-						}
-					}
-				};
+				let loginBtn = document.querySelector(".toolbar-btn-login>.toolbar-btn-loginfun");
+				//未登录:
+				if (loginBtn) {
+					//添加事件,不拦截
+					loginBtn.addEventListener("click", function () {
+						LoginFlag = false;
+					});
+					//执行监听
+					let observer = new MutationObserver(removeLoginNotice);
+					observer.observe(document, { childList: true, subtree: true });
+				}
+				//移动版登录弹窗
+				if (document.querySelector(".toolbarBack")) {
+					addStyle(".passport-login-container {display: none !important}");
+				}
 			},
 		},
 		{
@@ -839,7 +835,7 @@
 				//固定按钮:立即打开(底部)
 				".WakeUptop",
 				//悬浮按钮:打开(底部)
-				".page-float-box"
+				".page-float-box",
 			],
 		},
 		{
@@ -986,7 +982,7 @@
 						document.querySelector("[class^=FloatDownloadButton_mobile_openapp__fix_]").remove();
 					}
 				};
-				
+
 				/**
 				 * Removes a login notice.
 				 *
