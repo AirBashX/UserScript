@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         链接管理
-// @version      1.3.25
+// @version      1.3.26
 // @namespace    airbash/LinkManager
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
