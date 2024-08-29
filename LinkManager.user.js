@@ -48,13 +48,13 @@
     const safePages = [
         {
             //https://blog.csdn.net/weixin_50829653/article/details/118119039
-            //https://link.csdn.net/?target=https://baidu.com
+            //https://link.csdn.net/?from_id=118119039&target=https://baidu.com
             name: "CSDN",
-            url: "link.csdn.net/?target=",
+            url: "link.csdn.net",
             handlers: [
                 {
                     type: "forward",
-                    start: "?target=",
+                    start: "&target=",
                 },
             ],
         },
@@ -384,7 +384,7 @@
                                 for (let span of spans) {
                                     new_href += span.textContent;
                                 }
-                                if (!new_href.includes("...") & !new_href.includes("…") ) {
+                                if (!new_href.includes("...") & !new_href.includes("…")) {
                                     console.log(new_href);
                                     a.href = new_href;
                                 }
@@ -403,7 +403,9 @@
         if (location.href.includes(safePage.url)) {
             for (let handler of safePage.handlers) {
                 let str = location.href.split(handler.start)[1];
+                console.log(str);
                 let url = decodeURIComponent(str);
+                console.log(url);
                 location.replace(url);
             }
         }
