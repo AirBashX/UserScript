@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.73
+// @version      1.3.74
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -70,7 +70,7 @@
 // @match        *://mguba.eastmoney.com/*
 // @match        *://emcreative.eastmoney.com/*
 // @match        *://*.ximalaya.com/*
-// @match        *://so.gushiwen.cn/*
+// @match        *://*.gushiwen.cn/*
 // @match        *://*.it1352.com/*
 // @match        *://www.taodudu.cc/news/*
 // @match        *://programmercarl.com/*
@@ -1298,14 +1298,14 @@
 		},
 		{
 			name: "古诗文网",
-			url: "so.gushiwen.cn/",
+			url: "gushiwen.cn/",
 			handles: [],
 			fun: function () {
-				let items = document.evaluate("//a[contains(text(), '阅读全文')]", document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-				for (let i = 0; i < items.snapshotLength; i++) {
-					items.snapshotItem(i).click();
-					clearInterval(interval);
+				let item1s = document.evaluate("//a[contains(text(), '阅读全文')]", document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+				for (let i = 0; i < item1s.snapshotLength; i++) {
+					item1s.snapshotItem(i).click();
 				}
+				clearInterval(interval);
 			},
 		},
 		{
