@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         豆瓣助手
-// @version      0.0.14
+// @version      0.0.16
 // @namespace    airbash/DoubanAssistant
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -150,9 +150,9 @@
 					id: douban_en_name,
 				},
 				{
-					name: "tgx",
-					url: "tgx.rs",
-					search: "https://tgx.rs/torrents.php?search=",
+					name: "海盗湾",
+					url: "thepiratebay10.xyz",
+					search: "https://thepiratebay10.xyz/search/",
 					id: douban_en_name,
 				},
 				{
@@ -160,17 +160,21 @@
 					url: "www.hao6v.tv",
 					search: "https://www.hao6v.tv/e/search/index.php",
 					id: douban_cn_name_gbk,
-					data: "show=title%2Csmalltext&tempid=1&tbname=Article&keyboard=" + douban_cn_name_gbk + "&Submit22=%E6%90%9C%E7%B4%A2",
+					data: "show=title%2Csmalltext&tempid=1&keyboard=" + douban_cn_name_gbk + "&tbname=article&x=0&y=0",
 					type: "xhr",
 					anonymous: true,
 				},
 				{
 					name: "电影天堂",
-					url: "https://www.dy2018.com/",
-					search: "https://www.dy2018.com/e/search/index.php",
-					id: douban_cn_name_gbk,
-					data: "show=title&tempid=1&keyboard=" + douban_cn_name_gbk + "&Submit=%C1%A2%BC%B4%CB%D1%CB%F7",
-					type: "xhr",
+					url: "www.dy2018.com/",
+					search: "https://www.dy2018.com/",
+					id: "",
+				},
+				{
+					name: "新电影天堂",
+					url: "www.xl720.com",
+					search: "https://www.xl720.com/?s=",
+					id: douban_cn_name,
 				},
 			],
 		},
@@ -277,11 +281,17 @@
 							anonymous: link.anonymous,
 							data: link.data,
 							onload: function (response) {
+								//chrome+tm会出现兼容性问题:
+								let finalUrl = response.finalUrl;
+								if (finalUrl.search("/index.php/")!=-1) {
+									finalUrl = finalUrl.replace("/index.php", "");
+								}
+
 								let str;
-								if (response.finalUrl == link.search) {
-									str = '<a href="' + response.finalUrl + '" target="_blank" style="color:pink" title="没有资源">' + link.name + "</a>";
+								if (finalUrl == link.search) {
+									str = '<a href="' + finalUrl + '" target="_blank" style="color:pink" title="没有资源">' + link.name + "</a>";
 								} else {
-									str = '<a href="' + response.finalUrl + '" target="_blank">' + link.name + "</a>";
+									str = '<a href="' + finalUrl + '" target="_blank">' + link.name + "</a>";
 								}
 								let a = document.createRange().createContextualFragment(str);
 								ul.appendChild(a);
