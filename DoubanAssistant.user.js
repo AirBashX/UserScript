@@ -1,12 +1,12 @@
 // ==UserScript==
 // @name         豆瓣助手
-// @version      0.0.16
+// @version      0.0.17
 // @namespace    airbash/DoubanAssistant
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
 // @description  恢复IMDB的链接,展示IMDB评分,以及增加快捷搜索SubHD、字幕库、射手网、WebHD、rargb、海盗湾、6V电影网、电影天堂、新电影天堂、腾讯视频、优酷视频、爱奇艺、哔哩哔哩、西瓜视频、欢喜首映中资源的功能
 // @match        *://movie.douban.com/subject/*
-// @connect      www.hao6v.tv
+// @connect      www.hao6v.me
 // @connect      www.imdb.com
 // @connect      dy2018.com
 // @grant        GM_registerMenuCommand
@@ -158,7 +158,7 @@
 				{
 					name: "6v电影网",
 					url: "www.hao6v.tv",
-					search: "https://www.hao6v.tv/e/search/index.php",
+					search: "https://www.hao6v.me/e/search/index.php",
 					id: douban_cn_name_gbk,
 					data: "show=title%2Csmalltext&tempid=1&keyboard=" + douban_cn_name_gbk + "&tbname=article&x=0&y=0",
 					type: "xhr",
