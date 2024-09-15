@@ -361,39 +361,57 @@
      * https://www.bing.com/search?q=必应
      */
     if (location.href.includes("bing.com/search")) {
-        let time = 0;
-        let interval = setInterval(() => {
-            if (++time == 100) {
-                clearInterval(interval);
-            }
-            let items = document.querySelectorAll(".b_algo");
-            if (items.length) {
-                for (let item of items) {
-                    let a = item.querySelector("h2 > a");
-                    let suffix = item.querySelector(".b_suffix > div");
-                    if (suffix) {
-                        let str = suffix.getAttribute("data-sc-metadata");
-                        let json = JSON.parse(str);
-                        a.href = json.url;
-                    } else {
-                        let cite = item.querySelector("cite");
-                        if (cite) {
-                            if (cite.innerHTML.includes("span")) {
-                                let spans = cite.querySelectorAll("span");
-                                let new_href = "";
-                                for (let span of spans) {
-                                    new_href += span.textContent;
-                                }
-                                if (!new_href.includes("...") & !new_href.includes("…")) {
-                                    console.log(new_href);
-                                    a.href = new_href;
-                                }
-                            }
-                        }
-                    }
+        function handlerAnchor(a) {
+            let url_ = a.href;
+            if (url_.includes(".bing.com/ck/a?")) {
+                // 截取 u= 及其后面的字符
+                let tmp = url_.slice(url_.lastIndexOf("u="));
+                // 找到 u= 后的第一个 `&`, 精确提取出 u
+                tmp = tmp.slice("u=a1".length, tmp.indexOf("&"));
+                const paddingNeeded = 4 - tmp.length % 4;
+                // 如果长度不是4的倍数，则需要补充'='
+                if (paddingNeeded != 4) {
+                    tmp += '='.repeat(paddingNeeded);
+                }
+                try {
+                    let ori_url = atob(tmp.replace('-', '+').replace('_', '/'));
+                    a.href = ori_url;
+                } catch (e) {
+                    console.log("Error parsing", tmp);
                 }
             }
-        }, 100);
+        }
+
+        function afterLoaded(f_) {
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', f_);
+            } else {
+                typeof f_ === 'function' && f_();
+            }
+        }
+
+        afterLoaded(() => {
+            console.log("Started");
+            document.querySelectorAll('a').forEach(handlerAnchor);
+            // 使用 MutationObserver 监控 DOM 变化
+            const observer = new MutationObserver((mutationsList) => {
+                for (const mutation of mutationsList) {
+                    if (mutation.type === 'childList') {
+                        mutation.addedNodes.forEach(node => {
+                            if (node.nodeType === Node.ELEMENT_NODE) {
+                                node.querySelectorAll('a').forEach(handlerAnchor);
+                            }
+                        });
+                    }
+                }
+            });
+
+            // 观察整个文档的 DOM 变化
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        });
     }
 
     /**
