@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.74
+// @version      1.3.75
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -9,6 +9,7 @@
 // @match        *://blog.csdn.net/*
 // @match        *://ask.csdn.net/questions/*
 // @match        *://download.csdn.net/download/*
+// @match        *://wenku.csdn.net/answer/*
 // @match        *://*.jb51.cc/*
 // @match        *://*.jianshu.com/*
 // @match        *://www.zhihu.com/question/*
@@ -162,6 +163,17 @@
 				{
 					type: "click",
 					item: ".el-button--text",
+				},
+			],
+		},
+		{
+			name: "CSDN文库",
+			url: "wenku.csdn.net/answer/",
+			handles: [
+				//展开全部
+				{
+					type: "click",
+					item: ".text-all",
 				},
 			],
 		},
