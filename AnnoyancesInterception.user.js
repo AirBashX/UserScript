@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.4.11
+// @version      1.4.12
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -251,6 +251,14 @@
 			},
 		},
 		{
+			name: "百度",
+			url: "baidu.com",
+			items: [
+				//悬浮按钮:打开百度
+				"#J-invoke-baiduApp-float",
+			],
+		},
+		{
 			name: "百度贴吧",
 			url: "tieba.baidu.com",
 			items: [
@@ -283,10 +291,6 @@
 			items: [
 				//悬浮按钮:百度APP内打开
 				"#bdrainrwDragButton",
-				//下载弹窗
-				//".layer-wrap",
-				//悬浮按钮:xxx独家语音
-				//".undefined",
 			],
 		},
 		{
