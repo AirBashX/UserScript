@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         链接管理
-// @version      1.3.26
+// @version      1.3.27
 // @namespace    airbash/LinkManager
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -295,12 +295,8 @@
      * 百度单独规则
      */
     if (location.href.includes("m.baidu.com") || location.href.includes("www.baidu.com")) {
-        let interval;
-        interval = setInterval(() => {
+        let interval = setInterval(() => {
             let flag = baidu_static();
-            // if (flag == false) {
-            //     baidu_dynamic();
-            // }
         }, 100);
     }
     /**
