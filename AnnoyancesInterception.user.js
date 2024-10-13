@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.4.12
+// @version      1.4.13
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -979,6 +979,8 @@
 				".FloatDownloadButton_mobile_xiaoxue-button_1jZ",
 				//悬浮按钮:加群学习(文章)
 				".index_xiaoxue-button_1Av",
+				//悬浮按钮:登录提示
+				".widget__download-app"
 			],
 			fun: function () {
 				//悬浮按钮:打开app(话题)
