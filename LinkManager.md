@@ -42,3 +42,5 @@
 |MDN火狐|✔|✔|跳转中文文档|
 |微软文档|✔|✔|跳转中文文档|
 |tampermonkey|✔|✔|跳转中文文档|
+
+感谢:[Maritedo](https://github.com/AirBashX/UserScript/issues/25)对本项目的代码提交
