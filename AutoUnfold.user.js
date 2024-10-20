@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.76
+// @version      1.3.77
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -35,8 +35,7 @@
 // @match        *://*.huanqiu.com/article/*
 // @match        *://3w.huanqiu.com/a/*
 // @match        *://3g.china.com/act/*
-// @match        *://www.toutiao.com/article/*
-// @match        *://www.toutiao.com/answer/*
+// @match        *://m.toutiao.com/article/*
 // @match        *://mini.eastday.com/*
 // @match        *://*.dxy.cn/*
 // @match        *://www.cn-healthcare.com/*
@@ -72,7 +71,7 @@
 // @match        *://mguba.eastmoney.com/*
 // @match        *://emcreative.eastmoney.com/*
 // @match        *://*.ximalaya.com/*
-// @match        *://*.gushiwen.cn/*
+// @match        *://www.gushiwen.cn/*
 // @match        *://*.it1352.com/*
 // @match        *://www.taodudu.cc/news/*
 // @match        *://programmercarl.com/*
@@ -243,20 +242,22 @@
 			name: "知乎",
 			url: "www.zhihu.com/question",
 			handles: [
-				//PC端:显示全部(问题描述)
 				{
-					type: "click",
-					item: ".QuestionRichText-more",
+					type: "display",
+					item: ".ContentItem-rightButton",
+				},
+				{
+					type: "height",
+					item: ".RichContent-inner--collapsed",
 				},
 			],
 			fun: function () {
-				let loginFlag = document.querySelector("#immersive-translate-popup");
-				if (loginFlag) {
-					let items = document.querySelectorAll(".RichContent-inner");
-					for (let item of items) {
-						item.click();
-					}
-				}
+				let css = document.createElement("style");
+				//空白遮挡
+				css.innerText += ".RichContent--unescapable.is-collapsed .RichContent-inner {mask-image: unset !important;}";
+				//点击按钮
+				css.innerText += ".RichContent.is-collapsed {cursor: unset !important;}";
+				document.head.append(css);
 			},
 		},
 		{
@@ -671,32 +672,21 @@
 			],
 		},
 		{
-			name: "今日头条",
-			url: "www.toutiao.com/article/",
+			name: "今日头条:移动版",
+			url: "m.toutiao.com/article/",
 			handles: [
-				//PC端:点击展开剩余内容
+				//点击查看完整内容
 				{
 					type: "display",
-					item: ".expand-button-wrapper",
+					item: ".toggle-button-container",
+				},
+				{
+					type: "display",
+					item: ".content-shadow",
 				},
 				{
 					type: "height",
-					item: ".expand-container",
-				},
-			],
-		},
-		{
-			name: "今日头条问答",
-			url: "www.toutiao.com/answer/",
-			handles: [
-				//PC端:点击展开剩余内容
-				{
-					type: "display",
-					item: ".expand-button-wrapper",
-				},
-				{
-					type: "height",
-					item: ".expand-container",
+					item: ".content",
 				},
 			],
 		},
@@ -1291,7 +1281,7 @@
 		},
 		{
 			name: "古诗文网",
-			url: "gushiwen.cn/",
+			url: "www.gushiwen.cn/",
 			handles: [],
 			fun: function () {
 				let item1s = document.evaluate("//a[contains(text(), '阅读全文')]", document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
