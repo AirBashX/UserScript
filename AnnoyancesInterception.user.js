@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.4.13
+// @version      1.4.14
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -40,8 +40,8 @@
 // @match        *://*.ifeng.com/*
 // @match        *://m.163.com/*
 // @match        *://3g.163.com/*
-// @match        *://m.toutiao.com/article/*
-// @match        *://www.toutiao.com/article/*
+// @match        *://m.toutiao.com/*
+// @match        *://www.toutiao.com/*
 // @match        *://mini.eastday.com/nsa/*
 // @match        *://m.huxiu.com/*
 // @match        *://m.hupu.com/*
@@ -522,19 +522,20 @@
 			name: "抖音电脑版",
 			url: "www.douyin.com",
 			items: [
+				//PC端:下载电脑客户端
+				"#douyin-web-download-guide-container",
 				//PC端:右下角登录提示(画质)
 				".login-clarity-new",
 				//PC端:下方滑动引导
 				"[data-e2e=recommend-guide-mask]",
 				//PC端:登陆后查看评论
 				"#related-video-card-login-guide",
-				//PC端:底部登录
+				//PC端:底部登录提示
 				".wwNZW6za",
 			],
 			fun: function () {
-				//`登陆后查看评论`模糊
-				addStyle(".sIGPZD5n{filter: none !important}");
-				addStyle(".uKuFKJ0b{filter: none !important}");
+				//登陆后查看评论模糊
+				addStyle("._61cgy6j3{filter: none !important}");
 				//拦截登录弹窗
 				onload = function () {
 					//增加点击事件
@@ -766,29 +767,23 @@
 			],
 		},
 		{
-			name: "今日头条移动端:文章",
-			url: "m.toutiao.com/article/",
+			name: "今日头条:移动端",
+			url: "m.toutiao.com/",
 			items: [
 				//悬浮按钮：App内打开(底部)
-				".float-activate-button-container",
-				".download-bar__container",
+				".m-bottom-container",
+				//悬浮按钮:去首页(文章)
+				".m-index-tag"
 			],
 		},
 		{
-			name: "今日头条移动端:视频",
-			url: "m.toutiao.com/article/",
+			name: "今日头条:PC端",
+			url: "www.toutiao.com/",
 			items: [
-				//悬浮按钮：App内打开(底部)
-				".float-activate-button-container",
-				".download-bar__container",
-			],
-		},
-		{
-			name: "今日头条PC端",
-			url: "www.toutiao.com/article/",
-			items: [
-				//PC端:悬浮弹窗:添加今日头条到电脑桌面
-				".ttp-message-wrapper",
+				//悬浮弹窗:添加今日头条到电脑桌面
+				".add-panel",
+				//悬浮弹窗:扫码下载今日头条
+				"download-panel"
 			],
 		},
 		{
