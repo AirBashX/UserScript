@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.4.14
+// @version      1.4.15
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -526,8 +526,6 @@
 				"#douyin-web-download-guide-container",
 				//PC端:右下角登录提示(画质)
 				".login-clarity-new",
-				//PC端:下方滑动引导
-				"[data-e2e=recommend-guide-mask]",
 				//PC端:登陆后查看评论
 				"#related-video-card-login-guide",
 				//PC端:底部登录提示
