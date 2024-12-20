@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         豆瓣助手
-// @version      0.0.17
+// @version      0.0.18
 // @namespace    airbash/DoubanAssistant
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -120,28 +120,28 @@
 					id: douban_cn_name,
 				},
 				{
-					name: "字幕库",
-					url: "zimuku.org",
-					search: "https://so.zimuku.org/search?q=",
-					id: douban_cn_name,
-				},
-				{
 					name: "射手网",
 					url: "assrt.net",
 					search: "https://assrt.net/sub/?searchword=",
+					id: douban_cn_name,
+				},
+				{
+					name: "字幕库",
+					url: "zimuku.org",
+					search: "https://so.zimuku.org/search?q=",
 					id: douban_cn_name,
 				},
 			],
 		},
 		{
 			id: "group2",
-			name: "影视资源",
+			name: "英文资源",
 			links: [
 				{
-					name: "WebHD",
-					url: "webhd.top",
-					search: "https://webhd.top/search/",
-					id: douban_cn_name,
+					name: "tgx",
+					url: "tgx.rs",
+					search: "https://tgx.rs/torrents.php?search=",
+					id: douban_en_name,
 				},
 				{
 					name: "rargb",
@@ -155,6 +155,12 @@
 					search: "https://thepiratebay10.xyz/search/",
 					id: douban_en_name,
 				},
+			],
+		},
+		{
+			id: "group3",
+			name: "中文资源",
+			links: [
 				{
 					name: "6v电影网",
 					url: "www.hao6v.tv",
@@ -179,7 +185,7 @@
 			],
 		},
 		{
-			id: "group3",
+			id: "group4",
 			name: "正版资源",
 			links: [
 				{
@@ -283,7 +289,7 @@
 							onload: function (response) {
 								//chrome+tm会出现兼容性问题:
 								let finalUrl = response.finalUrl;
-								if (finalUrl.search("/index.php/")!=-1) {
+								if (finalUrl.search("/index.php/") != -1) {
 									finalUrl = finalUrl.replace("/index.php", "");
 								}
 
