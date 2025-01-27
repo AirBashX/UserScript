@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         豆瓣助手
-// @version      0.0.18
+// @version      0.0.19
 // @namespace    airbash/DoubanAssistant
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  恢复IMDB的链接,展示IMDB评分,以及增加快捷搜索SubHD、字幕库、射手网、WebHD、rargb、海盗湾、6V电影网、电影天堂、新电影天堂、腾讯视频、优酷视频、爱奇艺、哔哩哔哩、西瓜视频、欢喜首映中资源的功能
+// @description  恢复IMDB的链接,展示IMDB评分,以及增加快捷搜索SubHD、字幕库、射手网、opensubtitle、6V电影网、电影天堂、新电影天堂、WebHD、rargb、海盗湾、watchsomuch、tgx、EXT、腾讯视频、优酷视频、爱奇艺、哔哩哔哩、西瓜视频、欢喜首映中资源的功能
 // @match        *://movie.douban.com/subject/*
 // @connect      www.hao6v.me
 // @connect      www.imdb.com
@@ -116,20 +116,22 @@
 				{
 					name: "SubHD",
 					url: "subhd.tv",
-					search: "https://subhd.tv/search/",
-					id: douban_cn_name,
+					search: "https://subhd.tv/search/" + douban_cn_name,
 				},
 				{
 					name: "射手网",
 					url: "assrt.net",
-					search: "https://assrt.net/sub/?searchword=",
-					id: douban_cn_name,
+					search: "https://assrt.net/sub/?searchword=" + douban_cn_name,
 				},
 				{
 					name: "字幕库",
 					url: "zimuku.org",
-					search: "https://so.zimuku.org/search?q=",
-					id: douban_cn_name,
+					search: "https://so.zimuku.org/search?q=" + douban_cn_name,
+				},
+				{
+					name: "opensubtitle",
+					url: "opensubtitles.org",
+					search: "https://www.opensubtitles.com/zh-CN/zh-CN/search-all/q-" + imdb_id + "/hearing_impaired-include/machine_translated-/trusted_sources-",
 				},
 			],
 		},
@@ -138,22 +140,34 @@
 			name: "英文资源",
 			links: [
 				{
-					name: "tgx",
-					url: "tgx.rs",
-					search: "https://tgx.rs/torrents.php?search=",
-					id: douban_en_name,
-				},
-				{
 					name: "rargb",
 					url: "rargb.to",
-					search: "https://rargb.to/search/?search=",
-					id: douban_en_name,
+					search: "https://rargb.to/search/?search=" + douban_en_name,
 				},
 				{
 					name: "海盗湾",
 					url: "thepiratebay10.xyz",
-					search: "https://thepiratebay10.xyz/search/",
-					id: douban_en_name,
+					search: "https://thepiratebay10.xyz/search/" + douban_en_name,
+				},
+				{
+					name: "WSM",
+					url: "watchsomuch.to",
+					search: "https://watchsomuch.to/Movies/" + douban_en_name,
+				},
+				{
+					name: "tgx",
+					url: "tgx.rs",
+					search: "https://tgx.rs/torrents.php?search=" + douban_en_name,
+				},
+				{
+					name: "1377x",
+					url: "www.1377x.to",
+					search: "https://www.1377x.to/search/" + douban_en_name + "/1/",
+				},
+				{
+					name: "EXT",
+					url: "extranet.torrentbay.st",
+					search: "https://extranet.torrentbay.st/browse/?q=" + douban_en_name,
 				},
 			],
 		},
@@ -165,7 +179,6 @@
 					name: "6v电影网",
 					url: "www.hao6v.tv",
 					search: "https://www.hao6v.me/e/search/index.php",
-					id: douban_cn_name_gbk,
 					data: "show=title%2Csmalltext&tempid=1&keyboard=" + douban_cn_name_gbk + "&tbname=article&x=0&y=0",
 					type: "xhr",
 					anonymous: true,
@@ -174,13 +187,11 @@
 					name: "电影天堂",
 					url: "www.dy2018.com/",
 					search: "https://www.dy2018.com/",
-					id: "",
 				},
 				{
 					name: "新电影天堂",
 					url: "www.xl720.com",
-					search: "https://www.xl720.com/?s=",
-					id: douban_cn_name,
+					search: "https://www.xl720.com/?s=" + douban_cn_name,
 				},
 			],
 		},
@@ -191,38 +202,32 @@
 				{
 					name: "腾讯视频",
 					url: "v.qq.com",
-					search: "https://v.qq.com/x/search/?q=",
-					id: douban_cn_name,
+					search: "https://v.qq.com/x/search/?q=" + douban_cn_name,
 				},
 				{
 					name: "优酷视频",
 					url: "youku.com",
-					search: "https://so.youku.com/search_video/q_",
-					id: douban_cn_name,
+					search: "https://so.youku.com/search_video/q_" + douban_cn_name,
 				},
 				{
 					name: "爱奇艺",
 					url: "iqiyi.com",
-					search: "https://so.iqiyi.com/so/q_",
-					id: douban_cn_name,
+					search: "https://so.iqiyi.com/so/q_" + douban_cn_name,
 				},
 				{
 					name: "哔哩哔哩",
 					url: "bilibili.com",
-					search: "https://search.bilibili.com/all?keyword=",
-					id: douban_cn_name,
+					search: "https://search.bilibili.com/all?keyword=" + douban_cn_name,
 				},
 				{
 					name: "西瓜视频",
 					url: "www.ixigua.com",
-					search: "https://www.ixigua.com/search/",
-					id: douban_cn_name,
+					search: "https://www.ixigua.com/search/" + douban_cn_name,
 				},
 				{
 					name: "欢喜首映",
 					url: "www.huanxi.com",
-					search: "https://www.huanxi.com/search.shtml?sv=",
-					id: douban_cn_name,
+					search: "https://www.huanxi.com/search.shtml?sv=" + douban_cn_name,
 				},
 			],
 		},
@@ -276,7 +281,11 @@
 				ul.className = "resources";
 				div.appendChild(ul);
 				for (let link of webSite.links) {
-					if (link.type == "xhr") {
+					if (link.type != "xhr") {
+						let str = '<a href="' + link.search + '" target="_blank">' + link.name + "</a>";
+						let a = document.createRange().createContextualFragment(str);
+						ul.appendChild(a);
+					} else {
 						GM_xmlhttpRequest({
 							url: link.search,
 							method: "POST",
@@ -303,10 +312,6 @@
 								ul.appendChild(a);
 							},
 						});
-					} else {
-						let str = '<a href="' + link.search + link.id + '" target="_blank">' + link.name + "</a>";
-						let a = document.createRange().createContextualFragment(str);
-						ul.appendChild(a);
 					}
 				}
 			}
