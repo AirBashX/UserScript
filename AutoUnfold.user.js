@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.78
+// @version      1.3.79
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -764,21 +764,6 @@
 				},
 			],
 		},
-		// {
-		// 	name: "B站视频",
-		// 	url: "www.bilibili.com/video/",
-		// 	handles: [
-		// 		//PC端:展开内容
-		// 		{
-		// 			type: "display",
-		// 			item: ".toggle-btn",
-		// 		},
-		// 		{
-		// 			type: "height",
-		// 			item: ".basic-desc-info",
-		// 		},
-		// 	],
-		// },
 		{
 			name: "B站动态",
 			url: "space.bilibili.com/",
@@ -797,27 +782,6 @@
 		},
 		{
 			name: "B站专栏",
-			url: "www.bilibili.com/read/mobile",
-			handles: [
-				//展开阅读全文
-				{
-					type: "display",
-					item: ".read-more",
-				},
-				{
-					type: "classList",
-					item: ".read-article-box",
-					remove: "limit",
-				},
-				{
-					type: "classList",
-					item: ".read-article-box",
-					remove: "show-later",
-				},
-			],
-		},
-		{
-			name: "B站笔记",
 			url: "m.bilibili.com/opus/",
 			handles: [
 				//展开阅读全文
@@ -829,6 +793,11 @@
 					type: "classList",
 					item: ".opus-module-content",
 					remove: "limit",
+				},
+				{
+					type: "classList",
+					item: ".opus-module-content",
+					remove: "show-read-text",
 				},
 			],
 		},

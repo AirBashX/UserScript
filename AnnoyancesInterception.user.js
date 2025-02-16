@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.4.15
+// @version      1.4.16
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -410,7 +410,7 @@
 			url: "bilibili.com",
 			items: [
 				//悬浮按钮:打开app,看你感兴趣的内容(主页)
-				".m-home-float-openapp",
+				".m-open-app.fixed-openapp",
 				//悬浮按钮:打开app(UP主页)
 				".m-space-float-openapp",
 				//悬浮按钮:打开app,看高清内容(视频全屏)
@@ -485,23 +485,9 @@
 			},
 		},
 		{
-			name: "B站专栏",
-			url: "bilibili.com/read/",
-			items: [
-				//悬浮按钮:打开app
-				"#app>div>bili-open-app.float-btn",
-				//PC端:登录提示
-				"div:has(.unlogin-popover-avatar)",
-			],
-		},
-		{
 			name: "B站笔记",
 			url: "bilibili.com/opus/",
 			items: [
-				//悬浮按钮:打开App,看更多精彩内容
-				".float-btn",
-				//悬浮弹窗:打开APP
-				".openapp-dialog",
 				//PC端:登录提示
 				"div:has(.unlogin-popover-avatar)",
 			],
