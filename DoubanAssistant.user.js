@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         豆瓣助手
-// @version      0.0.19
+// @version      0.0.20
 // @namespace    airbash/DoubanAssistant
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -45,11 +45,37 @@
 	//获取GBK编码的douban_cn_name
 	let douban_cn_name_gbk = encodeToGb2312(douban_cn_name).replace(/(.{2})/gi, "%$1");
 
-	//获取douban_en_name
-	let douban_all_name = document.querySelector("#content > h1 > span:nth-child(1)").innerHTML;
-	let douban_en_name = douban_all_name.split(douban_cn_name)[1].trim();
-	if (douban_en_name == null) {
-		douban_en_name = douban_cn_name;
+	//获取豆瓣英文名
+	let douban_en_name = douban_cn_name;
+	let douban_en_name1s = document.querySelector("#content > h1 > span:nth-child(1)").innerHTML;
+	let douban_en_name1 = douban_en_name1s.split(douban_cn_name)[1].trim();
+
+	/**
+	 * 获取备用豆瓣英文名
+	 *
+	 * @return     {string}  The douban en name 2.
+	 */
+	function getDoubanEnName2() {
+		let douban_items = document.querySelectorAll("#info .pl");
+		for (let pl of douban_items) {
+			if ("又名:" == pl.textContent) {
+				let movieNames = pl.nextSibling.textContent.trim().split(" / ");
+				for (let name of movieNames) {
+					if (/^[a-zA-Z0-9]/.test(name)) {
+						return name;
+					}
+				}
+			}
+		}
+	}
+
+	if (/^[a-zA-Z0-9]/.test(douban_en_name1)) {
+		douban_en_name = douban_en_name1;
+	} else {
+		let doubanEnName = getDoubanEnName2();
+		if (doubanEnName) {
+			douban_en_name = getDoubanEnName2();
+		}
 	}
 
 	/**
@@ -129,7 +155,7 @@
 					search: "https://so.zimuku.org/search?q=" + douban_cn_name,
 				},
 				{
-					name: "opensubtitle",
+					name: "OpenSub",
 					url: "opensubtitles.org",
 					search: "https://www.opensubtitles.com/zh-CN/zh-CN/search-all/q-" + imdb_id + "/hearing_impaired-include/machine_translated-/trusted_sources-",
 				},
@@ -185,8 +211,8 @@
 				},
 				{
 					name: "电影天堂",
-					url: "www.dy2018.com/",
-					search: "https://www.dy2018.com/",
+					url: "www.dygod.net",
+					search: "https://www.dygod.net/",
 				},
 				{
 					name: "新电影天堂",
