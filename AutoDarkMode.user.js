@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         AutoDarkMode
-// @namespace    https://github.com/AirBashX/UserScript
+// @namespace    airbash/Rocy-June/AutoDarkMode
 // @homepage     https://github.com/AirBashX/UserScript
 // @version      25.04.07.01
 // @description  Automatically switch to Dark Mode
