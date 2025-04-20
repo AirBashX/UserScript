@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.4.16
+// @version      1.4.17
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -627,6 +627,8 @@
 				"#__callup_bottom_new",
 				//悬浮按钮:打开APP(子栏2:顶部,有bug)
 				".js-app-header",
+				//悬浮按钮:新版本抢先体验(底部)
+				"#SNP_bottom_bar"
 			],
 			fun: function () {
 				//修复上述规则产生的bug

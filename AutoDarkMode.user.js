@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动主题切换
-// @namespace    https://github.com/AirBashX/UserScript
+// @namespace    airbash/Rocy-June/AutoDarkMode
 // @homepage     https://github.com/AirBashX/UserScript
 // @version      25.04.20.03
 // @description  根据用户设定时间段, 自动切换已适配网站的黑白主题

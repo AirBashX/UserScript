@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.79
+// @version      1.3.80
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -1163,16 +1163,16 @@
 		},
 		{
 			name: "新浪财经",
-			url: "cj.sina.cn/article/",
+			url: "cj.sina.cn/article",
 			handles: [
 				//打开app阅读全文
 				{
 					type: "display",
-					item: ".unfold-box",
+					item: ".read-unfold-box",
 				},
 				{
 					type: "height",
-					item: ".main-body",
+					item: ".main-article-body",
 				},
 			],
 		},
