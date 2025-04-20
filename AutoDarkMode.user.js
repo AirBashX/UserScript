@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name         AutoDarkMode
+// @name         自动主题切换
 // @namespace    airbash/Rocy-June/AutoDarkMode
 // @homepage     https://github.com/AirBashX/UserScript
-// @version      25.04.07.01
-// @description  Automatically switch to Dark Mode
+// @version      25.04.20.03
+// @description  根据用户设定时间段, 自动切换已适配网站的黑白主题
 // @author       airbash / Rocy-June
 // @match        *://*/*
 // @icon
@@ -18,6 +18,7 @@
 
   // 日志函数
   const log = console.log.bind(console, "[AutoDarkMode Script]");
+  const warn = console.warn.bind(console, "[AutoDarkMode Script]");
   const error = console.error.bind(console, "[AutoDarkMode Script]");
 
   log("脚本开始运行");
@@ -42,11 +43,19 @@
         toggle: 切换主题函数(可选, 为 null 时 toLight 和 toDark 函数会被调用),
         toLight: 切换到明亮主题函数(可选, toggle 为 null 时必需设定),
         toDark: 切换到黑夜主题函数(可选, toggle 为 null 时必需设定),
-        checkTime: 检查主题间隔时间(可选, 为 null 时默认 5 秒),
+        fastCheckTime: 未成功检查 / 切换主题前的检查主题间隔时间(可选, 为 null 时默认 1 秒),
+        afterCheckTime: 无需切换或切换成功后, 再次检查主题间隔时间(可选, 为 null 时默认 10 秒),
       }]
     }
+
+    tip: 
+      如果新增站点有新的顶级域名, 
+      记得同步增加到 sites 下方的 domain_suffixes  
   */
+  const fastCheckDefaultTime = 200;
+  const afterCheckDefaultTime = 10000;
   const sites = {
+    // Pixiv
     "pixiv.net": [
       {
         url: /^https?:\/\/.*?pixiv\.net.*/,
@@ -68,6 +77,7 @@
         },
       },
     ],
+    // 风车动漫
     "fengchedmp.com": [
       {
         url: /^https?:\/\/.*?fengchedmp\.com.*/,
@@ -86,29 +96,77 @@
         },
       },
     ],
+    // Wikipedia
+    "wikipedia.org": [
+      {
+        url: /^https?:\/\/.*?wikipedia\.org.*/,
+        check: () =>
+          document.documentElement.classList.contains(
+            "skin-theme-clientpref-night"
+          )
+            ? "dark"
+            : "light",
+        toLight: () => {
+          document
+            .getElementById("skin-client-pref-skin-theme-value-day")
+            .click();
+        },
+        toDark: () => {
+          document
+            .getElementById("skin-client-pref-skin-theme-value-night")
+            .click();
+        },
+      },
+    ],
   };
 
+  const domain_suffixes = [
+    ".com.cn",
+    ".com",
+    ".org",
+    ".net",
+    ".edu",
+    ".gov",
+    ".cn",
+  ];
+
   // 匹配到的域名设置
-  const no_www_domain = location.hostname.replace(/^www\./, "");
+  const no_www_domain = getRootDomain(location.hostname);
 
   const domain_setting = sites[no_www_domain];
   if (!domain_setting) {
+    log(`未找到适配的站点: ${no_www_domain}`);
     return;
   }
 
   // 匹配到的网站设置
   const site_setting = domain_setting.find((s) => s.url.test(location.href));
   if (!site_setting) {
+    log(`未找到当前页面的适配操作`);
     return;
   }
 
   // 加载完成后开始检查主题
   addEventListener("load", () => {
-    // 创建一个定时器, 每隔 5 秒检查当前时间是否已超过时间设置
-    setInterval(checkTheme, site_setting.checkTime || 5000);
+    const timer = new Timer(
+      checkFunc,
+      site_setting.afterCheckTime || afterCheckDefaultTime
+    );
 
-    // 立刻检查
-    checkTheme();
+    checkFunc();
+
+    timer.start();
+
+    function checkFunc() {
+      try {
+        checkTheme();
+        timer.delay = site_setting.afterCheckTime || afterCheckDefaultTime;
+        log("检查完成, 切换到慢速模式");
+      } catch {
+        timer.delay = site_setting.fastCheckTime || fastCheckDefaultTime;
+        warn("检查失败, 切换到高速模式");
+      }
+    }
   });
 
   // 初始化设置
@@ -119,6 +177,18 @@
     settings.dark_time = GM_getValue("dark_time", settings.dark_time);
 
     refreshMenuCommand();
+  }
+
+  // 获取根域名
+  function getRootDomain(domain) {
+    for (const suffix of domain_suffixes) {
+      if (!domain.endsWith(suffix)) {
+        continue;
+      }
+
+      const index = domain.lastIndexOf(".", suffix.length);
+      return domain.substring(index + 1);
+    }
   }
 
   // 检查当前时间是否需要切换主题
@@ -141,11 +211,13 @@
       if (site_setting.toggle) {
         log("切换到明亮主题 - toggle");
         site_setting.toggle();
+        log("切换完成");
         return;
       }
       if (site_setting.toLight) {
         log("切换到明亮主题 - toLight");
         site_setting.toLight();
+        log("切换完成");
         return;
       }
 
@@ -158,11 +230,13 @@
       if (site_setting.toggle) {
         log("切换到黑夜主题 - toggle");
         site_setting.toggle();
+        log("切换完成");
         return;
       }
       if (site_setting.toDark) {
         log("切换到黑夜主题 - toDark");
         site_setting.toDark();
+        log("切换完成");
         return;
       }
 
@@ -251,5 +325,29 @@
   // 将函数加入下一轮事件循环
   function nextTick(func) {
     Promise.resolve().then(func);
+  }
+
+  // 自建定时器
+  class Timer {
+    #timer = null;
+    #func = null;
+    delay = 0;
+
+    constructor(func, delay) {
+      this.#func = func;
+      this.delay = delay;
+    }
+
+    start() {
+      this.stop();
+      this.#timer = setTimeout(() => {
+        this.#func();
+        this.start();
+      }, this.delay);
+    }
+
+    stop() {
+      clearTimeout(this.#timer);
+    }
   }
 })();
