@@ -2,7 +2,7 @@
 // @name         自动主题切换
 // @namespace    airbash/Rocy-June/AutoDarkMode
 // @homepage     https://github.com/AirBashX/UserScript
-// @version      25.04.20.03
+// @version      25.04.21.01
 // @description  根据用户设定时间段, 自动切换已适配网站的黑白主题
 // @author       airbash / Rocy-June
 // @match        *://*/*
@@ -20,6 +20,21 @@
   const log = console.log.bind(console, "[AutoDarkMode Script]");
   const warn = console.warn.bind(console, "[AutoDarkMode Script]");
   const error = console.error.bind(console, "[AutoDarkMode Script]");
+
+  // 失败检测计数器
+  let fail_count = 0;
+  // 失败检查时间间隔, 单位: 毫秒
+  let fail_check_time = 10000;
+
+  const sim_events = {
+    pointer_down: () =>
+      new PointerEvent("pointerdown", {
+        isTrusted: true,
+        bubbles: true,
+        cancelable: true,
+        pointerType: "mouse",
+      }),
+  };
 
   log("脚本开始运行");
 
@@ -60,18 +75,15 @@
       {
         url: /^https?:\/\/.*?pixiv\.net.*/,
         check: () =>
-          document.documentElement.getAttribute("data-theme") === "dark"
-            ? "dark"
-            : "light",
-        toggle: () => {
-          const button = document.querySelector(
+          $html().getAttribute("data-theme") === "dark" ? "dark" : "light",
+        toggle: async () => {
+          const button = $single(
             "button.ccl__sc-1lxyknw-0.hZvyDT.sc-pkfh0q-1.ikiFYU"
           );
           button.click();
-          nextTick(() => {
-            document
-              .querySelector("div.sc-1o6692m-0.lerGVa.sc-gmfqyv-1.jdCrQO")
-              .click();
+
+          await $nextTick(() => {
+            $single("div.sc-1o6692m-0.lerGVa.sc-gmfqyv-1.jdCrQO").click();
             button.click();
           });
         },
@@ -82,17 +94,14 @@
       {
         url: /^https?:\/\/.*?fengchedmp\.com.*/,
         check: () =>
-          document
-            .querySelector("#cssFile")
-            .getAttribute("href")
-            .includes("black")
+          $single("#cssFile").getAttribute("href").includes("black")
             ? "dark"
             : "light",
         toLight: () => {
-          document.querySelector("i.icon-rijian").click();
+          $single("i.icon-rijian").click();
         },
         toDark: () => {
-          document.querySelector("i.icon-yejian").click();
+          $single("i.icon-yejian").click();
         },
       },
     ],
@@ -101,20 +110,70 @@
       {
         url: /^https?:\/\/.*?wikipedia\.org.*/,
         check: () =>
-          document.documentElement.classList.contains(
-            "skin-theme-clientpref-night"
-          )
+          $html().classList.contains("skin-theme-clientpref-night")
             ? "dark"
             : "light",
         toLight: () => {
-          document
-            .getElementById("skin-client-pref-skin-theme-value-day")
-            .click();
+          $single("#skin-client-pref-skin-theme-value-day").click();
         },
         toDark: () => {
-          document
-            .getElementById("skin-client-pref-skin-theme-value-night")
-            .click();
+          $single("#skin-client-pref-skin-theme-value-night").click();
+        },
+      },
+    ],
+    "chatgpt.com": [
+      {
+        url: /^https?:\/\/.*?chatgpt\.com.*/,
+        check: () => ($html().classList.contains("dark") ? "dark" : "light"),
+        toLight: async () => {
+          $single(
+            "#conversation-header-actions>button:last-child"
+          ).dispatchEvent(sim_events.pointer_down());
+          (
+            await $singleAsync("div[data-radix-popper-content-wrapper]")
+          ).style.opacity = 0;
+
+          $single("div[data-testid=settings-menu-item]").click();
+          (
+            await $singleAsync("div[data-testid=modal-settings]")
+          ).style.opacity = 0;
+
+          $single(
+            "div.flex.items-center.justify-between button[role=combobox]"
+          ).dispatchEvent(sim_events.pointer_down());
+          (
+            await $singleAsync("div[data-radix-popper-content-wrapper]")
+          ).style.opacity = 0;
+
+          $single(
+            "div[data-radix-select-viewport] div[role=option]:nth-child(3)"
+          ).click();
+          $single("button[data-testid=close-button]").click();
+        },
+        toDark: async () => {
+          $single(
+            "#conversation-header-actions>button:last-child"
+          ).dispatchEvent(sim_events.pointer_down());
+          (
+            await $singleAsync("div[data-radix-popper-content-wrapper]")
+          ).style.opacity = 0;
+
+          $single("div[data-testid=settings-menu-item]").click();
+          (
+            await $singleAsync("div[data-testid=modal-settings]")
+          ).style.opacity = 0;
+
+          $single(
+            "div.flex.items-center.justify-between button[role=combobox]"
+          ).dispatchEvent(sim_events.pointer_down());
+          (
+            await $singleAsync("div[data-radix-popper-content-wrapper]")
+          ).style.opacity = 0;
+
+          $single(
+            "div[data-radix-select-viewport] div[role=option]:nth-child(2)"
+          ).click();
+          $single("button[data-testid=close-button]").click();
         },
       },
     ],
@@ -147,27 +206,106 @@
   }
 
   // 加载完成后开始检查主题
-  addEventListener("load", () => {
+  addEventListener("load", async () => {
     const timer = new Timer(
       checkFunc,
       site_setting.afterCheckTime || afterCheckDefaultTime
     );
 
-    checkFunc();
+    await checkFunc();
 
     timer.start();
 
-    function checkFunc() {
+    async function checkFunc() {
       try {
-        checkTheme();
+        await checkTheme();
+        fail_count = 0;
         timer.delay = site_setting.afterCheckTime || afterCheckDefaultTime;
-        log("检查完成, 切换到慢速模式");
-      } catch {
+        log("检查/操作完成, 切换到慢速模式");
+      } catch (ex) {
+        fail_count++;
+        if (
+          fail_count >=
+          fail_check_time / (site_setting.fastCheckTime || fastCheckDefaultTime)
+        ) {
+          timer.delay = site_setting.afterCheckTime || afterCheckDefaultTime;
+          error("失败超出时长限制, 切换到慢速模式");
+          return;
+        }
+
         timer.delay = site_setting.fastCheckTime || fastCheckDefaultTime;
-        warn("检查失败, 切换到高速模式");
+        warn("检查/操作失败, 切换到高速模式", ex);
       }
     }
   });
+
+  // 查找元素, 用法类似于 jQuery
+  function $single(selector) {
+    return document.querySelector(selector);
+  }
+
+  /*
+    类似 jQuery 的元素查找函数
+
+    适用于连续操作中可能影响用户操作体验的场景, 该方式会尽可能在渲染的同一帧内找到该 DOM 元素,
+    以缩短元素变更对用户交互的干扰时间 (如弹窗在显示帧立即点击关闭按钮)
+    
+    与 $singleIntervalAsync 不同的是, 本函数每一帧都会进行查询, 因此可能对性能造成一定影响
+    如果操作不会显著影响用户体验, 则推荐使用 $singleIntervalAsync
+  */
+  function $singleAsync(selector, timeout = 1000) {
+    return $promise(async (resolve, reject) => {
+      const start = Date.now();
+      while (Date.now() - start < timeout) {
+        const ele = $single(selector);
+        if (ele) {
+          resolve(ele);
+          return;
+        }
+
+        await $nextFrame();
+      }
+
+      reject(new Error("Timeout"));
+    });
+  }
+
+  /*
+    类似 jQuery 的元素查找函数
+    
+    适用于不会改变页面结构、或不影响用户操作体验的场景
+    使用自定义 Timer 以固定间隔查询元素, 性能开销较小, 但查找速度相对较慢
+
+    与 $singleAsync 不同的是, 该函数通过节流方式降低性能消耗,
+    更适合异步检查某些静态区域元素是否已加载完成等情况
+  */
+  function $singleIntervalAsync(selector, interval = 100, timeout = 1000) {
+    return $promise(async (resolve, reject) => {
+      const start = Date.now();
+      const timer = new Timer(() => {
+        const ele = $single(selector);
+        if (ele) {
+          resolve(ele);
+          timer.stop();
+          return;
+        }
+        if (Date.now() - start >= timeout) {
+          reject(new Error("Timeout"));
+          timer.stop();
+          return;
+        }
+      }, interval);
+      timer.start(true);
+    });
+  }
+
+  function $all(selector) {
+    return document.querySelectorAll(selector);
+  }
+
+  function $html() {
+    return document.documentElement;
+  }
 
   // 初始化设置
   function initSettings() {
@@ -192,7 +330,7 @@
   }
 
   // 检查当前时间是否需要切换主题
-  function checkTheme() {
+  async function checkTheme() {
     log("开始检查主题");
 
     const light_minutes = timeToMinutes(settings.light_time);
@@ -210,13 +348,13 @@
       }
       if (site_setting.toggle) {
         log("切换到明亮主题 - toggle");
-        site_setting.toggle();
+        await site_setting.toggle();
         log("切换完成");
         return;
       }
       if (site_setting.toLight) {
         log("切换到明亮主题 - toLight");
-        site_setting.toLight();
+        await site_setting.toLight();
         log("切换完成");
         return;
       }
@@ -229,13 +367,13 @@
       }
       if (site_setting.toggle) {
         log("切换到黑夜主题 - toggle");
-        site_setting.toggle();
+        await site_setting.toggle();
         log("切换完成");
         return;
       }
       if (site_setting.toDark) {
         log("切换到黑夜主题 - toDark");
-        site_setting.toDark();
+        await site_setting.toDark();
         log("切换完成");
         return;
       }
@@ -323,8 +461,31 @@
   }
 
   // 将函数加入下一轮事件循环
-  function nextTick(func) {
-    Promise.resolve().then(func);
+  function $nextTick(func) {
+    return Promise.resolve().then(() => {
+      func();
+    });
+  }
+
+  // 等待下一帧
+  function $nextFrame(func) {
+    return new Promise((resolve) => {
+      requestAnimationFrame((timestamp) => {
+        func?.(timestamp);
+        resolve(timestamp);
+      });
+    });
+  }
+
+  // 异步函数返回 Promise
+  function $promise(func) {
+    return new Promise((resolve, reject) => {
+      try {
+        func(resolve, reject);
+      } catch (ex) {
+        reject(ex);
+      }
+    });
   }
 
   // 自建定时器
@@ -338,12 +499,20 @@
       this.delay = delay;
     }
 
-    start() {
+    start(immediate = false) {
       this.stop();
-      this.#timer = setTimeout(() => {
-        this.#func();
-        this.start();
-      }, this.delay);
+
+      let start_new = async () => {
+        if (immediate) {
+          await this.#func();
+        }
+
+        this.#timer = setTimeout(async () => {
+          await this.#func();
+          this.start();
+        }, this.delay);
+      };
+      start_new();
     }
 
     stop() {
