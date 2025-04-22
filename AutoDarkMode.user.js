@@ -7,7 +7,7 @@
 // @author       airbash / Rocy-June
 // @match        *://*/*
 // @icon
-// @run-at       document-start
+// @run-at       document-body
 // @grant        GM_registerMenuCommand
 // @grant        GM_setValue
 // @grant        GM_getValue
@@ -118,16 +118,11 @@
         url: /^https?:\/\/.*?pixiv\.net.*/,
         check: () =>
           html().getAttribute("data-theme") === "dark" ? "dark" : "light",
-        toggle: async () => {
-          const button = $single(
-            "button.ccl__sc-1lxyknw-0.hZvyDT.sc-pkfh0q-1.ikiFYU"
-          );
-          button.click();
-
-          await nextTick(() => {
-            $single("div.sc-1o6692m-0.lerGVa.sc-gmfqyv-1.jdCrQO").click();
-            button.click();
-          });
+        toLight: () => {
+          $single(".gtm-darkmode-toggle-on-user-menu-to-light").click();
+        },
+        toDark: () => {
+          $single(".gtm-darkmode-toggle-on-user-menu-to-dark").click();
         },
       },
     ],
