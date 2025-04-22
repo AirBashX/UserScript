@@ -158,6 +158,7 @@
         },
       },
     ],
+    // ChatGPT
     "chatgpt.com": [
       {
         url: /^https?:\/\/.*?chatgpt\.com.*/,
@@ -214,6 +215,7 @@
         },
       },
     ],
+    // GitHub
     "github.com": [
       {
         url: /^https?:\/\/.*?github\.com.*/,
