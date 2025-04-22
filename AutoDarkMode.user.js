@@ -17,7 +17,7 @@
 (function () {
   "use strict";
 
-  const debug_mode = true;
+  const debug_mode = false;
   let debug_force_toggle = false;
 
   // 日志函数
