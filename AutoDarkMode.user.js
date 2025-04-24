@@ -2,7 +2,7 @@
 // @name         自动主题切换
 // @namespace    airbash/Rocy-June/AutoDarkMode
 // @homepage     https://github.com/AirBashX/UserScript
-// @version      25.04.22.02
+// @version      25.04.24.01
 // @description  根据用户设定时间段, 自动切换已适配网站的黑白主题
 // @author       airbash / Rocy-June
 // @match        *://*/*
@@ -556,13 +556,15 @@
       `设置黑夜时间 (${settings.dark_time})`,
       () => setTimePrompt("dark_time", "黑夜时间")
     );
-    settings.debug_toggle_id = GM_registerMenuCommand(
-      `调试模式: 强制切换主题`,
-      async () => {
-        debug_force_toggle = true;
-        await checkTheme();
-      }
-    );
+    if (debug_mode) {
+      settings.debug_toggle_id = GM_registerMenuCommand(
+        `调试模式: 强制切换主题`,
+        async () => {
+          debug_force_toggle = true;
+          await checkTheme();
+        }
+      );
+    }
   }
 
   // 设置时间提示框
