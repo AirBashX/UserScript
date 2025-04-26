@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.4.17
+// @version      1.4.18
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -544,13 +544,11 @@
 					for (let mutation of mutationsList) {
 						for (let node of mutation.addedNodes) {
 							if (node.nodeType == Node.ELEMENT_NODE) {
-								let closeBtn = node.querySelector(".dy-account-close");
+								let closeBtn = document.querySelector(".lR1QBof5");
 								//关闭登录弹窗
 								if (closeBtn) {
 									if (LoginFlag == true) {
 										closeBtn.click();
-									} else {
-										LoginFlag = true;
 									}
 								}
 								return;
@@ -628,7 +626,7 @@
 				//悬浮按钮:打开APP(子栏2:顶部,有bug)
 				".js-app-header",
 				//悬浮按钮:新版本抢先体验(底部)
-				"#SNP_bottom_bar"
+				"#SNP_bottom_bar",
 			],
 			fun: function () {
 				//修复上述规则产生的bug
@@ -744,7 +742,7 @@
 			],
 		},
 		{
-			name: "搜狐",
+			name: "搜狐新闻",
 			url: "m.sohu.com/a/",
 			items: [
 				//悬浮按钮:打开APP
@@ -759,7 +757,7 @@
 				//悬浮按钮：App内打开(底部)
 				".m-bottom-container",
 				//悬浮按钮:去首页(文章)
-				".m-index-tag"
+				".m-index-tag",
 			],
 		},
 		{
@@ -769,7 +767,7 @@
 				//悬浮弹窗:添加今日头条到电脑桌面
 				".add-panel",
 				//悬浮弹窗:扫码下载今日头条
-				"download-panel"
+				"download-panel",
 			],
 		},
 		{
@@ -961,7 +959,7 @@
 				//悬浮按钮:加群学习(文章)
 				".index_xiaoxue-button_1Av",
 				//悬浮按钮:登录提示
-				".widget__download-app"
+				".widget__download-app",
 			],
 			fun: function () {
 				//悬浮按钮:打开app(话题)
