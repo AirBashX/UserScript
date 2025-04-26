@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.80
+// @version      1.3.81
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -518,7 +518,16 @@
 		{
 			name: "搜狐新闻",
 			url: "sohu.com/a",
-			handles: [],
+			handles: [
+				{
+					type: "display",
+					item: ".lookall-box",
+				},
+				{
+					type: "height",
+					item: "#mp-editor",
+				},
+			],
 			fun: function () {
 				onload = function () {
 					let item = document.querySelector("#artLookAll");
