@@ -358,9 +358,16 @@
 			html: swal_html,
 			showCloseButton: true,
 			didRender: () => {
-				GM_addStyle(
-					'.swal2-html-container{text-align:left !important;line-height:unset !important;}.smail_div{width:33%;float:left;}.switch{float:left;position:relative;top:3px;width:40px;height:20px;display:flex;}.checkbox{z-index:3;position:relative;width:100%;height:100%;cursor:pointer;opacity:0;}.bt{z-index:2;position:absolute;top:0;bottom:0;}.bt:before{position:absolute;top:2.5px;left:2.5px;content:"";width:15px;height:15px;background-color:red;border-radius:50%;transition:0.3s cubic-bezier(0.18,0.89,0.35,1.15) all;}.checkbox:checked + .bt:before{left:20px;background-color:#03a9f4;}.bg{z-index:1;position:absolute;top:0;right:0;bottom:0;left:0;border-radius:100px;background-color:#fcebeb;}.checkbox:checked ~ .bg{background-color:#ebf7fc;}',
-				);
+				GM_addStyle(`
+					.swal2-html-container{text-align:left !important;line-height:unset !important;}
+					.smail_div{width:33%;float:left;}
+					.switch{float:left;position:relative;top:3px;width:40px;height:20px;display:flex;}
+					.checkbox{z-index:3;position:relative;width:100%;height:100%;cursor:pointer;opacity:0;}
+					.bt{z-index:2;position:absolute;top:0;bottom:0;}
+					.bt:before{position:absolute;top:2.5px;left:2.5px;content:"";width:15px;height:15px;background-color:red;border-radius:50%;transition:0.3s cubic-bezier(0.18,0.89,0.35,1.15) all;}
+					.checkbox:checked + .bt:before{left:20px;background-color:#03a9f4;}
+					.bg{z-index:1;position:absolute;top:0;right:0;bottom:0;left:0;border-radius:100px;background-color:#fcebeb;}
+					.checkbox:checked ~ .bg{background-color:#ebf7fc;}`);
 				/**
 				 * 侧边栏开关
 				 */
