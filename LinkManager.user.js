@@ -307,7 +307,7 @@
         let item1s = document.querySelectorAll("#content_left>div");
         for (let item of item1s) {
             let a = item.querySelector("a");
-            if (a.href.includes("www.baidu.com/link?url=")) {
+            if (a && a.href.includes("www.baidu.com/link?url=")) {
                 let url = item.getAttribute("mu");
                 //https://www.baidu.com/s?wd=一夜醒来欠地铁600多万?官方回应
                 //智能精选
