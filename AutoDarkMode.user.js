@@ -2,13 +2,14 @@
 // @name         自动主题切换
 // @namespace    airbash/Rocy-June/AutoDarkMode
 // @homepage     https://github.com/AirBashX/UserScript
-// @version      25.04.24.01
+// @version      25.06.01.01
 // @description  根据用户设定时间段, 自动切换已适配网站的黑白主题
 // @author       airbash / Rocy-June
 // @match        *://*/*
 // @icon
 // @run-at       document-body
 // @grant        GM_registerMenuCommand
+// @grant        GM_unregisterMenuCommand
 // @grant        GM_setValue
 // @grant        GM_getValue
 // @license      GPL-3.0
@@ -561,7 +562,12 @@
         `调试模式: 强制切换主题`,
         async () => {
           debug_force_toggle = true;
-          await checkTheme();
+          try {
+            await checkTheme();
+          }
+          finally {
+            debug_force_toggle = false;
+          }
         }
       );
     }
@@ -582,7 +588,7 @@
     }
     if (
       !new_val ||
-      !/^(?:[0-9]|1[0-9]|2[0-3])[:：](?:[0-9]|[0-5][0-9])/.test(new_val)
+      !/^([0-1][0-9]|2[0-3])[:：]([0-5][0-9])$/.test(new_val)
     ) {
       alert('格式不正确, 时间格式为 "08:00"');
       return;
