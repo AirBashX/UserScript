@@ -18,7 +18,11 @@
 (function () {
   "use strict";
 
-  const debug_mode = false;
+  // 调试模式开关
+  const debug_mode = true;
+  // 调试模式: 是否在报错时中断脚本运行
+  const debug_interrupt_on_error = false;
+  // 调试模式: 是否强制切换主题
   let debug_force_toggle = false;
 
   // 日志函数
@@ -43,6 +47,24 @@
         bubbles: true,
         cancelable: true,
         pointerType: "mouse",
+      }),
+    mouse_over: () =>
+      new MouseEvent("mouseover", {
+        bubbles: true,
+        cancelable: true,
+        relatedTarget: null,
+      }),
+    mouse_leave: () =>
+      new MouseEvent("mouseleave", {
+        bubbles: true,
+        cancelable: true,
+        relatedTarget: null,
+      }),
+    mouse_enter: () =>
+      new MouseEvent("mouseenter", {
+        bubbles: true,
+        cancelable: true,
+        relatedTarget: null,
       }),
     key: (is_down, key, modifiers = {}) => {
       const key_codes = {
@@ -82,11 +104,21 @@
 
   // 设置对象
   const settings = {
+    // 默认明亮主题起始时间
     light_time: "08:00",
+    // 默认黑夜主题起始时间
     dark_time: "18:00",
+    // 油猴菜单: 明亮主题设置菜单ID
     light_menu_id: null,
+    // 油猴菜单: 黑夜主题设置菜单ID
     dark_menu_id: null,
+    // 油猴菜单: Debug强制切换菜单ID
     debug_toggle_id: null,
+
+    // 默认快速检查时间 (Debug 模式且开启报错中断时将延长)
+    fast_check_default_time: debug_mode && debug_interrupt_on_error ? 3000 : 200,
+    // 快速检查过后的常态检查时间 (Debug 模式且开启报错中断时将延长)
+    after_check_default_time: debug_mode && debug_interrupt_on_error ? 3600000 : 10000,
   };
 
   // 初始化设置
@@ -110,8 +142,6 @@
       如果新增站点有新的顶级域名, 
       记得同步增加到 sites 下方的 domain_suffixes  
   */
-  const fastCheckDefaultTime = debug_mode ? 3000 : 200;
-  const afterCheckDefaultTime = debug_mode ? 3600000 : 10000;
   const sites = {
     // Pixiv
     "pixiv.net": [
@@ -238,11 +268,14 @@
             await $singleAsync("div[role=listbox]>command-palette-item>span")
           ).click();
 
-          await waitForAsync(() => {
+          let flag = await waitForAsync(() => {
             return $single("svg[aria-label=Loading]").parentNode.hasAttribute(
               "hidden"
             );
           });
+          if (!flag) {
+            throw new Error("Waiting for load ready failed");
+          }
 
           command_palette.value = "default light";
 
@@ -272,11 +305,14 @@
             await $singleAsync("div[role=listbox]>command-palette-item>span")
           ).click();
 
-          await waitForAsync(() => {
+          let flag = await waitForAsync(() => {
             return $single("svg[aria-label=Loading]").parentNode.hasAttribute(
               "hidden"
             );
           });
+          if (!flag) {
+            throw new Error("Waiting for load ready failed");
+          }
 
           command_palette.value = "default dark";
 
@@ -289,6 +325,67 @@
             )
           ).click();
           command_container.style.opacity = 1;
+        },
+      },
+    ],
+    // Bilibili
+    "bilibili.com": [
+      {
+        url: /^https?:\/\/.*?bilibili\.com.*/,
+        check: () =>
+          html().classList.contains("night-mode") ? "dark" : "light",
+        toLight: async () => {
+          let flag = await waitForTimerAsync(() => $single("li.v-popover-wrap.header-avatar-wrap") != null, 200, 10000);
+          if (!flag) {
+            throw new Error("Waiting for links-item created failed");
+          }
+
+          let avatar = $single("li.v-popover-wrap.header-avatar-wrap")
+          avatar.dispatchEvent(sim_events.mouse_enter());
+          await nextFrame();
+          avatar.dispatchEvent(sim_events.mouse_leave());
+
+          flag = await waitForTimerAsync(() => $all(".links-item").length > 0, 200, 10000);
+          if (!flag) {
+            throw new Error("Waiting for links-item created failed");
+          }
+
+          let links_item = $all(".links-item");
+          let single_link_item = $single(links_item[links_item.length - 1], ".single-link-item")
+          single_link_item.dispatchEvent(sim_events.mouse_enter());
+
+          flag = await waitForAsync(() => single_link_item.nextElementSibling?.classList.contains("v-popover"));
+          if (!flag) {
+            throw new Error("Waiting for popover created failed");
+          }
+
+          let popover = single_link_item.nextElementSibling;
+          let options = $all(popover, ".single-link-item.sub-link-item")
+          options[1].click();
+        },
+        toDark: async () => {
+          let avatar = $single("li.v-popover-wrap.header-avatar-wrap")
+          avatar.dispatchEvent(sim_events.mouse_enter());
+          await nextFrame();
+          avatar.dispatchEvent(sim_events.mouse_leave());
+
+          let flag = await waitForTimerAsync(() => $all(".links-item").length > 0, 200, 10000);
+          if (!flag) {
+            throw new Error("Waiting for links-item created failed");
+          }
+
+          let links_item = $all(".links-item");
+          let single_link_item = $single(links_item[links_item.length - 1], ".single-link-item")
+          single_link_item.dispatchEvent(sim_events.mouse_enter());
+
+          flag = await waitForAsync(() => single_link_item.nextElementSibling?.classList.contains("v-popover"));
+          if (!flag) {
+            throw new Error("Waiting for popover created failed");
+          }
+
+          let popover = single_link_item.nextElementSibling;
+          let options = $all(popover, ".single-link-item.sub-link-item")
+          options[0].click();
         },
       },
     ],
@@ -324,7 +421,7 @@
   addEventListener("load", async () => {
     const timer = new Timer(
       checkFunc,
-      site_setting.afterCheckTime || afterCheckDefaultTime
+      site_setting.afterCheckTime || settings.after_check_default_time
     );
 
     await checkFunc();
@@ -335,33 +432,46 @@
       try {
         await checkTheme();
         fail_count = 0;
-        timer.delay = site_setting.afterCheckTime || afterCheckDefaultTime;
+        timer.delay = site_setting.afterCheckTime || settings.after_check_default_time;
         log("检查/操作完成, 切换到慢速模式");
       } catch (ex) {
         if (debug_mode) {
+          if (debug_interrupt_on_error) {
+            debug("检查/操作失败, 中断脚本运行", ex);
+            return;
+          }
+
           debug("检查/操作失败", ex);
-          return;
         }
 
         fail_count++;
         if (
           fail_count >=
-          fail_check_time / (site_setting.fastCheckTime || fastCheckDefaultTime)
+          fail_check_time / (site_setting.fastCheckTime || settings.fast_check_default_time)
         ) {
-          timer.delay = site_setting.afterCheckTime || afterCheckDefaultTime;
+          timer.delay = site_setting.afterCheckTime || settings.after_check_default_time;
           error("失败超出时长限制, 切换到慢速模式");
           return;
         }
 
-        timer.delay = site_setting.fastCheckTime || fastCheckDefaultTime;
+        timer.delay = site_setting.fastCheckTime || settings.fast_check_default_time;
         error("检查/操作失败, 切换到高速模式", ex);
       }
     }
   });
 
   // 查找元素, 用法类似于 jQuery
-  function $single(selector) {
+  function $single(arg1, arg2) {
+    if (arguments.length == 2) {
+      return $single2(arg1, arg2);
+    }
+    return $single1(arg1);
+  }
+  function $single1(selector) {
     return document.querySelector(selector);
+  }
+  function $single2(dom, selector) {
+    return dom.querySelector(selector);
   }
 
   /*
@@ -422,7 +532,7 @@
     while (Date.now() - start < timeout) {
       const eles = $all(selector);
       if (eles.length) {
-        var selected = Array.from(eles).filter(filter);
+        let selected = Array.from(eles).filter(filter);
         if (selected.length) {
           return selected[0];
         }
@@ -434,8 +544,17 @@
     throw new Error("Timeout");
   }
 
-  function $all(selector) {
+  function $all(arg1, arg2) {
+    if (arguments.length == 2) {
+      return $all2(arg1, arg2);
+    }
+    return $all1(arg1);
+  }
+  function $all1(selector) {
     return document.querySelectorAll(selector);
+  }
+  function $all2(dom, selector) {
+    return dom.querySelectorAll(selector);
   }
 
   function html() {
