@@ -2,7 +2,7 @@
 // @name         自动主题切换
 // @namespace    airbash/Rocy-June/AutoDarkMode
 // @homepage     https://github.com/AirBashX/UserScript
-// @version      25.06.01.01
+// @version      25.06.22.01
 // @description  根据用户设定时间段, 自动切换已适配网站的黑白主题
 // @author       airbash / Rocy-June
 // @match        *://*/*
@@ -166,7 +166,7 @@
         check: () => (html().classList.contains("dark") ? "dark" : "light"),
         toLight: async () => {
           $single(
-            "#conversation-header-actions>button:last-child"
+            "#conversation-header-actions button:last-child"
           ).dispatchEvent(sim_events.pointer_down());
           (
             await $singleAsync("div[data-radix-popper-content-wrapper]")
@@ -191,7 +191,7 @@
         },
         toDark: async () => {
           $single(
-            "#conversation-header-actions>button:last-child"
+            "#conversation-header-actions button:last-child"
           ).dispatchEvent(sim_events.pointer_down());
           (
             await $singleAsync("div[data-radix-popper-content-wrapper]")
