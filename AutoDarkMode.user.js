@@ -2,7 +2,7 @@
 // @name         自动主题切换
 // @namespace    airbash/Rocy-June/AutoDarkMode
 // @homepage     https://github.com/AirBashX/UserScript
-// @version      25.06.22.01
+// @version      25.06.22.03
 // @description  根据用户设定时间段, 自动切换已适配网站的黑白主题
 // @author       airbash / Rocy-June
 // @match        *://*/*
@@ -19,7 +19,7 @@
   "use strict";
 
   // 调试模式开关
-  const debug_mode = true;
+  const debug_mode = false;
   // 调试模式: 是否在报错时中断脚本运行
   const debug_interrupt_on_error = false;
   // 调试模式: 是否强制切换主题
@@ -196,7 +196,7 @@
         check: () => (html().classList.contains("dark") ? "dark" : "light"),
         toLight: async () => {
           $single(
-            "#conversation-header-actions button:last-child"
+            "#conversation-header-actions button[data-testid=profile-button]"
           ).dispatchEvent(sim_events.pointer_down());
           (
             await $singleAsync("div[data-radix-popper-content-wrapper]")
@@ -221,7 +221,7 @@
         },
         toDark: async () => {
           $single(
-            "#conversation-header-actions button:last-child"
+            "#conversation-header-actions button[data-testid=profile-button]"
           ).dispatchEvent(sim_events.pointer_down());
           (
             await $singleAsync("div[data-radix-popper-content-wrapper]")
@@ -244,6 +244,18 @@
           ).click();
           $single("button[data-testid=close-button]").click();
         },
+        load: () => {
+          document.addEventListener("visibilitychange", function () {
+            if (document.visibilityState === "visible") {
+              let modal_settings = $single("div[data-testid=modal-settings]");
+              if (!modal_settings) {
+                return;
+              }
+
+              $single("button[data-testid=close-button]").click();
+            }
+          });
+        }
       },
     ],
     // GitHub
@@ -419,20 +431,25 @@
 
   // 加载完成后开始检查主题
   addEventListener("load", async () => {
+
+    site_setting.load?.();
+
     const timer = new Timer(
-      checkFunc,
+      intervalFunc,
       site_setting.afterCheckTime || settings.after_check_default_time
     );
 
-    await checkFunc();
+    await intervalFunc();
 
     timer.start();
 
-    async function checkFunc() {
+    async function intervalFunc() {
       try {
-        await checkTheme();
+        await checkAndChangeTheme();
+
         fail_count = 0;
         timer.delay = site_setting.afterCheckTime || settings.after_check_default_time;
+
         log("检查/操作完成, 切换到慢速模式");
       } catch (ex) {
         if (debug_mode) {
@@ -447,14 +464,17 @@
         fail_count++;
         if (
           fail_count >=
-          fail_check_time / (site_setting.fastCheckTime || settings.fast_check_default_time)
+          fail_check_time /
+            (site_setting.fastCheckTime || settings.fast_check_default_time)
         ) {
-          timer.delay = site_setting.afterCheckTime || settings.after_check_default_time;
+          timer.delay =
+            site_setting.afterCheckTime || settings.after_check_default_time;
           error("失败超出时长限制, 切换到慢速模式");
           return;
         }
 
-        timer.delay = site_setting.fastCheckTime || settings.fast_check_default_time;
+        timer.delay =
+          site_setting.fastCheckTime || settings.fast_check_default_time;
         error("检查/操作失败, 切换到高速模式", ex);
       }
     }
@@ -584,7 +604,7 @@
   }
 
   // 检查当前时间是否需要切换主题
-  async function checkTheme() {
+  async function checkAndChangeTheme() {
     log("开始检查主题");
 
     const light_minutes = timeToMinutes(settings.light_time);
@@ -682,7 +702,7 @@
         async () => {
           debug_force_toggle = true;
           try {
-            await checkTheme();
+            await checkAndChangeTheme();
           }
           finally {
             debug_force_toggle = false;
