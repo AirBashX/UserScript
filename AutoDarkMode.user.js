@@ -2,11 +2,11 @@
 // @name         自动主题切换
 // @namespace    airbash/Rocy-June/AutoDarkMode
 // @homepage     https://github.com/AirBashX/UserScript
-// @version      25.06.23.01
+// @version      25.06.24.01
 // @description  根据用户设定时间段, 自动切换已适配网站的黑白主题
 // @author       airbash / Rocy-June
 // @match        *://*/*
-// @icon
+// @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAolBMVEVHcExYYm2zfUHYhC34jx74kRv4jx1naGllZWVlZWX3khxmZmb3kB73jx/4kB33kBxmZmZmZmZhYWFoaGj3kB5iY2RnZ2f5jBtqampubm5paWn3kh33kB73kB5aWlr3kR5mZmb6mhz2iSBkZGT3kR33kR1lZmY7Ozt3d3dISEj9uRG0fkGqeUX3kB5mZmZkZWb/lhRpaWn3kR9jY2NxcXGzfUGVB4hkAAAALXRSTlMA9+kD3YkOfEWWIYvnWLN47W03XvW04S8ZCs6fRMcnCFEY/r/PaqhTxWFHqnwtZ5kAAAACpUlEQVRYw9WX65qaMBCGbQFBRUARXEHF8x7aDMuh939rTRCimAHiw/Zpm18aM+/OTubwZTD419fU+uhlH5nE7AUYmqmq9AKo5G8DzJ4AFsSnAC+Pp+3T+Rn7mTOSSo4xvr/1AGQAFjGH2L7hAPiKjD0he2RfB7rmtYC4k4v3wwq1msvMfoq7D6DfWc+OdCP+9uszTcnCOpdORyFu7zrM3uPfV3qxQQHfP0mxTDtiP+xRe2VSnPZX1cZrAPAAIERds6OaKtrPj0lx2uDhiAEBEGIXf028/DwpDCbVxihJYhRANOxW3PJwwO3hth4AB4zgXo8m1Q3qeTOApFhij1gE8uoG5hm0AMhhiRGYA9vyQgKI2wDkNMAJVQRmAK0ekHSKFSFkZQ4qfidARQAeZGUId9AFIGQtdhGHJ+FFAhCKmcirYOV0A5A+7/IsNEDCA7JEOsGsnpXtAOEeaC3uHquoDVDU1JitIU+DHUdJAGhBRNaCLfWjBGSGWEetgHGtwCeQvD7pgWJv2LLGpVleAvRMOgb1TOa3IAUQUnHH58lc6l94nEvKFrJj+dnPugFiQa/82ClrYRR3pzLS1i68I88lamGJ9QPekoNOgCXa0yDwqWp0AtZYTwtuU8XrAIToxHYhPt66SxsAVwZFI6nmgtEGSNcNooHm8BsP6W2yCYBpk+qgqZC/V1/esyYPps26hfYi54WLHR8FXOd7g8AaUD3yduvTF8gEQMiEEe0kWoNCdCC5k2iGBzGNRQlIaf5cw7dvGvK0JuMs1++bvR7EhUYiZLHReP7aaSNBvxcpTIkoW2Om/9TO6/G9LrGZD7ganNQATUuxkZZQXcVOShDbi81QXj5jgmL/hIAPD2G/N9MiNf/3N9MXPLr6xSA6pad+b+elvfzDr/Pf2oPrAJ6zWhcAAAAASUVORK5CYII=
 // @run-at       document-body
 // @grant        GM_registerMenuCommand
 // @grant        GM_unregisterMenuCommand
@@ -19,18 +19,18 @@
   "use strict";
 
   // 调试模式开关
-  const debug_mode = false;
+  const DEBUG = false;
   // 调试模式: 是否在报错时中断脚本运行
-  const debug_interrupt_on_error = false;
+  const DEBUG_INTERRUPT_ON_ERROR = false;
   // 调试模式: 是否强制切换主题
-  let debug_force_toggle = false;
+  let DEBUG_FORCE_TOGGLE = false;
 
   // 日志函数
   const log = console.log.bind(console, "[AutoDarkMode Script]");
   const warn = console.warn.bind(console, "[AutoDarkMode Script]");
   const error = console.error.bind(console, "[AutoDarkMode Script]");
   const debug = (() =>
-    debug_mode
+    DEBUG
       ? console.error.bind(console, "[AutoDarkMode Script] [Debug Mode]")
       : () => {})();
 
@@ -116,9 +116,9 @@
     debug_toggle_id: null,
 
     // 默认快速检查时间 (Debug 模式且开启报错中断时将延长)
-    fast_check_default_time: debug_mode && debug_interrupt_on_error ? 3000 : 200,
+    fast_check_default_time: DEBUG && DEBUG_INTERRUPT_ON_ERROR ? 3000 : 200,
     // 快速检查过后的常态检查时间 (Debug 模式且开启报错中断时将延长)
-    after_check_default_time: debug_mode && debug_interrupt_on_error ? 3600000 : 10000,
+    after_check_default_time: DEBUG && DEBUG_INTERRUPT_ON_ERROR ? 3600000 : 10000,
   };
 
   // 初始化设置
@@ -400,8 +400,9 @@
           options[0].click();
         },
         load: () => {
-          document.addEventListener("visibilitychange", function () {
+          document.addEventListener("visibilitychange", async function () {
             if (document.visibilityState === "visible") {
+              await nextTick();
               $single("li.v-popover-wrap.header-avatar-wrap>.v-popover").dispatchEvent(
                 sim_events.mouse_leave()
               );
@@ -461,8 +462,8 @@
 
         log("检查/操作完成, 切换到慢速模式");
       } catch (ex) {
-        if (debug_mode) {
-          if (debug_interrupt_on_error) {
+        if (DEBUG) {
+          if (DEBUG_INTERRUPT_ON_ERROR) {
             debug("检查/操作失败, 中断脚本运行", ex);
             return;
           }
@@ -624,7 +625,7 @@
     const current_theme = site_setting.check();
     log(`当前主题：${current_theme}`);
 
-    if (debug_mode && debug_force_toggle) {
+    if (DEBUG && DEBUG_FORCE_TOGGLE) {
       debug("强制切换主题");
       if (
         now >= light_minutes &&
@@ -705,16 +706,16 @@
       `设置黑夜时间 (${settings.dark_time})`,
       () => setTimePrompt("dark_time", "黑夜时间")
     );
-    if (debug_mode) {
+    if (DEBUG) {
       settings.debug_toggle_id = GM_registerMenuCommand(
         `调试模式: 强制切换主题`,
         async () => {
-          debug_force_toggle = true;
+          DEBUG_FORCE_TOGGLE = true;
           try {
             await checkAndChangeTheme();
           }
           finally {
-            debug_force_toggle = false;
+            DEBUG_FORCE_TOGGLE = false;
           }
         }
       );
