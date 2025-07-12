@@ -2,7 +2,7 @@
 // @name         自动主题切换
 // @namespace    airbash/Rocy-June/AutoDarkMode
 // @homepage     https://github.com/AirBashX/UserScript
-// @version      25.06.24.01
+// @version      25.06.25.01
 // @description  根据用户设定时间段, 自动切换已适配网站的黑白主题
 // @author       airbash / Rocy-June
 // @match        *://*/*
@@ -19,7 +19,7 @@
   "use strict";
 
   // 调试模式开关
-  const DEBUG = false;
+  const DEBUG = true;
   // 调试模式: 是否在报错时中断脚本运行
   const DEBUG_INTERRUPT_ON_ERROR = false;
   // 调试模式: 是否强制切换主题
@@ -403,9 +403,18 @@
           document.addEventListener("visibilitychange", async function () {
             if (document.visibilityState === "visible") {
               await nextTick();
-              $single("li.v-popover-wrap.header-avatar-wrap>.v-popover").dispatchEvent(
-                sim_events.mouse_leave()
-              );
+
+              let popover = $single("li.v-popover-wrap.header-avatar-wrap>.v-popover");
+              let flag = true;
+              while (flag) {
+                if (getComputedStyle(popover).display === "none") {
+                  flag = false;
+                }
+
+                popover.dispatchEvent(sim_events.mouse_leave());
+
+                await nextFrame();
+              }
             }
           });
         }
