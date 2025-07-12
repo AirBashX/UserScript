@@ -2,7 +2,7 @@
 // @name         自动主题切换
 // @namespace    airbash/Rocy-June/AutoDarkMode
 // @homepage     https://github.com/AirBashX/UserScript
-// @version      25.06.25.01
+// @version      25.07.12.01
 // @description  根据用户设定时间段, 自动切换已适配网站的黑白主题
 // @author       airbash / Rocy-June
 // @match        *://*/*
@@ -19,7 +19,7 @@
   "use strict";
 
   // 调试模式开关
-  const DEBUG = true;
+  const DEBUG = false;
   // 调试模式: 是否在报错时中断脚本运行
   const DEBUG_INTERRUPT_ON_ERROR = false;
   // 调试模式: 是否强制切换主题
@@ -420,6 +420,29 @@
         }
       },
     ],
+    // DeepSeek
+    "deepseek.com": [
+      {
+        url: /^https?:\/\/.*?deepseek\.com.*/,
+        check: () => document.body.classList.contains("dark") ? "dark" : "light",
+        toLight: async () => {
+          $single("#root>div>div>div:nth-child(2)>div>div>div:last-child>div:last-child").click();
+          (await $singleAsync(".ds-floating-position-wrapper .ds-dropdown-menu .ds-dropdown-menu-option:nth-child(2)")).click();
+          const theme_select = await $singleAsync(".ds-modal-wrapper .ds-modal .ds-modal-content .ds-flex:nth-child(3) select");
+          theme_select.value = "light";
+          theme_select.dispatchEvent(new Event("change", { bubbles: true }));
+          $single(".ds-modal-wrapper .ds-modal .ds-modal-content .ds-icon-button").click();
+        },
+        toDark: async () => {
+          $single("#root>div>div>div:nth-child(2)>div>div>div:last-child>div:last-child").click();
+          (await $singleAsync(".ds-floating-position-wrapper .ds-dropdown-menu .ds-dropdown-menu-option:nth-child(2)")).click();
+          const theme_select = await $singleAsync(".ds-modal-wrapper .ds-modal .ds-modal-content .ds-flex:nth-child(3) select");
+          theme_select.value = "dark";
+          theme_select.dispatchEvent(new Event("change", { bubbles: true }));
+          $single(".ds-modal-wrapper .ds-modal .ds-modal-content .ds-icon-button").click();
+        }
+      }
+    ]
   };
 
   const domain_suffixes = [
