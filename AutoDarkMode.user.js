@@ -2,7 +2,7 @@
 // @name         自动主题切换
 // @namespace    airbash/Rocy-June/AutoDarkMode
 // @homepage     https://github.com/AirBashX/UserScript
-// @version      25.07.12.01
+// @version      25.07.15.01
 // @description  根据用户设定时间段, 自动切换已适配网站的黑白主题
 // @author       airbash / Rocy-June
 // @match        *://*/*
@@ -354,7 +354,7 @@
 
           let avatar = $single("li.v-popover-wrap.header-avatar-wrap")
           avatar.dispatchEvent(sim_events.mouse_enter());
-          await nextFrame();
+          await nextTick();
           avatar.dispatchEvent(sim_events.mouse_leave());
 
           flag = await waitForTimerAsync(() => $all(".links-item").length > 0, 200, 10000);
@@ -378,7 +378,7 @@
         toDark: async () => {
           let avatar = $single("li.v-popover-wrap.header-avatar-wrap")
           avatar.dispatchEvent(sim_events.mouse_enter());
-          await nextFrame();
+          await nextTick();
           avatar.dispatchEvent(sim_events.mouse_leave());
 
           let flag = await waitForTimerAsync(() => $all(".links-item").length > 0, 200, 10000);
@@ -399,7 +399,7 @@
           let options = $all(popover, ".single-link-item.sub-link-item")
           options[0].click();
         },
-        load: () => {
+        load: async () => {
           document.addEventListener("visibilitychange", async function () {
             if (document.visibilityState === "visible") {
               await nextTick();
@@ -814,7 +814,7 @@
   // 将函数加入下一轮事件循环
   function nextTick(func) {
     return Promise.resolve().then(() => {
-      func();
+      func?.();
     });
   }
 
