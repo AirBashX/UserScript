@@ -2,12 +2,13 @@
 // @name         自动主题切换
 // @namespace    airbash/Rocy-June/AutoDarkMode
 // @homepage     https://github.com/AirBashX/UserScript
-// @version      25.07.15.01
+// @version      25.07.18.01
 // @description  根据用户设定时间段, 自动切换已适配网站的黑白主题
 // @author       airbash / Rocy-June
 // @match        *://*/*
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAolBMVEVHcExYYm2zfUHYhC34jx74kRv4jx1naGllZWVlZWX3khxmZmb3kB73jx/4kB33kBxmZmZmZmZhYWFoaGj3kB5iY2RnZ2f5jBtqampubm5paWn3kh33kB73kB5aWlr3kR5mZmb6mhz2iSBkZGT3kR33kR1lZmY7Ozt3d3dISEj9uRG0fkGqeUX3kB5mZmZkZWb/lhRpaWn3kR9jY2NxcXGzfUGVB4hkAAAALXRSTlMA9+kD3YkOfEWWIYvnWLN47W03XvW04S8ZCs6fRMcnCFEY/r/PaqhTxWFHqnwtZ5kAAAACpUlEQVRYw9WX65qaMBCGbQFBRUARXEHF8x7aDMuh939rTRCimAHiw/Zpm18aM+/OTubwZTD419fU+uhlH5nE7AUYmqmq9AKo5G8DzJ4AFsSnAC+Pp+3T+Rn7mTOSSo4xvr/1AGQAFjGH2L7hAPiKjD0he2RfB7rmtYC4k4v3wwq1msvMfoq7D6DfWc+OdCP+9uszTcnCOpdORyFu7zrM3uPfV3qxQQHfP0mxTDtiP+xRe2VSnPZX1cZrAPAAIERds6OaKtrPj0lx2uDhiAEBEGIXf028/DwpDCbVxihJYhRANOxW3PJwwO3hth4AB4zgXo8m1Q3qeTOApFhij1gE8uoG5hm0AMhhiRGYA9vyQgKI2wDkNMAJVQRmAK0ekHSKFSFkZQ4qfidARQAeZGUId9AFIGQtdhGHJ+FFAhCKmcirYOV0A5A+7/IsNEDCA7JEOsGsnpXtAOEeaC3uHquoDVDU1JitIU+DHUdJAGhBRNaCLfWjBGSGWEetgHGtwCeQvD7pgWJv2LLGpVleAvRMOgb1TOa3IAUQUnHH58lc6l94nEvKFrJj+dnPugFiQa/82ClrYRR3pzLS1i68I88lamGJ9QPekoNOgCXa0yDwqWp0AtZYTwtuU8XrAIToxHYhPt66SxsAVwZFI6nmgtEGSNcNooHm8BsP6W2yCYBpk+qgqZC/V1/esyYPps26hfYi54WLHR8FXOd7g8AaUD3yduvTF8gEQMiEEe0kWoNCdCC5k2iGBzGNRQlIaf5cw7dvGvK0JuMs1++bvR7EhUYiZLHReP7aaSNBvxcpTIkoW2Om/9TO6/G9LrGZD7ganNQATUuxkZZQXcVOShDbi81QXj5jgmL/hIAPD2G/N9MiNf/3N9MXPLr6xSA6pad+b+elvfzDr/Pf2oPrAJ6zWhcAAAAASUVORK5CYII=
 // @run-at       document-body
+// @grant        unsafeWindow
 // @grant        GM_registerMenuCommand
 // @grant        GM_unregisterMenuCommand
 // @grant        GM_setValue
@@ -118,7 +119,8 @@
     // 默认快速检查时间 (Debug 模式且开启报错中断时将延长)
     fast_check_default_time: DEBUG && DEBUG_INTERRUPT_ON_ERROR ? 3000 : 200,
     // 快速检查过后的常态检查时间 (Debug 模式且开启报错中断时将延长)
-    after_check_default_time: DEBUG && DEBUG_INTERRUPT_ON_ERROR ? 3600000 : 10000,
+    after_check_default_time:
+      DEBUG && DEBUG_INTERRUPT_ON_ERROR ? 3600000 : 10000,
   };
 
   // 初始化设置
@@ -195,53 +197,39 @@
         url: /^https?:\/\/.*?chatgpt\.com.*/,
         check: () => (html().classList.contains("dark") ? "dark" : "light"),
         toLight: async () => {
-          $single(
-            "#conversation-header-actions button[data-testid=profile-button]"
-          ).dispatchEvent(sim_events.pointer_down());
-          (
-            await $singleAsync("div[data-radix-popper-content-wrapper]")
-          ).style.opacity = 0;
-
-          $single("div[data-testid=settings-menu-item]").click();
+          $single("nav>:last-child>div").dispatchEvent(
+            sim_events.pointer_down()
+          );
+          await $singleAsyncClick(
+            "div[data-radix-popper-content-wrapper]>div>div>div:nth-child(4)"
+          );
           (
             await $singleAsync("div[data-testid=modal-settings]")
           ).style.opacity = 0;
-
           $single(
-            "div.flex.items-center.justify-between button[role=combobox]"
-          ).dispatchEvent(sim_events.pointer_down());
-          (
-            await $singleAsync("div[data-radix-popper-content-wrapper]")
-          ).style.opacity = 0;
-
-          $single(
-            "div[data-radix-select-viewport] div[role=option]:nth-child(3)"
+            "div.absolute>div.fixed>div>div[role=dialog]>div>div>div:nth-child(2)>section>div>div>div>button"
           ).click();
+          await $singleAsyncClick(
+            "div[data-radix-popper-content-wrapper]>div>div>div:nth-child(3)"
+          );
           $single("button[data-testid=close-button]").click();
         },
         toDark: async () => {
-          $single(
-            "#conversation-header-actions button[data-testid=profile-button]"
-          ).dispatchEvent(sim_events.pointer_down());
-          (
-            await $singleAsync("div[data-radix-popper-content-wrapper]")
-          ).style.opacity = 0;
-
-          $single("div[data-testid=settings-menu-item]").click();
+          $single("nav>:last-child>div").dispatchEvent(
+            sim_events.pointer_down()
+          );
+          await $singleAsyncClick(
+            "div[data-radix-popper-content-wrapper]>div>div>div:nth-child(4)"
+          );
           (
             await $singleAsync("div[data-testid=modal-settings]")
           ).style.opacity = 0;
-
           $single(
-            "div.flex.items-center.justify-between button[role=combobox]"
-          ).dispatchEvent(sim_events.pointer_down());
-          (
-            await $singleAsync("div[data-radix-popper-content-wrapper]")
-          ).style.opacity = 0;
-
-          $single(
-            "div[data-radix-select-viewport] div[role=option]:nth-child(2)"
+            "div.absolute>div.fixed>div>div[role=dialog]>div>div>div:nth-child(2)>section>div>div>div>button"
           ).click();
+          await $singleAsyncClick(
+            "div[data-radix-popper-content-wrapper]>div>div>div:nth-child(2)"
+          );
           $single("button[data-testid=close-button]").click();
         },
         load: () => {
@@ -255,7 +243,7 @@
               $single("button[data-testid=close-button]").click();
             }
           });
-        }
+        },
       },
     ],
     // GitHub
@@ -347,56 +335,78 @@
         check: () =>
           html().classList.contains("night-mode") ? "dark" : "light",
         toLight: async () => {
-          let flag = await waitForTimerAsync(() => $single("li.v-popover-wrap.header-avatar-wrap") != null, 200, 10000);
+          let flag = await waitForTimerAsync(
+            () => $single("li.v-popover-wrap.header-avatar-wrap") != null,
+            200,
+            10000
+          );
           if (!flag) {
             throw new Error("Waiting for links-item created failed");
           }
 
-          let avatar = $single("li.v-popover-wrap.header-avatar-wrap")
+          let avatar = $single("li.v-popover-wrap.header-avatar-wrap");
           avatar.dispatchEvent(sim_events.mouse_enter());
           await nextTick();
           avatar.dispatchEvent(sim_events.mouse_leave());
 
-          flag = await waitForTimerAsync(() => $all(".links-item").length > 0, 200, 10000);
+          flag = await waitForTimerAsync(
+            () => $all(".links-item").length > 0,
+            200,
+            10000
+          );
           if (!flag) {
             throw new Error("Waiting for links-item created failed");
           }
 
           let links_item = $all(".links-item");
-          let single_link_item = $single(links_item[links_item.length - 1], ".single-link-item")
+          let single_link_item = $single(
+            links_item[links_item.length - 1],
+            ".single-link-item"
+          );
           single_link_item.dispatchEvent(sim_events.mouse_enter());
 
-          flag = await waitForAsync(() => single_link_item.nextElementSibling?.classList.contains("v-popover"));
+          flag = await waitForAsync(() =>
+            single_link_item.nextElementSibling?.classList.contains("v-popover")
+          );
           if (!flag) {
             throw new Error("Waiting for popover created failed");
           }
 
           let popover = single_link_item.nextElementSibling;
-          let options = $all(popover, ".single-link-item.sub-link-item")
+          let options = $all(popover, ".single-link-item.sub-link-item");
           options[1].click();
         },
         toDark: async () => {
-          let avatar = $single("li.v-popover-wrap.header-avatar-wrap")
+          let avatar = $single("li.v-popover-wrap.header-avatar-wrap");
           avatar.dispatchEvent(sim_events.mouse_enter());
           await nextTick();
           avatar.dispatchEvent(sim_events.mouse_leave());
 
-          let flag = await waitForTimerAsync(() => $all(".links-item").length > 0, 200, 10000);
+          let flag = await waitForTimerAsync(
+            () => $all(".links-item").length > 0,
+            200,
+            10000
+          );
           if (!flag) {
             throw new Error("Waiting for links-item created failed");
           }
 
           let links_item = $all(".links-item");
-          let single_link_item = $single(links_item[links_item.length - 1], ".single-link-item")
+          let single_link_item = $single(
+            links_item[links_item.length - 1],
+            ".single-link-item"
+          );
           single_link_item.dispatchEvent(sim_events.mouse_enter());
 
-          flag = await waitForAsync(() => single_link_item.nextElementSibling?.classList.contains("v-popover"));
+          flag = await waitForAsync(() =>
+            single_link_item.nextElementSibling?.classList.contains("v-popover")
+          );
           if (!flag) {
             throw new Error("Waiting for popover created failed");
           }
 
           let popover = single_link_item.nextElementSibling;
-          let options = $all(popover, ".single-link-item.sub-link-item")
+          let options = $all(popover, ".single-link-item.sub-link-item");
           options[0].click();
         },
         load: async () => {
@@ -404,7 +414,9 @@
             if (document.visibilityState === "visible") {
               await nextTick();
 
-              let popover = $single("li.v-popover-wrap.header-avatar-wrap>.v-popover");
+              let popover = $single(
+                "li.v-popover-wrap.header-avatar-wrap>.v-popover"
+              );
               let flag = true;
               while (flag) {
                 if (getComputedStyle(popover).display === "none") {
@@ -417,32 +429,53 @@
               }
             }
           });
-        }
+        },
       },
     ],
     // DeepSeek
     "deepseek.com": [
       {
         url: /^https?:\/\/.*?deepseek\.com.*/,
-        check: () => document.body.classList.contains("dark") ? "dark" : "light",
+        check: () =>
+          document.body.classList.contains("dark") ? "dark" : "light",
         toLight: async () => {
-          $single("#root>div>div>div:nth-child(2)>div>div>div:last-child>div:last-child").click();
-          (await $singleAsync(".ds-floating-position-wrapper .ds-dropdown-menu .ds-dropdown-menu-option:nth-child(2)")).click();
-          const theme_select = await $singleAsync(".ds-modal-wrapper .ds-modal .ds-modal-content .ds-flex:nth-child(3) select");
+          $single(
+            "#root>div>div>div:nth-child(2)>div>div>div:last-child>div:last-child"
+          ).click();
+          (
+            await $singleAsync(
+              ".ds-floating-position-wrapper .ds-dropdown-menu .ds-dropdown-menu-option:nth-child(2)"
+            )
+          ).click();
+          const theme_select = await $singleAsync(
+            ".ds-modal-wrapper .ds-modal .ds-modal-content .ds-flex:nth-child(3) select"
+          );
           theme_select.value = "light";
           theme_select.dispatchEvent(new Event("change", { bubbles: true }));
-          $single(".ds-modal-wrapper .ds-modal .ds-modal-content .ds-icon-button").click();
+          $single(
+            ".ds-modal-wrapper .ds-modal .ds-modal-content .ds-icon-button"
+          ).click();
         },
         toDark: async () => {
-          $single("#root>div>div>div:nth-child(2)>div>div>div:last-child>div:last-child").click();
-          (await $singleAsync(".ds-floating-position-wrapper .ds-dropdown-menu .ds-dropdown-menu-option:nth-child(2)")).click();
-          const theme_select = await $singleAsync(".ds-modal-wrapper .ds-modal .ds-modal-content .ds-flex:nth-child(3) select");
+          $single(
+            "#root>div>div>div:nth-child(2)>div>div>div:last-child>div:last-child"
+          ).click();
+          (
+            await $singleAsync(
+              ".ds-floating-position-wrapper .ds-dropdown-menu .ds-dropdown-menu-option:nth-child(2)"
+            )
+          ).click();
+          const theme_select = await $singleAsync(
+            ".ds-modal-wrapper .ds-modal .ds-modal-content .ds-flex:nth-child(3) select"
+          );
           theme_select.value = "dark";
           theme_select.dispatchEvent(new Event("change", { bubbles: true }));
-          $single(".ds-modal-wrapper .ds-modal .ds-modal-content .ds-icon-button").click();
-        }
-      }
-    ]
+          $single(
+            ".ds-modal-wrapper .ds-modal .ds-modal-content .ds-icon-button"
+          ).click();
+        },
+      },
+    ],
   };
 
   const domain_suffixes = [
@@ -473,6 +506,29 @@
 
   // 加载完成后开始检查主题
   addEventListener("load", async () => {
+    // 调试模式向 window 注册调试函数
+    if (DEBUG) {
+      warn("向 window 注册调试函数");
+
+      const debug_functions = [
+        ["$log", log],
+        ["$warn", warn],
+        ["$error", error],
+        ["$debug", debug],
+        ["$single", $single],
+        ["$singleAsync", $singleAsync],
+        ["$singleAsyncClick", $singleAsyncClick],
+        ["$singleTimerAsync", $singleTimerAsync],
+        ["$selectSingleAsync", $selectSingleAsync],
+        ["$all", $all],
+      ];
+
+      for (const [name, func] of debug_functions) {
+        unsafeWindow[name] = func;
+      }
+
+      warn("调试函数注册完毕");
+    }
 
     site_setting.load?.();
 
@@ -485,12 +541,21 @@
 
     timer.start();
 
+    document.addEventListener("visibilitychange", async function () {
+      if (document.visibilityState === "visible") {
+        log("页面可见, 重新开始检查主题");
+
+        await checkAndChangeTheme();
+      }
+    });
+
     async function intervalFunc() {
       try {
         await checkAndChangeTheme();
 
         fail_count = 0;
-        timer.delay = site_setting.afterCheckTime || settings.after_check_default_time;
+        timer.delay =
+          site_setting.afterCheckTime || settings.after_check_default_time;
 
         log("检查/操作完成, 切换到慢速模式");
       } catch (ex) {
@@ -557,6 +622,13 @@
     }
 
     throw new Error("Timeout");
+  }
+
+  async function $singleAsyncClick(select, timeout = 1000) {
+    const ele = await $singleAsync(select, timeout);
+    ele?.click();
+
+    return ele;
   }
 
   /*
@@ -745,8 +817,9 @@
           DEBUG_FORCE_TOGGLE = true;
           try {
             await checkAndChangeTheme();
-          }
-          finally {
+          } catch (ex) {
+            error("强制切换主题失败", ex);
+          } finally {
             DEBUG_FORCE_TOGGLE = false;
           }
         }
@@ -767,10 +840,7 @@
     if (!new_val) {
       return;
     }
-    if (
-      !new_val ||
-      !/^([0-1][0-9]|2[0-3])[:：]([0-5][0-9])$/.test(new_val)
-    ) {
+    if (!new_val || !/^([0-1][0-9]|2[0-3])[:：]([0-5][0-9])$/.test(new_val)) {
       alert('格式不正确, 时间格式为 "08:00"');
       return;
     }
