@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.4.18
+// @version      1.4.19
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -237,7 +237,7 @@
 										} else {
 											LoginFlag = true;
 										}
-										return;
+										//此处删除return，进行持续监听，规避反制
 									}
 								}
 								//拦截登录弹窗2
@@ -544,7 +544,7 @@
 					for (let mutation of mutationsList) {
 						for (let node of mutation.addedNodes) {
 							if (node.nodeType == Node.ELEMENT_NODE) {
-								let closeBtn = document.querySelector(".lR1QBof5");
+								let closeBtn = document.querySelector(".neCVZUZM");
 								//关闭登录弹窗
 								if (closeBtn) {
 									if (LoginFlag == true) {
