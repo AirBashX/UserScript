@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         豆瓣助手
-// @version      0.0.20
+// @version      0.0.21
 // @namespace    airbash/DoubanAssistant
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  恢复IMDB的链接,展示IMDB评分,以及增加快捷搜索SubHD、字幕库、射手网、opensubtitle、6V电影网、电影天堂、新电影天堂、WebHD、rargb、海盗湾、watchsomuch、tgx、EXT、腾讯视频、优酷视频、爱奇艺、哔哩哔哩、西瓜视频、欢喜首映中资源的功能
+// @description  恢复IMDB的链接,展示IMDB评分,以及增加快捷搜索SubHD、字幕库、射手网、opensubtitle、6V电影网、电影天堂、新电影天堂、rargb、海盗湾、watchsomuch、tgx、EXT、yts、imbt、腾讯视频、优酷视频、爱奇艺、哔哩哔哩、西瓜视频、欢喜首映中资源的功能
 // @match        *://movie.douban.com/subject/*
 // @connect      www.hao6v.me
 // @connect      www.imdb.com
@@ -176,11 +176,6 @@
 					search: "https://thepiratebay10.xyz/search/" + douban_en_name,
 				},
 				{
-					name: "WSM",
-					url: "watchsomuch.to",
-					search: "https://watchsomuch.to/Movies/" + douban_en_name,
-				},
-				{
 					name: "tgx",
 					url: "tgx.rs",
 					search: "https://tgx.rs/torrents.php?search=" + douban_en_name,
@@ -194,6 +189,21 @@
 					name: "EXT",
 					url: "extranet.torrentbay.st",
 					search: "https://extranet.torrentbay.st/browse/?q=" + douban_en_name,
+				},
+				{
+					name: "imbt",
+					url: "imbt.one",
+					search: "https://imbt.one/i/" + imdb_id,
+				},
+				{
+					name: "yts",
+					url: "yts.torrentbay.st",
+					search: "https://yts.torrentbay.st/browse-movies/" + douban_en_name,
+				},
+				{
+					name: "WSM",
+					url: "watchsomuch.to",
+					search: "https://watchsomuch.to/Movies/" + douban_en_name,
 				},
 			],
 		},
