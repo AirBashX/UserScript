@@ -16,11 +16,7 @@
 
 5. 增加快捷搜索腾讯、优酷、爱奇艺、哔哩哔哩、西瓜视频、欢喜首映中影视的功能;
 
-![](https://img.picui.cn/free/2024/09/11/66e1b74a02156.png)
-
-# 现代化UI
-
-![](https://img.picui.cn/free/2024/09/11/66e1b86c5f6e7.png)
+![](https://youke1.picui.cn/s1/2025/08/23/68a98d4b8facc.png)
 
 # 增加链接:
 |链接|功能|其他功能|
@@ -35,7 +31,7 @@
 |海盗船|✔||
 |1337X|✔||
 |watchsomuch|✔||
-|tgx|✔||
+|limetorrents|✔||
 |EXT|✔||
 |yts|✔||
 |6v电影|✔|自动验证|
