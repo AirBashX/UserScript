@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         豆瓣助手
-// @version      0.0.22
+// @version      0.0.23
 // @namespace    airbash/DoubanAssistant
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  恢复IMDB的链接,展示IMDB评分,以及增加快捷搜索SubHD、字幕库、射手网、opensubtitle、6V电影网、电影天堂、新电影天堂、rargb、海盗湾、limetorrents、watchsomuch、EXT、yts、imbt、腾讯视频、优酷视频、爱奇艺、哔哩哔哩、西瓜视频、欢喜首映中资源的功能
+// @description  恢复IMDB的链接,展示IMDB评分,以及增加快捷搜索SubHD、字幕库、射手网、opensubtitle、6V电影网、电影天堂、新电影天堂、rarbg、rargb、海盗湾、limetorrents、watchsomuch、EXT、yts、imbt、腾讯视频、优酷视频、爱奇艺、哔哩哔哩、西瓜视频、欢喜首映中资源的功能
 // @match        *://movie.douban.com/subject/*
 // @connect      www.hao6v.me
 // @connect      www.imdb.com
@@ -166,9 +166,9 @@
 			name: "英文资源",
 			links: [
 				{
-					name: "rargb",
-					url: "rargb.to",
-					search: "https://rargb.to/search/?search=" + douban_en_name,
+					name: "rarbg",
+					url: "rarbg.torrentbay.st",
+					search: "https://rarbg.torrentbay.st/get-posts/keywords:" + douban_en_name,
 				},
 				{
 					name: "海盗湾",
@@ -204,6 +204,11 @@
 					name: "WSM",
 					url: "watchsomuch.to",
 					search: "https://watchsomuch.to/Movies/" + douban_en_name,
+				},
+				{
+					name: "rargb",
+					url: "rargb.to",
+					search: "https://rargb.to/search/?search=" + douban_en_name,
 				},
 			],
 		},
@@ -285,11 +290,9 @@
 		},
 	];
 
-	if (imdb_id) {
-		for (let GMValue of GMValues) {
-			if (GM_getValue(GMValue.id, true)) {
-				GMValue.fun();
-			}
+	for (let GMValue of GMValues) {
+		if (GM_getValue(GMValue.id, true)) {
+			GMValue.fun();
 		}
 	}
 
@@ -386,11 +389,9 @@
 						document.querySelector("#DA_div #" + webSite.id).checked = true;
 					}
 				}
-				if (imdb_id) {
-					for (let GMValue of GMValues) {
-						if (GM_getValue(GMValue.id, true)) {
-							document.querySelector("#DA_div #" + GMValue.id).checked = true;
-						}
+				for (let GMValue of GMValues) {
+					if (GM_getValue(GMValue.id, true)) {
+						document.querySelector("#DA_div #" + GMValue.id).checked = true;
 					}
 				}
 			},
@@ -403,12 +404,10 @@
 						change = true;
 					}
 				}
-				if (imdb_id) {
-					for (let GMValue of GMValues) {
-						if (document.querySelector("#DA_div #" + GMValue.id).checked != GM_getValue(GMValue.id, true)) {
-							GM_setValue(GMValue.id, document.querySelector("#DA_div #" + GMValue.id).checked);
-							change = true;
-						}
+				for (let GMValue of GMValues) {
+					if (document.querySelector("#DA_div #" + GMValue.id).checked != GM_getValue(GMValue.id, true)) {
+						GM_setValue(GMValue.id, document.querySelector("#DA_div #" + GMValue.id).checked);
+						change = true;
 					}
 				}
 
