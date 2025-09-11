@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.5.1
+// @version      1.5.2
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -515,8 +515,8 @@
 				".login-clarity-new",
 				//PC端:登陆后查看评论
 				"#related-video-card-login-guide",
-				//PC端:底部登录提示
-				".wwNZW6za",
+				// //PC端:底部登录提示
+				// ".HDhMLx9a",
 			],
 			fun: function () {
 				//登陆后查看评论模糊
@@ -545,7 +545,7 @@
 					for (let mutation of mutationsList) {
 						for (let node of mutation.addedNodes) {
 							if (node.nodeType == Node.ELEMENT_NODE) {
-								let closeBtn = document.querySelector(".neCVZUZM");
+								const closeBtn = document.querySelector(".faitpiNH");
 								//关闭登录弹窗
 								if (closeBtn) {
 									if (LoginFlag == true) {
