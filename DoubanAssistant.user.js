@@ -1,11 +1,12 @@
 // ==UserScript==
 // @name         豆瓣助手
-// @version      0.0.23
+// @version      1.0.0
 // @namespace    airbash/DoubanAssistant
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
 // @description  恢复IMDB的链接,展示IMDB评分,以及增加快捷搜索SubHD、字幕库、射手网、opensubtitle、6V电影网、电影天堂、新电影天堂、rarbg、rargb、海盗湾、limetorrents、watchsomuch、EXT、yts、imbt、腾讯视频、优酷视频、爱奇艺、哔哩哔哩、西瓜视频、欢喜首映中资源的功能
 // @match        *://movie.douban.com/subject/*
+// @match        *://www.douban.com/personage/*
 // @connect      www.hao6v.me
 // @connect      www.imdb.com
 // @connect      dy2018.com
@@ -28,27 +29,70 @@
 	// "use strict";
 	const url = location.href;
 	const head = document.head;
+	let imdb_id_item, imdb_id, douban_en_name, douban_cn_name, douban_gbk_name;
 
-	//获取imdbitem
-	let info_item = document.querySelector("#info");
-	let imdb_item = document.evaluate('//span[text()="IMDb:"]', info_item, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-	let imdb_id_item = document.evaluate('//span[text()="IMDb:"]/following::text()[1]', info_item, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+	if (url.includes("www.douban.com/personage/")) {
+		imdb_id_item = getImdbIdItem(".subject-property", '//span[contains(text(), "IMDb编号:")]/following::*[1]');
+		imdb_id = imdb_id_item.textContent.trim();
+		imdbLink("https://www.imdb.com/name/");
+	} else {
+		imdb_id_item = getImdbIdItem("#info", '//span[contains(text(), "IMDb:")]/following::text()[1]');
+		imdb_id = imdb_id_item.textContent.trim();
 
-	//获取imdb_id
-	let imdb_id = imdb_id_item.textContent.trim();
+		//获取豆瓣中文名
+		douban_cn_name = head.querySelector("title").innerText.slice(9, -6);
+		//获取GBK编码的豆瓣中文名
+		douban_gbk_name = encodeToGb2312(douban_cn_name).replace(/(.{2})/gi, "%$1");
+		
+		const doubanEnName1=getDoubanEnName1();
+		const doubanEnName2=getDoubanEnName2();
 
-	//获取douban_id
-	let douban_id = url.split("/")[4];
+		if (/^[a-zA-Z0-9]/.test(doubanEnName1)) {
+			douban_en_name = doubanEnName1;
+		} else if (doubanEnName2) {
+			douban_en_name = doubanEnName2;
+		} else {
+			douban_en_name = douban_cn_name;
+		}
+	}
 
-	//获取douban_cn_name
-	let douban_cn_name = head.querySelector("title").innerText.slice(9, -6);
-	//获取GBK编码的douban_cn_name
-	let douban_cn_name_gbk = encodeToGb2312(douban_cn_name).replace(/(.{2})/gi, "%$1");
+	/**
+	 * 获取imdb_id所在的元素
+	 *
+	 * @param      {string}  node         	The node selector
+	 * @param      {string}  imdb_id_Xpath  The imdb_id  xpath
+	 * @return     {string}  imdb_id_item
+	 */
+	function getImdbIdItem(node, imdb_id_Xpath) {
+		const info_item = document.querySelector(node);
+		const imdb_id_item = document.evaluate(imdb_id_Xpath, info_item, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+		return imdb_id_item;
+	}
 
-	//获取豆瓣英文名
-	let douban_en_name = douban_cn_name;
-	let douban_en_name1s = document.querySelector("#content > h1 > span:nth-child(1)").innerHTML;
-	let douban_en_name1 = douban_en_name1s.split(douban_cn_name)[1].trim();
+	/**
+	 * 恢复IMDB链接
+	 *
+	 * @param      {string}  imdb_url   		The imdb url
+	 */
+	function imdbLink(imdb_url) {
+		//创建新的元素
+		const span = document.createElement("span");
+		span.innerHTML = '<a target="_blank" href="' + imdb_url + imdb_id + '">' + imdb_id + "</a><br>";
+		imdb_id_item.after(span);
+		//删除旧的元素
+		imdb_id_item.remove();
+	}
+
+	/**
+	 * 获取豆瓣英文名
+	 *
+	 * @return     {string}  The douban en name 1.
+	 */
+	function getDoubanEnName1() {
+		const douban_en_names = document.querySelector("#content > h1 > span:nth-child(1)").innerHTML;
+		const douban_en_name = douban_en_names.split(douban_cn_name)[1].trim();
+		return douban_en_name;
+	}
 
 	/**
 	 * 获取备用豆瓣英文名
@@ -56,11 +100,11 @@
 	 * @return     {string}  The douban en name 2.
 	 */
 	function getDoubanEnName2() {
-		let douban_items = document.querySelectorAll("#info .pl");
-		for (let pl of douban_items) {
+		const douban_items = document.querySelectorAll("#info .pl");
+		for (const pl of douban_items) {
 			if ("又名:" == pl.textContent) {
-				let movieNames = pl.nextSibling.textContent.trim().split(" / ");
-				for (let name of movieNames) {
+				const movieNames = pl.nextSibling.textContent.trim().split(" / ");
+				for (const name of movieNames) {
 					if (/^[a-zA-Z0-9]/.test(name)) {
 						return name;
 					}
@@ -69,47 +113,26 @@
 		}
 	}
 
-	if (/^[a-zA-Z0-9]/.test(douban_en_name1)) {
-		douban_en_name = douban_en_name1;
-	} else {
-		let doubanEnName = getDoubanEnName2();
-		if (doubanEnName) {
-			douban_en_name = getDoubanEnName2();
-		}
-	}
-
-	/**
-	 * 恢复IMDB链接
-	 */
-	function imdb_link() {
-		let div = document.createElement("div");
-		div.innerHTML = "<span class='pl'>IMDb:</span><a target='_blank' href='https://www.imdb.com/title/" + imdb_id + "'>&nbsp" + imdb_id + "</a><br>";
-		imdb_id_item.after(div);
-		//删除原本的idmb链接
-		imdb_item.remove();
-		imdb_id_item.remove();
-	}
-
 	/**
 	 * 获取IMDB评分
 	 */
-	function imdb_score() {
+	function getImdbScore() {
 		GM_xmlhttpRequest({
 			url: "https://www.imdb.com/title/" + imdb_id,
 			onload: function (response) {
-				let text = response.responseText;
-				let dp = new DOMParser();
-				let html = dp.parseFromString(text, "text/html");
-				let item = html.querySelector("[data-testid=hero-rating-bar__aggregate-rating__score] span");
-				let imdb_score = item.innerText;
+				const text = response.responseText;
+				const dp = new DOMParser();
+				const html = dp.parseFromString(text, "text/html");
+				const item = html.querySelector("[data-testid=hero-rating-bar__aggregate-rating__score] span");
+				const imdb_score = item.innerText;
 
-				let str = html.querySelector("#__NEXT_DATA__").textContent;
-				let json = JSON.parse(str);
-				let imdb_vote = json.props.pageProps.aboveTheFoldData.ratingsSummary.voteCount;
+				const str = html.querySelector("#__NEXT_DATA__").textContent;
+				const json = JSON.parse(str);
+				const imdb_vote = json.props.pageProps.aboveTheFoldData.ratingsSummary.voteCount;
 
-				let self = document.querySelector(".rating_self").cloneNode(true);
-				let logo = document.querySelector(".rating_logo").cloneNode(true);
-				let sectl = document.querySelector("#interest_sectl");
+				const self = document.querySelector(".rating_self").cloneNode(true);
+				const logo = document.querySelector(".rating_logo").cloneNode(true);
+				const sectl = document.querySelector("#interest_sectl");
 				sectl.append(logo);
 				sectl.append(self);
 
@@ -118,13 +141,13 @@
 				//修改文字评分
 				self.querySelector(".rating_num").innerText = imdb_score;
 				//修改图形评分
-				let classList = self.querySelector(".bigstar").classList;
+				const classList = self.querySelector(".bigstar").classList;
 				classList.replace(classList.item(2), "bigstar" + (Math.floor(imdb_score) / 2) * 10);
 				//修改IMDB人数
 				self.querySelector(".rating_people span").innerText = imdb_vote;
 				self.querySelector(".rating_people").href = "https://www.imdb.com/title/" + imdb_id + "/ratings";
 
-				// let div = document.createElement("div");
+				// const div = document.createElement("div");
 				// div.innerHTML = "<span class='pl'>IMDb评分:</span>" + score + "<br>";
 				// document.querySelector(".rating_wrap").after(div);
 			},
@@ -220,7 +243,7 @@
 					name: "6v电影网",
 					url: "www.hao6v.tv",
 					search: "https://www.hao6v.me/e/search/index.php",
-					data: "show=title%2Csmalltext&tempid=1&keyboard=" + douban_cn_name_gbk + "&tbname=article&x=0&y=0",
+					data: "show=title%2Csmalltext&tempid=1&keyboard=" + douban_gbk_name + "&tbname=article&x=0&y=0",
 					type: "xhr",
 					anonymous: true,
 				},
@@ -281,16 +304,18 @@
 		{
 			id: "imdb_link",
 			name: "IMDB链接",
-			fun: imdb_link,
+			fun: function () {
+				imdbLink("https://www.imdb.com/title/");
+			},
 		},
 		{
 			id: "imdb_score",
 			name: "IMDB评分",
-			fun: imdb_score,
+			fun: getImdbScore,
 		},
 	];
 
-	for (let GMValue of GMValues) {
+	for (const GMValue of GMValues) {
 		if (GM_getValue(GMValue.id, true)) {
 			GMValue.fun();
 		}
@@ -309,20 +334,20 @@
 	 * 侧边栏功能
 	 */
 	function aside() {
-		let aside = document.querySelector(".aside");
-		for (let webSite of webSites) {
-			let div = document.createElement("div");
+		const aside = document.querySelector(".aside");
+		for (const webSite of webSites) {
+			const div = document.createElement("div");
 			div.className = "resource";
 			if (GM_getValue(webSite.id, true)) {
 				div.innerHTML = "<h2><i>" + webSite.name + "</i>· · · · · ·</h2>";
 				aside.prepend(div);
-				let ul = document.createElement("ul");
+				const ul = document.createElement("ul");
 				ul.className = "resources";
 				div.appendChild(ul);
-				for (let link of webSite.links) {
+				for (const link of webSite.links) {
 					if (link.type != "xhr") {
-						let str = '<a href="' + link.search + '" target="_blank">' + link.name + "</a>";
-						let a = document.createRange().createContextualFragment(str);
+						const str = '<a href="' + link.search + '" target="_blank">' + link.name + "</a>";
+						const a = document.createRange().createContextualFragment(str);
 						ul.appendChild(a);
 					} else {
 						GM_xmlhttpRequest({
@@ -347,7 +372,7 @@
 								} else {
 									str = '<a href="' + finalUrl + '" target="_blank">' + link.name + "</a>";
 								}
-								let a = document.createRange().createContextualFragment(str);
+								const a = document.createRange().createContextualFragment(str);
 								ul.appendChild(a);
 							},
 						});
@@ -384,12 +409,12 @@
 				/**
 				 * 侧边栏开关
 				 */
-				for (let webSite of webSites) {
+				for (const webSite of webSites) {
 					if (GM_getValue(webSite.id, true)) {
 						document.querySelector("#DA_div #" + webSite.id).checked = true;
 					}
 				}
-				for (let GMValue of GMValues) {
+				for (const GMValue of GMValues) {
 					if (GM_getValue(GMValue.id, true)) {
 						document.querySelector("#DA_div #" + GMValue.id).checked = true;
 					}
@@ -398,13 +423,13 @@
 		}).then((result) => {
 			let change;
 			if (result.isConfirmed) {
-				for (let webSite of webSites) {
+				for (const webSite of webSites) {
 					if (document.querySelector("#DA_div #" + webSite.id).checked != GM_getValue(webSite.id, true)) {
 						GM_setValue(webSite.id, document.querySelector("#DA_div #" + webSite.id).checked);
 						change = true;
 					}
 				}
-				for (let GMValue of GMValues) {
+				for (const GMValue of GMValues) {
 					if (document.querySelector("#DA_div #" + GMValue.id).checked != GM_getValue(GMValue.id, true)) {
 						GM_setValue(GMValue.id, document.querySelector("#DA_div #" + GMValue.id).checked);
 						change = true;
@@ -419,10 +444,10 @@
 	}
 
 	let swal_html = "<div id='DA_div'>";
-	for (let webSite of webSites) {
+	for (const webSite of webSites) {
 		swal_html += '<div class="smail_div"><div class="switch"><input type="checkbox" class="checkbox" id="' + webSite.id + '"/><div class="bt"></div><div class="bg"></div></div>' + webSite.name + "</div>";
 	}
-	for (let GMValue of GMValues) {
+	for (const GMValue of GMValues) {
 		swal_html += '<div class="smail_div"><div class="switch"><input type="checkbox" class="checkbox" id="' + GMValue.id + '"/><div class="bt"></div><div class="bg"></div></div>' + GMValue.name + "</div>";
 	}
 	swal_html += "</div>";
