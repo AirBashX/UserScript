@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name         豆瓣助手
-// @version      1.0.0
+// @version      1.0.1
 // @namespace    airbash/DoubanAssistant
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
 // @description  恢复IMDB的链接,展示IMDB评分,以及增加快捷搜索SubHD、字幕库、射手网、opensubtitle、6V电影网、电影天堂、新电影天堂、rarbg、rargb、海盗湾、limetorrents、watchsomuch、EXT、yts、imbt、腾讯视频、优酷视频、爱奇艺、哔哩哔哩、西瓜视频、欢喜首映中资源的功能
-// @match        *://movie.douban.com/subject/*
+// @match        *://movie.douban.com/*
 // @match        *://www.douban.com/personage/*
 // @connect      www.hao6v.me
 // @connect      www.imdb.com
@@ -35,7 +35,9 @@
 		imdb_id_item = getImdbIdItem(".subject-property", '//span[contains(text(), "IMDb编号:")]/following::*[1]');
 		imdb_id = imdb_id_item.textContent.trim();
 		imdbLink("https://www.imdb.com/name/");
-	} else {
+	} 
+
+	if (url.includes("movie.douban.com/subject/")) {
 		imdb_id_item = getImdbIdItem("#info", '//span[contains(text(), "IMDb:")]/following::text()[1]');
 		imdb_id = imdb_id_item.textContent.trim();
 
@@ -43,9 +45,9 @@
 		douban_cn_name = head.querySelector("title").innerText.slice(9, -6);
 		//获取GBK编码的豆瓣中文名
 		douban_gbk_name = encodeToGb2312(douban_cn_name).replace(/(.{2})/gi, "%$1");
-		
-		const doubanEnName1=getDoubanEnName1();
-		const doubanEnName2=getDoubanEnName2();
+
+		const doubanEnName1 = getDoubanEnName1();
+		const doubanEnName2 = getDoubanEnName2();
 
 		if (/^[a-zA-Z0-9]/.test(doubanEnName1)) {
 			douban_en_name = doubanEnName1;
@@ -315,13 +317,15 @@
 		},
 	];
 
-	for (const GMValue of GMValues) {
-		if (GM_getValue(GMValue.id, true)) {
-			GMValue.fun();
+	if (url.includes("movie.douban.com/subject/")) {
+		for (const GMValue of GMValues) {
+			if (GM_getValue(GMValue.id, true)) {
+				GMValue.fun();
+			}
 		}
-	}
 
-	aside();
+		aside();
+	}
 
 	/**
 	 * 脚本工具菜单
