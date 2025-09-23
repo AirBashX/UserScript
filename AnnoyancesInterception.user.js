@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.5.2
+// @version      1.5.3
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -512,11 +512,11 @@
 				//PC端:下载电脑客户端
 				"#douyin-web-download-guide-container",
 				//PC端:右下角登录提示(画质)
-				".login-clarity-new",
+				".vW4dJNzI",
 				//PC端:登陆后查看评论
 				"#related-video-card-login-guide",
-				// //PC端:底部登录提示
-				// ".HDhMLx9a",
+				//PC端:底部登录提示
+				".HDhMLx9a",
 			],
 			fun: function () {
 				//登陆后查看评论模糊
@@ -545,7 +545,7 @@
 					for (let mutation of mutationsList) {
 						for (let node of mutation.addedNodes) {
 							if (node.nodeType == Node.ELEMENT_NODE) {
-								const closeBtn = document.querySelector(".faitpiNH");
+								const closeBtn = document.querySelector(".O26rSgTA");
 								//关闭登录弹窗
 								if (closeBtn) {
 									if (LoginFlag == true) {
