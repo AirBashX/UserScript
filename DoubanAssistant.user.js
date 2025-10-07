@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         豆瓣助手
-// @version      1.1.0
+// @version      1.1.1
 // @namespace    airbash/DoubanAssistant
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  恢复IMDB的链接,展示IMDB评分,以及增加快捷搜索SubHD、字幕库、射手网、opesubtitle、6V电影网、电影天堂、新电影天堂、rarbg、rargb、海盗湾、limetorrents、watchsomuch、EXT、yts、imbt、腾讯视频、优酷视频、爱奇艺、哔哩哔哩、抖音视频、欢喜首映、soali、混合盘、伏羲盘、伏羲盘、小云搜索、V盘搜、懒盘搜索、夸克盘搜、阿里盘搜、迅雷盘搜中资源的功能
+// @description  恢复IMDB的链接,展示IMDB评分,以及增加快捷搜索SubHD、字幕库、射手网、opesubtitle、6V电影网、电影天堂、新电影天堂、rarbg、rargb、海盗湾、limetorrents、watchsomuch、EXT、yts、imbt、腾讯视频、优酷视频、爱奇艺、哔哩哔哩、抖音视频、欢喜首映、soali、混合盘、伏羲盘、小云搜索、V盘搜、懒盘搜索、夸克盘搜、阿里盘搜、盘了个盘中资源的功能
 // @match        *://movie.douban.com/*
 // @match        *://www.douban.com/personage/*
 // @connect      www.hao6v.me
@@ -327,9 +327,9 @@
 					search: "https://www.alipanx.com/search?q=" + douban_cn_name,
 				},
 				{
-					name: "迅雷盘搜",
-					url: "xlpanso.com",
-					search: "https://xlpanso.com/search?q=" + douban_cn_name,
+					name: "懒盘搜索",
+					url: "www.lzpanx.com",
+					search: "https://www.lzpanx.com/search?q=" + douban_cn_name,
 				},
 				{
 					name: "小云搜索",
@@ -337,14 +337,14 @@
 					search: "https://www.yunso.net/index/user/s?wd=" + douban_cn_name,
 				},
 				{
+					name: "盘了个盘",
+					url: "qkpanso.com",
+					search: "https://www.panlegepan.com/s/" + douban_cn_name,
+				},
+				{
 					name: "V盘搜",
 					url: "www.vpansou.com",
 					search: "http://www.vpansou.com/query?wd=" + douban_cn_name,
-				},
-				{
-					name: "懒盘搜索",
-					url: "www.lzpanx.com",
-					search: "https://www.lzpanx.com/search?q=F" + douban_cn_name + "&type=BDY",
 				},
 			],
 		},
