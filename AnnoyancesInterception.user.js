@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.5.3
+// @version      1.5.4
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -545,7 +545,7 @@
 					for (let mutation of mutationsList) {
 						for (let node of mutation.addedNodes) {
 							if (node.nodeType == Node.ELEMENT_NODE) {
-								const closeBtn = document.querySelector(".O26rSgTA");
+								const closeBtn = document.querySelector(".DKE9HSAk");
 								//关闭登录弹窗
 								if (closeBtn) {
 									if (LoginFlag == true) {
