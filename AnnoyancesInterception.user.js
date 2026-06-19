@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.5.7
+// @version      1.5.8
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -308,17 +308,17 @@
 			],
 		},
 		{
-			name: "腾讯新闻1",
+			name: "腾讯新闻",
 			url: "view.inews.qq.com/",
 			items: [
 				//固定按钮:打开
-				".slider-top-bar_sliderWrapper__1Nize",
+				"[class^=slider-top-bar_sliderWrapper__]",
 				//悬浮按钮:打开腾讯新闻,看更多热点资讯
-				".bottom-bar_buttonWrap__NXBe-",
+				"[class^=bottom-bar_buttonWrap__]",
 			],
 		},
 		{
-			name: "腾讯新闻2",
+			name: "腾讯新闻(主页)",
 			url: "xw.qq.com/",
 			items: [
 				//固定按钮:打开(首页)
