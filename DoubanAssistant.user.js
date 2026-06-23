@@ -402,7 +402,7 @@
 			data: link.data,
 			onload: function (response) {
 				let finalUrl = response.finalUrl;
-				if (!finalUrl.includes("/index.php/")) {
+				if (finalUrl.includes("/index.php/")) {
 					finalUrl = finalUrl.replace("/index.php", "");
 				}
 				item.href = finalUrl;
