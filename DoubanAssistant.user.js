@@ -1,21 +1,22 @@
 // ==UserScript==
 // @name         豆瓣助手
-// @version      1.1.2
+// @version      1.2.0
 // @namespace    airbash/DoubanAssistant
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
-// @description  恢复IMDB的链接,展示IMDB评分,以及增加快捷搜索SubHD、字幕库、射手网、opesubtitle、6V电影网、电影天堂、新电影天堂、rarbg、rargb、海盗湾、limetorrents、watchsomuch、EXT、yts、imbt、腾讯视频、优酷视频、爱奇艺、哔哩哔哩、抖音视频、欢喜首映、soali、混合盘、伏羲盘、小云搜索、V盘搜、懒盘搜索、夸克盘搜、阿里盘搜、盘了个盘中资源的功能
+// @description  恢复IMDB的链接,展示IMDB评分,以及增加快捷搜索字幕库、射手网、opesubtitle、6V电影网、电影天堂、rarbg、rargb、海盗湾、limetorrents、watchsomuch、EXT、yts、imbt、腾讯视频、优酷视频、爱奇艺、哔哩哔哩、抖音视频、欢喜首映、soali、混合盘、伏羲盘、小云搜索、V盘搜、懒盘搜索、夸克盘搜、阿里盘搜、盘了个盘中资源的功能
 // @match        *://movie.douban.com/*
 // @match        *://www.douban.com/personage/*
 // @connect      www.6v520.com
 // @connect      www.imdb.com
-// @connect      dy2018.com
+// @connect      www.dygod.vip
 // @grant        GM_registerMenuCommand
 // @grant        GM_unregisterMenuCommand
 // @grant        GM_setValue
 // @grant        GM_getValue
 // @grant        GM_xmlhttpRequest
 // @grant        GM_addStyle
+// @grant        GM_openInTab
 // @license      GPL-3.0
 // @icon         https://img1.doubanio.com/favicon.ico
 // @require      https://fastly.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js
@@ -104,7 +105,7 @@
 	function getDoubanEnName2() {
 		const douban_items = document.querySelectorAll("#info .pl");
 		for (const pl of douban_items) {
-			if ("又名:" == pl.textContent) {
+			if ("又名:" === pl.textContent) {
 				const movieNames = pl.nextSibling.textContent.trim().split(" / ");
 				for (const name of movieNames) {
 					if (/^[a-zA-Z0-9]/.test(name)) {
@@ -166,32 +167,26 @@
 			links: [
 				{
 					name: "腾讯视频",
-					url: "v.qq.com",
 					search: "https://v.qq.com/x/search/?q=" + douban_cn_name,
 				},
 				{
 					name: "优酷视频",
-					url: "youku.com",
 					search: "https://so.youku.com/search_video/q_" + douban_cn_name,
 				},
 				{
 					name: "爱奇艺",
-					url: "iqiyi.com",
 					search: "https://so.iqiyi.com/so/q_" + douban_cn_name,
 				},
 				{
 					name: "哔哩哔哩",
-					url: "bilibili.com",
 					search: "https://search.bilibili.com/all?keyword=" + douban_cn_name,
 				},
 				{
 					name: "抖音视频",
-					url: "www.douyin.com",
 					search: "https://www.douyin.com/root/search/" + douban_cn_name,
 				},
 				{
 					name: "欢喜首映",
-					url: "www.huanxi.com",
 					search: "https://www.huanxi.com/search.shtml?sv=" + douban_cn_name,
 				},
 			],
@@ -202,21 +197,20 @@
 			links: [
 				{
 					name: "6v电影网",
-					url: "www.hao6v.tv",
 					search: "https://www.6v520.com/e/search/index.php",
 					data: "show=title%2Csmalltext&tempid=1&keyboard=" + douban_gbk_name + "&tbname=article&x=0&y=0",
-					type: "xhr",
+					xhrType: "auto",
 					anonymous: true,
 				},
 				{
-					name: "BT之家",
-					url: "www.1lou.info",
-					search: "https://www.1lou.info/search-_" + douban_cn_name + "-1.htm",
+					name: "电影天堂",
+					search: "https://www.dygod.vip/e/search/index.php",
+					data: "show=title&tempid=1&keyboard=" + douban_gbk_name + "&Submit=%C1%A2%BC%B4%CB%D1%CB%F7",
+					xhrType: "click",
 				},
 				{
-					name: "新电影天堂",
-					url: "www.xl720.com",
-					search: "https://www.xl720.com/?s=" + douban_cn_name,
+					name: "BT之家",
+					search: "http://www.1lou.me/search-" + encodeURIComponent(douban_cn_name).replaceAll('%','_') + ".htm",
 				},
 			],
 		},
@@ -226,47 +220,34 @@
 			links: [
 				{
 					name: "rarbg",
-					url: "rarbg.torrentbay.st",
 					search: "https://rarbg.torrentbay.st/get-posts/keywords:" + douban_en_name,
 				},
 				{
 					name: "海盗湾",
-					url: "thepiratebay10.xyz",
 					search: "https://thepiratebay10.xyz/search/" + douban_en_name,
 				},
 				{
 					name: "Lime",
-					url: "limetorrents.asia",
 					search: "https://limetorrents.asia/search?catname=&q=" + douban_en_name,
 				},
 				{
-					name: "imbt",
-					url: "imbt.one",
-					search: "https://imbt.one/i/" + imdb_id,
-				},
-				{
 					name: "1377x",
-					url: "www.1377x.to",
 					search: "https://www.1377x.to/search/" + douban_en_name + "/1/",
 				},
 				{
 					name: "EXT",
-					url: "extranet.torrentbay.st",
 					search: "https://extranet.torrentbay.st/browse/?q=" + douban_en_name,
 				},
 				{
 					name: "yts",
-					url: "yts.torrentbay.st",
 					search: "https://yts.torrentbay.st/browse-movies/" + douban_en_name,
 				},
 				{
 					name: "WSM",
-					url: "watchsomuch.to",
 					search: "https://watchsomuch.to/Movies/" + douban_en_name,
 				},
 				{
 					name: "rargb",
-					url: "rargb.to",
 					search: "https://rargb.to/search/?search=" + douban_en_name,
 				},
 			],
@@ -276,23 +257,15 @@
 			name: "字幕搜索",
 			links: [
 				{
-					name: "SubHD",
-					url: "subhd.tv",
-					search: "https://subhd.tv/search/" + douban_cn_name,
-				},
-				{
 					name: "射手网",
-					url: "assrt.net",
 					search: "https://assrt.net/sub/?searchword=" + douban_cn_name,
 				},
 				{
 					name: "字幕库",
-					url: "zimuku.org",
-					search: "https://so.zimuku.org/search?q=" + douban_cn_name,
+					search: "http://so.zimuku.org/search?q=" + douban_cn_name,
 				},
 				{
 					name: "OpenSub",
-					url: "opensubtitles.org",
 					search: "https://www.opensubtitles.com/zh-CN/zh-CN/search-all/q-" + imdb_id + "/hearing_impaired-include/machine_translated-/trusted_sources-",
 				},
 			],
@@ -303,47 +276,38 @@
 			links: [
 				{
 					name: "soali",
-					url: "assrt.net",
 					search: "https://soali.net/search?keyword=" + douban_cn_name + "&app=quark",
 				},
 				{
 					name: "混合盘",
-					url: "hunhepan.com",
 					search: "https://hunhepan.com/search?enabled=true&q=" + douban_cn_name,
 				},
 				{
 					name: "伏羲盘",
-					url: "fuxipan.com",
 					search: "https://fuxipan.com/search?q=" + douban_cn_name,
 				},
 				{
 					name: "夸克盘搜",
-					url: "qkpanso.com",
 					search: "https://qkpanso.com/search?q=" + douban_cn_name,
 				},
 				{
 					name: "阿里盘搜",
-					url: "alipanx.com",
 					search: "https://www.alipanx.com/search?q=" + douban_cn_name,
 				},
 				{
 					name: "懒盘搜索",
-					url: "www.lzpanx.com",
 					search: "https://www.lzpanx.com/search?q=" + douban_cn_name,
 				},
 				{
 					name: "小云搜索",
-					url: "assrt.net",
 					search: "https://www.yunso.net/index/user/s?wd=" + douban_cn_name,
 				},
 				{
 					name: "盘了个盘",
-					url: "qkpanso.com",
 					search: "https://www.panlegepan.com/s/" + douban_cn_name,
 				},
 				{
 					name: "V盘搜",
-					url: "www.vpansou.com",
 					search: "http://www.vpansou.com/query?wd=" + douban_cn_name,
 				},
 			],
@@ -403,37 +367,17 @@
 				ul.className = "resources";
 				div.appendChild(ul);
 				for (const link of webSite.links) {
-					if (link.type != "xhr") {
-						const str = '<a href="' + link.search + '" target="_blank">' + link.name + "</a>";
-						const a = document.createRange().createContextualFragment(str);
-						ul.appendChild(a);
-					} else {
-						GM_xmlhttpRequest({
-							url: link.search,
-							method: "POST",
-							headers: {
-								"Content-Type": "application/x-www-form-urlencoded",
-							},
-							timeout: 5000,
-							anonymous: link.anonymous,
-							data: link.data,
-							onload: function (response) {
-								//chrome+tm会出现兼容性问题:
-								let finalUrl = response.finalUrl;
-								if (finalUrl.search("/index.php/") != -1) {
-									finalUrl = finalUrl.replace("/index.php", "");
-								}
-
-								let str;
-								if (finalUrl == link.search) {
-									str = '<a href="' + finalUrl + '" target="_blank" style="color:pink" title="没有资源">' + link.name + "</a>";
-								} else {
-									str = '<a href="' + finalUrl + '" target="_blank">' + link.name + "</a>";
-								}
-								const a = document.createRange().createContextualFragment(str);
-								ul.appendChild(a);
-							},
-						});
+					//添加元素
+					const item = document.createElement("a");
+					item.href = link.search;
+					item.target = "_blank";
+					item.textContent = link.name;
+					ul.appendChild(item);
+					//是否校验
+					if (link.xhrType === "auto") {
+						xhrAuto(link, item);
+					} else if (link.xhrType === "click") {
+						xhrClick(link, item);
 					}
 				}
 			}
@@ -443,6 +387,68 @@
 		resourceStyle.innerHTML =
 			".resource {margin-bottom: 30px}  .resources {padding: 0 12px;*letter-spacing: normal}  .resources a {border-radius: 6px;color: #37A;display: inline-block;letter-spacing: normal;margin: 0 8px 8px 0;padding: 0 8px;text-align: center;width: 65px}  .resources a:link, .resources a:visited {background-color: #f5f5f5;color: #37A}  .resources a:hover, .resources a:active {background-color: #e8e8e8;color: #37A}  .resources a.disabled {text-decoration: line-through}  .resources a.available {background-color: #5ccccc;color: #006363}  .resources a.available:hover, .resources a.available:active {background-color: #3cc}  .resources a.honse {background-color: #fff0f5;color: #006363}  .resources a.honse:hover, .resources a.honse:active {background-color: #3cc}  .resources a.sites_r0 {text-decoration: line-through}";
 		document.head.appendChild(resourceStyle);
+	}
+
+	function xhrAuto(link, item) {
+		item.style.color = "pink";
+		GM_xmlhttpRequest({
+			url: link.search,
+			method: "POST",
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded",
+			},
+			timeout: 5000,
+			anonymous: link.anonymous,
+			data: link.data,
+			onload: function (response) {
+				let finalUrl = response.finalUrl;
+				if (!finalUrl.includes("/index.php/")) {
+					finalUrl = finalUrl.replace("/index.php", "");
+				}
+				item.href = finalUrl;
+				if (finalUrl === link.search) {
+					item.title = "没有资源";
+					item.style.color = "pink";
+				}else{
+					item.style.color = "#37A";
+				}
+			},
+		});
+	}
+
+	function xhrClick(link, item) {
+		item.addEventListener(
+			"click",
+			function (e) {
+				e.preventDefault();
+				GM_xmlhttpRequest({
+					url: link.search,
+					method: "POST",
+					headers: {
+						"Content-Type": "application/x-www-form-urlencoded",
+					},
+					timeout: 5000,
+					anonymous: link.anonymous,
+					data: link.data,
+					onload: function (response) {
+						let finalUrl = response.finalUrl;
+						if (!finalUrl.includes("/index.php/")) {
+							finalUrl = finalUrl.replace("/index.php", "");
+						}
+						item.href = finalUrl;
+						if (finalUrl === link.search) {
+							item.title = "没有资源";
+							item.style.color = "pink";
+						} else {
+							GM_openInTab(finalUrl, {
+								insert: true,
+							});
+						}
+					},
+				});
+			},
+			{ once: true },
+		);
 	}
 
 	/**
@@ -482,13 +488,13 @@
 			let change;
 			if (result.isConfirmed) {
 				for (const webSite of webSites) {
-					if (document.querySelector("#DA_div #" + webSite.id).checked != GM_getValue(webSite.id, true)) {
+					if (document.querySelector("#DA_div #" + webSite.id).checked !== GM_getValue(webSite.id, true)) {
 						GM_setValue(webSite.id, document.querySelector("#DA_div #" + webSite.id).checked);
 						change = true;
 					}
 				}
 				for (const GMValue of GMValues) {
-					if (document.querySelector("#DA_div #" + GMValue.id).checked != GM_getValue(GMValue.id, true)) {
+					if (document.querySelector("#DA_div #" + GMValue.id).checked !== GM_getValue(GMValue.id, true)) {
 						GM_setValue(GMValue.id, document.querySelector("#DA_div #" + GMValue.id).checked);
 						change = true;
 					}
@@ -503,10 +509,16 @@
 
 	let swal_html = "<div id='DA_div'>";
 	for (const GMValue of GMValues) {
-		swal_html += '<div class="smail_div"><div class="switch"><input type="checkbox" class="checkbox" id="' + GMValue.id + '"/><div class="bt"></div><div class="bg"></div></div>' + GMValue.name + "</div>";
+		swal_html +=
+			'<div class="smail_div"><div class="switch"><input type="checkbox" class="checkbox" id="' + GMValue.id + '"/><div class="bt"></div><div class="bg"></div></div>' + GMValue.name + "</div>";
 	}
 	for (const webSite of webSites) {
-		swal_html += '<div class="smail_div"><div class="switch"><input type="checkbox" class="checkbox" id="' + webSite.id + '"/><div class="bt"></div><div class="bg"></div></div>' + webSite.name + "</div>";
+		swal_html +=
+			'<div class="smail_div"><div class="switch"><input type="checkbox" class="checkbox" id="' + webSite.id + '"/><div class="bt"></div><div class="bg"></div></div>' + webSite.name + "</div>";
 	}
 	swal_html += "</div>";
 })();
+
+//错误笔记
+//这只是个片段
+// const item = document.createRange().createContextualFragment(str);
