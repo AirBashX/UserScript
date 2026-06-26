@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         豆瓣助手
-// @version      1.2.0
+// @version      1.2.2
 // @namespace    airbash/DoubanAssistant
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -210,7 +210,7 @@
 				},
 				{
 					name: "BT之家",
-					search: "http://www.1lou.me/search-" + encodeURIComponent(douban_cn_name).replaceAll('%','_') + ".htm",
+					search: "http://www.1lou.me/search-" + encodeURIComponent(douban_cn_name).replaceAll("%", "_") + ".htm",
 				},
 			],
 		},
@@ -245,6 +245,10 @@
 				{
 					name: "WSM",
 					search: "https://watchsomuch.to/Movies/" + douban_en_name,
+				},
+				{
+					name: "tgx",
+					search: `https://torrentgalaxy.info/get-posts/keywords:${douban_en_name}`,
 				},
 				{
 					name: "rargb",
@@ -409,7 +413,7 @@
 				if (finalUrl === link.search) {
 					item.title = "没有资源";
 					item.style.color = "pink";
-				}else{
+				} else {
 					item.style.color = "#37A";
 				}
 			},
