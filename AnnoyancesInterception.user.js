@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         骚扰拦截
-// @version      1.5.8
+// @version      1.5.9
 // @namespace    airbash/AnnoyancesInterception
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -267,7 +267,7 @@
 			url: "tieba.baidu.com",
 			items: [
 				//悬浮按钮:打开百度贴吧
-				".nav-bar-bottom",
+				".tb-backflow-defensive",
 			],
 		},
 		{
@@ -1132,10 +1132,9 @@
 			url: "m.smzdm.com/",
 			items: [
 				//app内打开
-				".footer-banner-wrap",
-				//国内好价:qpp内打开
-				".wrapper",
-				".foot-banner",
+				".damo-footer-open-app",
+				// //国内好价板块:打开app
+				".foot-banner"
 			],
 		},
 		{
