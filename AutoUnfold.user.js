@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         自动展开
-// @version      1.3.86
+// @version      1.3.87
 // @namespace    https://github.com/AirBashX/AutoUnfold/
 // @homepageURL  https://github.com/AirBashX/UserScript
 // @author       airbash
@@ -35,7 +35,7 @@
 // @match        *://*.huanqiu.com/article/*
 // @match        *://3w.huanqiu.com/a/*
 // @match        *://*.china.com/*
-// @match        *://*.toutiao.com/article/*
+// @match        *://*.toutiao.com/*
 // @match        *://mini.eastday.com/*
 // @match        *://*.dxy.cn/*
 // @match        *://www.cn-healthcare.com/*
@@ -78,6 +78,7 @@
 // @match        *://blog.didispace.com/*
 // @match        *://*.wang1314.com/doc/*
 // @match        *://www.guancha.cn/economy/*
+// @match        *://baidu.so.com/doc/*
 // @run-at       document-start
 // @icon         data:image/png;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAAA29JREFUeF7tmMvrT08Yx1/fnViwVcq/gqKQa8gtd0Kyk8Vv81tZKWGByC233JWIwp9iYcPORkT56fl1po5pnjNn5syc6dOZz/Iz1/dr3s9z5pk5Jv6bm7h+KoDqgIkTqCEwcQPUJFhDoIbAxAnUEJi4AepXoIZADYGJE4gJgSPAF+BFYXYngU/AsyH7CAUg4s8B84GNBSGI+DPAAmDzEAghANriDfS9wO0hJxAx9iBwvhFvhu8HbkbM1fsz6BJfAoJL/CAIfRzQJX5MCF3ioyH4AOwGrjQxbxb5Cixy2G0fcCvGhj3GuMS79vEfIH1v9Jjz/y5dADTx/wCfgScjQdDE/wt8dCTiIAgaAE38MeBBI1yyrw3hN3AgoRO2A9eshCcnfwK42+xjvQJBxj70OcEFQMRftGz+C5BcYGfanBD6iDf6DgFXLbHihG3A4y4ILgBbgEeOQWuA147/VwFvrP/FCbK4K0x8hyLtmnj53D13TCD9LwMLW23fAclLnS7QQmCDspAGYRdwJxEEifmzlgN/AiL+npJ35HLWTsy9xPuS4A5lwVAI0t92iOaCUcX7AEh7qBPEivcdTlgHvPJ435Xtu07+aHMtnxdq+/Y+fPcA6RuaEzQIq4G3CoQi4vs4wOx3GfAhIDEuB947nOCCECpeEtslYNDJm731cYDp6xIlbVpOWAG880AoKj7EAUbHWuClwwlble+tC4IMl1J6aaukNVNKzMsJ23lE2pPEvL33EAfEQlipxP4364Y3uvgYB/ggHG6urjZoDYLpJ9fb4wEnL/1PKWt5PjZ/N8c4IDWELvGuhJdM/BAHxELYBDxtnUFR8SkAyBxaYtypWNpAKC4+FQCZZ49SAmsQpIpcAlxwBKzY3nW3P91UqUEx7us8JAfYc2sQQl6PNfHyDpHltSklgC4n9IEgoXHdUdVlE58yBNpukEuRqwbXbowyVuoHud5GlbQ+m3e1p3aAWSukitRs733MGCLcjM0FQObv855QVHyuEGgfTJcTpBaQbJ+kqot1Q04HmD1p7wk/SosfwwEGgvaeYNp7v+HFnrQ2bgwHmLW194Ri4sd0gFY7FBVfAkC7diguvhQAA2Fxinp+aE4YMwcM3WuW8RVAFqwzNGl1wAwdVpatVgdkwTpDk1YHzNBhZdlqdUAWrDM06eQd8Acza/FB2qWb3AAAAABJRU5ErkJggg==
 // @grant        none
@@ -723,7 +724,7 @@
 		},
 		{
 			name: "今日头条:PC版",
-			url: "www.toutiao.com/article/",
+			url: "www.toutiao.com/",
 			handles: [
 				//点击查看完整内容
 				{
@@ -1398,6 +1399,21 @@
 				{
 					type: "click",
 					item: ".module-page-right>.last",
+				},
+			],
+		},
+		{
+			name: "360百科",
+			url: "baike.so.com/doc/",
+			handles: [
+				//PC端:全文
+				{
+					type: "height",
+					item: ".entry-detail-fold-part",
+				},
+				{
+					type: "display",
+					item: ".entry-detail-fold-switch",
 				},
 			],
 		},
